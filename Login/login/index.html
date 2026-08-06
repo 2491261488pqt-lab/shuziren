@@ -1,0 +1,413 @@
+<!DOCTYPE html><html class="light" lang="zh"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>登录 | 数字人微课平台</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-surface": "#2f3031",
+                      "secondary-fixed-dim": "#6de039",
+                      "on-secondary-fixed": "#062100",
+                      "tertiary-fixed": "#ffddb0",
+                      "on-error-container": "#93000a",
+                      "surface-container-highest": "#e3e2e2",
+                      "inverse-on-surface": "#f2f0f0",
+                      "surface-tint": "#005fae",
+                      "on-tertiary-fixed": "#281800",
+                      "on-secondary-fixed-variant": "#1a5200",
+                      "on-secondary": "#ffffff",
+                      "tertiary-container": "#9d6a00",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary": "#7d5400",
+                      "on-primary-fixed-variant": "#004785",
+                      "surface-variant": "#e3e2e2",
+                      "secondary-fixed": "#88fd54",
+                      "error": "#ba1a1a",
+                      "surface": "#faf9f9",
+                      "secondary-container": "#85fa51",
+                      "error-container": "#ffdad6",
+                      "on-primary-container": "#fefcff",
+                      "tertiary-fixed-dim": "#ffba45",
+                      "on-surface-variant": "#404753",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#614000",
+                      "on-secondary-container": "#287100",
+                      "inverse-primary": "#a5c8ff",
+                      "primary": "#005daa",
+                      "on-surface": "#1b1c1c",
+                      "primary-container": "#0075d5",
+                      "on-error": "#ffffff",
+                      "on-background": "#1b1c1c",
+                      "outline": "#707785",
+                      "surface-container-low": "#f4f3f3",
+                      "surface-bright": "#faf9f9",
+                      "on-tertiary-container": "#fffbff",
+                      "surface-container-high": "#e9e8e8",
+                      "on-primary-fixed": "#001c3a",
+                      "outline-variant": "#c0c7d6",
+                      "on-tertiary": "#ffffff",
+                      "primary-fixed": "#d4e3ff",
+                      "surface-container": "#efeded",
+                      "surface-dim": "#dbdad9",
+                      "secondary": "#266d00",
+                      "primary-fixed-dim": "#a5c8ff",
+                      "background": "#faf9f9"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "lg": "24px",
+                      "base": "4px",
+                      "sidebar-width": "240px",
+                      "gutter": "16px",
+                      "md": "16px",
+                      "container-margin": "24px",
+                      "sm": "12px",
+                      "xs": "8px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "headline-sm": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "title-lg": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "label-md": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "display-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "title-lg": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                      "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-md": ["12px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .shimmer-bg {
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .dot-pulse {
+            animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(1.1); }
+        }
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background overflow-hidden h-screen flex">
+<!-- Left Side: Branding Illustration & Animation -->
+<div class="hidden lg:flex lg:w-3/5 h-full relative overflow-hidden bg-primary items-center justify-center">
+<div class="relative z-10 p-xl flex flex-col items-center text-center max-w-2xl">
+<div class="mb-lg flex items-center justify-center">
+<img alt="Hainan University Logo" class="w-64 h-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChkqVSBL3OtZGUKFGoZfkUX1_vlAjJ6luVJb8_lcH1QexfQ5LX0Mo8RW7jRfdc9HaHnnRBFilkz97OEoXQXbJgJlwQO7zUUVz0li6f6L_ypqNHzuviiDABblHwMx_FZ-SgaaFtmAsY_5l4K2Hprtz3hbSkRsBJ1YKfVL7zKW3FmxZ0xqTQXSp_NXPHfkTMzHDMpR3Bcvi4AGQEZhguh71MBy_HRVe5n6ks_kJNZ9GmDftqzUgaiUNl372MdDka7ra8Pg">
+</div>
+<h1 class="font-display-lg text-display-lg text-white mb-md">
+                数字人微课系统
+            </h1>
+<p class="font-body-md text-body-md text-primary-fixed-dim max-w-md opacity-90">
+                为海南大学提供AI驱动的微课合成与下一代教学制作工具。
+            </p>
+<div class="mt-xl flex gap-md">
+<div class="px-md py-xs bg-white/10 rounded-full flex items-center gap-xs border border-white/20">
+<span class="w-2 h-2 bg-secondary rounded-full dot-pulse"></span>
+<span class="text-white font-label-md text-label-md">AI内核已激活</span>
+</div>
+<div class="px-md py-xs bg-white/10 rounded-full flex items-center gap-xs border border-white/20">
+<span class="material-symbols-outlined text-white text-[14px]">shield</span>
+<span class="text-white font-label-md text-label-md">安全统一认证</span>
+</div>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-primary/50 to-transparent"></div>
+</div>
+<!-- Right Side: Login Form -->
+<main class="w-full lg:w-2/5 h-full flex flex-col justify-center px-lg md:px-xl bg-surface">
+<div class="max-w-md w-full mx-auto">
+<!-- Mobile Logo (Hidden on Desktop) -->
+<div class="lg:hidden mb-xl flex items-center gap-md">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-black">H</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-primary">Micro-course AI</h2>
+<p class="font-label-md text-label-md text-on-surface-variant">Production Suite</p>
+</div>
+</div>
+<!-- Login Header -->
+<header class="mb-xl">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-xs">欢迎回来</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">进入您的微课管理后台。</p>
+</header>
+<!-- Login Tabs -->
+<div class="flex border-b border-outline-variant mb-lg" id="login-tabs" role="tablist">
+<button class="flex-1 pb-md font-title-lg text-title-lg text-primary border-b-2 border-primary transition-all flex items-center justify-center gap-xs" id="tab-sso" onclick="switchTab('sso')" role="tab">
+<span class="material-symbols-outlined text-[18px]">account_balance</span>
+                    海南大学统一身份认证
+                </button>
+<button class="flex-1 pb-md font-title-lg text-title-lg text-on-surface-variant border-b-2 border-transparent hover:text-on-surface transition-all flex items-center justify-center gap-xs" id="tab-local" onclick="switchTab('local')" role="tab">
+<span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+                    管理员本地登录
+                </button>
+</div>
+<!-- SSO Content -->
+<div class="block space-y-lg animate-in fade-in duration-500" id="content-sso">
+<div class="p-lg bg-surface-container-low rounded-xl border border-outline-variant text-center">
+<img class="h-16 mx-auto mb-md grayscale hover:grayscale-0 transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATHPAKU8iUh4N0S-Kazv5p2DkLt-bpUVo-9WvG2xZYmDgd44Jo38m2dUKGllAA7-zGO6rG9DcJI-09f_-601-HQyx_LY4zF9icb7L4Je7yzaHpiDhwQZhzHmK6z72aGdxMB6PBNwk8RsDbugFBiFPyJbRTqkPj8Ti-dhaikoE_XpIGloNQ7i1K0HdOglTic9II9smx1ySzitCbBteRWOyZuOlhmXY2gqsOTaBxMUtbhhodo2-EnokV">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-xs">海南大学统一身份认证</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-lg">使用您的学校账号安全登录。</p>
+<button class="w-full bg-primary hover:bg-primary-container text-white py-md rounded-lg font-title-lg transition-all active:scale-[0.98] flex items-center justify-center gap-md" onclick="window.location.href='qr.html';">
+                        统一认证登录
+                        <span class="material-symbols-outlined">login</span>
+</button>
+</div>
+<div class="flex items-center gap-md text-on-surface-variant">
+<div class="h-px flex-1 bg-outline-variant"></div>
+<span class="font-label-md text-label-md">需要帮助？</span>
+<div class="h-px flex-1 bg-outline-variant"></div>
+</div>
+<div class="space-y-md">
+<a class="flex items-center gap-md p-md rounded-lg border border-outline-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-primary">contact_support</span>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface">IT 服务台</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">账号与访问问题</p>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- Local Content (Hidden by default) - 管理员本地登录表单 -->
+<div class="hidden space-y-lg" id="content-local">
+<form class="space-y-lg" id="tab-admin-form">
+<!-- Username -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-base" for="tab-admin-user">用户名</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</div>
+<input class="w-full h-12 pl-11 pr-md bg-surface-container border border-outline-variant rounded-lg font-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" id="tab-admin-user" name="username" placeholder="请输入管理员账号" type="text" autocomplete="off">
+</div>
+</div>
+<!-- Password -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-base" for="tab-admin-pwd">密码</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</div>
+<input class="w-full h-12 pl-11 pr-md bg-surface-container border border-outline-variant rounded-lg font-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" id="tab-admin-pwd" name="password" placeholder="请输入登录密码" type="password">
+<button class="absolute inset-y-0 right-0 pr-md flex items-center text-outline hover:text-on-surface-variant" type="button" onclick="toggleTabAdminPwd()">
+<span class="material-symbols-outlined text-[20px]" id="tab-admin-pwd-icon">visibility_off</span>
+</button>
+</div>
+</div>
+<!-- Captcha -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-base" for="tab-admin-captcha">验证码</label>
+<div class="flex gap-md">
+<div class="relative group flex-grow">
+<div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+</div>
+<input class="w-full h-12 pl-11 pr-md bg-surface-container border border-outline-variant rounded-lg font-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" id="tab-admin-captcha" name="captcha" placeholder="输入验证码" type="text" autocomplete="off">
+</div>
+<div class="h-12 w-32 bg-surface-container-high rounded-lg flex items-center justify-center overflow-hidden border border-outline-variant cursor-pointer hover:bg-surface-variant transition-colors" onclick="this.querySelector('img').style.opacity='0.5';setTimeout(()=>this.querySelector('img').style.opacity='1',200);">
+<img class="h-full w-auto transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIQxmgEPFQ9m_PwT3rAat8z-_fgUhstDCMGz05Imhkp_MCXfL1ykK9WVvGXtKSr-8mQm0adCOB-vsIycJ8L5wqg_It8CMq-yatDK6wt6woUmu2SiJXVzG0ErkhEViC-a1mI-ZgGXJvWba5sOgDOSSYHiePX9qSqt3UwZGVW0hbHGGxl04q96zsW5xJ3lu0O3sntrecADtpr0_ONM41ZKbqzS09tiyEg-_PsNdSNZAaumakdDQNlb8z">
+</div>
+</div>
+</div>
+<!-- Error -->
+<div class="hidden flex items-center gap-2 p-3 rounded-lg bg-error-container/50 border border-error/20" id="tab-admin-error">
+<span class="material-symbols-outlined text-error text-[18px]">error</span>
+<p class="font-body-sm text-body-sm text-on-error-container" id="tab-admin-error-msg"></p>
+</div>
+<!-- Options -->
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<input class="w-4 h-4 text-primary border-outline-variant rounded focus:ring-primary" id="tab-admin-remember" name="remember" type="checkbox">
+<label class="ml-xs font-body-sm text-body-sm text-on-surface-variant cursor-pointer" for="tab-admin-remember">记住密码</label>
+</div>
+<a class="font-body-sm text-body-sm text-primary hover:underline transition-all" href="#">遇到问题？联系技术支持</a>
+</div>
+<!-- Submit -->
+<button class="w-full h-12 bg-primary text-on-primary font-title-lg text-title-lg rounded-xl shadow-md hover:bg-primary-container hover:shadow-lg active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2" type="submit" id="tab-admin-submit">
+<span id="tab-admin-submit-text">立即登录</span>
+<span class="hidden animate-spin material-symbols-outlined text-[20px]" id="tab-admin-spinner">progress_activity</span>
+</button>
+</form>
+<p class="text-center font-label-md text-label-md text-outline mt-4">演示账号：admin / admin@123（验证码任意）</p>
+<!-- Switch back to SSO -->
+<div class="mt-xl">
+<div class="relative flex items-center justify-center mb-lg">
+<div class="w-full border-t border-outline-variant"></div>
+<span class="absolute px-md bg-surface-container-lowest font-label-md text-label-md text-outline">或</span>
+</div>
+<a class="flex items-center justify-center gap-xs w-full py-md border border-primary text-primary font-title-lg text-title-lg rounded-xl hover:bg-primary/5 active:bg-primary/10 transition-all group" href="javascript:switchTab('sso')">
+<span class="material-symbols-outlined text-[20px] transition-transform group-hover:-translate-x-1">arrow_back</span>
+                    海南大学统一身份认证
+                </a>
+</div>
+</div>
+<!-- Footer Meta -->
+<footer class="mt-xl pt-xl border-t border-outline-variant flex flex-col gap-md">
+<div class="flex justify-between items-center text-on-surface-variant font-label-md text-label-md">
+<span>© 2024 Digital Human AI Production</span>
+<div class="flex gap-md">
+<a class="hover:text-primary transition-colors" href="#">隐私政策</a>
+<a class="hover:text-primary transition-colors" href="#">服务条款</a>
+</div>
+</div>
+<div class="flex items-center justify-center gap-xs py-md">
+<span class="material-symbols-outlined text-[14px] text-secondary">verified_user</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant opacity-70">AES-256 加密会话</span>
+</div>
+</footer>
+</div>
+</main>
+<script>
+    function switchTab(type) {
+        const ssoTab = document.getElementById('tab-sso');
+        const localTab = document.getElementById('tab-local');
+        const ssoContent = document.getElementById('content-sso');
+        const localContent = document.getElementById('content-local');
+
+        if (type === 'sso') {
+            ssoTab.classList.add('text-primary', 'border-primary');
+            ssoTab.classList.remove('text-on-surface-variant', 'border-transparent');
+            localTab.classList.add('text-on-surface-variant', 'border-transparent');
+            localTab.classList.remove('text-primary', 'border-primary');
+            ssoContent.classList.remove('hidden');
+            localContent.classList.add('hidden');
+        } else {
+            localTab.classList.add('text-primary', 'border-primary');
+            localTab.classList.remove('text-on-surface-variant', 'border-transparent');
+            ssoTab.classList.add('text-on-surface-variant', 'border-transparent');
+            ssoTab.classList.remove('text-primary', 'border-primary');
+            localContent.classList.remove('hidden');
+            ssoContent.classList.add('hidden');
+        }
+    }
+
+    // --- Tab Admin Login Simulation ---
+    const DEMO_TAB_ADMIN = { username: 'admin', password: 'admin@123' };
+    const tabAdminForm = document.getElementById('tab-admin-form');
+    const tabAdminUser = document.getElementById('tab-admin-user');
+    const tabAdminPwd = document.getElementById('tab-admin-pwd');
+    const tabAdminCaptcha = document.getElementById('tab-admin-captcha');
+    const tabAdminError = document.getElementById('tab-admin-error');
+    const tabAdminErrorMsg = document.getElementById('tab-admin-error-msg');
+    const tabAdminSubmit = document.getElementById('tab-admin-submit');
+    const tabAdminSubmitText = document.getElementById('tab-admin-submit-text');
+    const tabAdminSpinner = document.getElementById('tab-admin-spinner');
+
+    function setTabLoading(loading) {
+        tabAdminSubmit.disabled = loading;
+        if (loading) {
+            tabAdminSubmitText.classList.add('hidden');
+            tabAdminSpinner.classList.remove('hidden');
+            tabAdminSubmit.classList.add('opacity-70');
+        } else {
+            tabAdminSubmitText.classList.remove('hidden');
+            tabAdminSpinner.classList.add('hidden');
+            tabAdminSubmit.classList.remove('opacity-70');
+        }
+    }
+
+    function showTabAdminError(msg) {
+        tabAdminErrorMsg.textContent = msg;
+        tabAdminError.classList.remove('hidden');
+    }
+
+    function hideTabAdminError() {
+        tabAdminError.classList.add('hidden');
+    }
+
+    tabAdminForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        hideTabAdminError();
+        const u = tabAdminUser.value.trim();
+        const p = tabAdminPwd.value;
+        const c = tabAdminCaptcha.value.trim();
+        if (!u) { showTabAdminError('请输入管理员账号'); tabAdminUser.focus(); return; }
+        if (!p) { showTabAdminError('请输入登录密码'); tabAdminPwd.focus(); return; }
+        if (!c) { showTabAdminError('请输入验证码'); tabAdminCaptcha.focus(); return; }
+        setTabLoading(true);
+        setTimeout(() => {
+            setTabLoading(false);
+            if (u === DEMO_TAB_ADMIN.username && p === DEMO_TAB_ADMIN.password) {
+                tabAdminSubmitText.textContent = '登录成功 ✓';
+                tabAdminSubmit.classList.add('bg-secondary');
+                tabAdminSubmit.classList.remove('bg-primary');
+                setTimeout(() => { window.location.href = '../../dashboard/index.html'; }, 600);
+            } else {
+                showTabAdminError('账号或密码错误，请重试');
+                tabAdminPwd.value = '';
+                tabAdminCaptcha.value = '';
+                tabAdminPwd.focus();
+            }
+        }, 1200);
+    });
+
+    function toggleTabAdminPwd() {
+        const icon = document.getElementById('tab-admin-pwd-icon');
+        if (tabAdminPwd.type === 'password') {
+            tabAdminPwd.type = 'text';
+            icon.textContent = 'visibility';
+        } else {
+            tabAdminPwd.type = 'password';
+            icon.textContent = 'visibility_off';
+        }
+    }
+
+    // Ripple Effect
+    document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('mousedown', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const ripple = document.createElement('span');
+            ripple.style.cssText = 'position:absolute;width:100px;height:100px;background:rgba(255,255,255,0.3);border-radius:50%;left:'+(x-50)+'px;top:'+(y-50)+'px;transform:scale(0);animation:ripple 0.6s linear;pointer-events:none';
+            this.style.position = 'relative';
+            this.style.overflow = 'hidden';
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
+</script>
+</body></html>

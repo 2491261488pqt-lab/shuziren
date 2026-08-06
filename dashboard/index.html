@@ -1,0 +1,531 @@
+<!DOCTYPE html><html class="light" lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Digital Human AI - 工作台</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#d4e3ff",
+                        "inverse-on-surface": "#f2f0f0",
+                        "tertiary": "#7d5400",
+                        "surface-container-high": "#e9e8e8",
+                        "on-tertiary-fixed": "#281800",
+                        "secondary-fixed": "#88fd54",
+                        "secondary-container": "#85fa51",
+                        "primary": "#005daa",
+                        "surface": "#faf9f9",
+                        "tertiary-fixed-dim": "#ffba45",
+                        "secondary-fixed-dim": "#6de039",
+                        "on-tertiary-fixed-variant": "#614000",
+                        "surface-container-low": "#f4f3f3",
+                        "surface-container-highest": "#e3e2e2",
+                        "on-secondary-container": "#287100",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#a5c8ff",
+                        "on-primary-container": "#fefcff",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#404753",
+                        "on-tertiary-container": "#fffbff",
+                        "secondary": "#266d00",
+                        "primary-container": "#0075d5",
+                        "tertiary-fixed": "#ffddb0",
+                        "background": "#faf9f9",
+                        "on-background": "#1b1c1c",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#a5c8ff",
+                        "on-primary-fixed": "#001c3a",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#005fae",
+                        "on-secondary-fixed-variant": "#1a5200",
+                        "tertiary-container": "#9d6a00",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#004785",
+                        "outline": "#707785",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1b1c1c",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#dbdad9",
+                        "surface-variant": "#e3e2e2",
+                        "on-secondary-fixed": "#062100",
+                        "surface-container": "#efeded",
+                        "inverse-surface": "#2f3031",
+                        "outline-variant": "#c0c7d6",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#faf9f9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "md": "16px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "gutter": "16px",
+                        "sm": "12px",
+                        "lg": "24px",
+                        "sidebar-width": "240px",
+                        "container-margin": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "title-lg": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: #1b1c1c;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .sidebar-active {
+            background-color: #d4e3ff;
+            color: #001c3a;
+            border-right: 4px solid #005daa;
+        }
+
+        .status-pulse {
+            position: relative;
+        }
+        .status-pulse::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: inherit;
+            animation: pulse 2s infinite;
+            opacity: 0.5;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c0c7d6;
+            border-radius: 10px;
+        }
+
+        /* Circular Progress for Storage */
+        .circular-progress {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: conic-gradient(#005daa 64%, #e9e8e8 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .circular-progress::before {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            border-radius: 50%;
+            background: #faf9f9;
+        }
+        .circular-progress-icon {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- SideNavBar (Authority: JSON + Design System) -->
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50">
+<div class="px-6 py-8 flex flex-col items-center">
+<img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6P6wfO4WzAvKB29FOgOhh2gKBA0I5qlzQeKI5vJJL5zJEXfw12NIb54CcvIorfCPPvY-fQA4FkHm5asDVuQALYu2D1o8zxRfu43p9izOJhgYMgdroju-AmDkgli4t4lq01Ffo_k-DYgBUln2qmX5UP14xGigku6x0_0pOdJsQesTtUECqX24MoTFKo1M8JKP2d5y9A-vPoJD2J6NyktJtsf2PCBAPRED9heWexjhF_IQC027pdzqH_ujAzI_uyK2_Yg">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1>
+<p class="font-label-md text-label-md text-outline">Hainan University</p>
+</div>
+<nav class="flex-1 mt-4 px-3 space-y-1">
+<a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html">
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">业务总览</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html">
+<span class="material-symbols-outlined mr-3" data-icon="video_call">video_call</span>
+<span class="font-label-md text-label-md">微课智能体</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html">
+<span class="material-symbols-outlined mr-3">video_library</span>
+<span class="font-label-md text-label-md">视频管理</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html">
+<span class="material-symbols-outlined mr-3" data-icon="folder_open">folder_open</span>
+<span class="font-label-md text-label-md">资产管理</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html">
+<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">系统设置</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A professional business headshot of a university administrator in a modern office, bright natural lighting, corporate aesthetic, clean light-mode environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYzMnP2c0Xr56Z5hZGnvtaUbLDy4Di6cbJs3ueJMZ_9qmW3PE6MfWE3wXYOWKXw-0hD60S-nqqIFHaAave39GOhatkdPoHH-rGBI1Wem-PRvbr-SblX11vlTUb3RUQOPMeaZCuC8lPNsIG-wqkMsf5PbDAGL_QLLewnGvY0sifq8wjgVUm_q2mz5R7U9ExKchTV2yEynyaVSel6-K-NQ0iV0c4mDVasvtgUwGduaNp-mmcmRSwmV4l">
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p>
+<p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p>
+</div>
+<span class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer" data-icon="logout">logout</span>
+</div>
+</div>
+</aside>
+<!-- TopNavBar (Authority: JSON) -->
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest">
+<div class="flex items-center gap-4">
+<div class="flex items-center text-outline font-body-sm text-body-sm">
+<span class="">首页</span>
+<span class="material-symbols-outlined text-sm mx-2" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">工作台首页</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+<span class="material-symbols-outlined text-outline text-lg" data-icon="search">search</span>
+</div>
+<input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索资源或项目..." type="text">
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="relative hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span>
+</button>
+<button class="hover:text-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+<span class="font-body-sm text-body-sm">帮助</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width mt-16 p-xl min-h-[calc(100vh-64px)]">
+<!-- Welcome Header -->
+<section class="mb-xl flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="font-display-lg text-display-lg text-on-surface mb-2">早上好，管理员</h2>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary" data-icon="info" style="font-variation-settings: 'FILL' 1;">info</span>
+<p class="font-body-sm text-body-sm">当前平台运行稳健，今日已有 <span class="text-primary font-bold">12</span> 个视频项目成功导出。</p>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant">
+<div class="w-2 h-2 rounded-full bg-secondary status-pulse"></div>
+<span class="font-label-md text-label-md text-secondary">系统在线</span>
+<div class="w-px h-4 bg-outline-variant mx-2"></div>
+<span class="font-label-md text-label-md text-outline">2023年10月24日 星期二</span>
+</div>
+</section>
+<div class="grid grid-cols-12 gap-xl">
+<!-- Data Overview Cards -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-4 gap-gutter mb-6">
+<div class="bg-surface p-lg rounded-xl border border-surface-container-highest flex items-center gap-4 hover:shadow-lg transition-shadow">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl" data-icon="video_library">video_library</span>
+</div>
+<div>
+<p class="text-outline font-label-md text-label-md">总视频数</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">1,284</h3>
+</div>
+</div>
+<div class="bg-surface p-lg rounded-xl border border-surface-container-highest flex items-center gap-4 hover:shadow-lg transition-shadow">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-2xl" data-icon="cycle">cycle</span>
+</div>
+<div>
+<p class="text-outline font-label-md text-label-md">正在合成</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">06</h3>
+</div>
+</div>
+<div class="bg-surface p-lg rounded-xl border border-surface-container-highest flex items-center gap-4 hover:shadow-lg transition-shadow">
+<div class="circular-progress">
+<span class="material-symbols-outlined text-xl text-primary circular-progress-icon" data-icon="database">database</span>
+</div>
+<div>
+<p class="text-outline font-label-md text-label-md">存储使用率</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">64%</h3>
+</div>
+</div>
+<div class="bg-surface p-lg rounded-xl border border-surface-container-highest flex items-center justify-between gap-4 hover:shadow-lg transition-shadow">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed-dim flex items-center justify-center text-on-primary-fixed-variant">
+<span class="material-symbols-outlined text-2xl" data-icon="trending_up">trending_up</span>
+</div>
+<div>
+<p class="text-outline font-label-md text-label-md">今日访问</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">3.2k</h3>
+</div>
+</div>
+<!-- Simple Trend Line using SVG -->
+<svg class="w-16 h-8 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 40 20">
+<path d="M0,20 L10,12 L20,15 L30,5 L40,0" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="col-span-12 lg:col-span-8 grid grid-cols-1 gap-gutter md:grid-cols-4 mb-6">
+<button class="relative h-48 overflow-hidden rounded-xl bg-primary group transition-all hover:-translate-y-1 hover:shadow-xl md:col-span-1">
+<div class="absolute inset-0 bg-gradient-to-br from-primary to-[#00386b] opacity-100"></div>
+<div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+<div class="relative z-10 p-lg h-full flex flex-col justify-between text-white text-left">
+<span class="material-symbols-outlined text-5xl mb-2" data-icon="add_circle">add_circle</span>
+<div>
+<h4 class="font-title-lg text-title-lg mb-1">新建视频项目</h4>
+<p class="text-white/80 font-label-md text-label-md">快速开启 AI 合成之旅</p>
+</div>
+</div>
+</button>
+<button class="relative h-40 mt-auto overflow-hidden rounded-xl bg-surface border border-surface-container-highest group transition-all hover:-translate-y-1 hover:shadow-md hover:border-primary">
+<div class="p-lg h-full flex flex-col justify-between text-left">
+<span class="material-symbols-outlined text-4xl text-primary" data-icon="person_play">person_play</span>
+<div>
+<h4 class="font-title-lg text-title-lg text-on-surface">管理数字人</h4>
+<p class="text-outline font-label-md text-label-md mt-1">配置 3D 角色与唇形同步</p>
+</div>
+</div>
+</button>
+<button class="relative h-40 mt-auto overflow-hidden rounded-xl bg-surface border border-surface-container-highest group transition-all hover:-translate-y-1 hover:shadow-md hover:border-primary">
+<div class="p-lg h-full flex flex-col justify-between text-left">
+<span class="material-symbols-outlined text-4xl text-secondary" data-icon="audio_file">audio_file</span>
+<div>
+<h4 class="font-title-lg text-title-lg text-on-surface">音视频库</h4>
+<p class="text-outline font-label-md text-label-md mt-1">管理配音、BGM 与素材</p>
+</div>
+</div>
+</button>
+</div>
+<!-- System Bulletin -->
+<div class="col-span-12 lg:col-span-4 bg-surface rounded-xl border border-surface-container-highest flex flex-col overflow-hidden mb-6 h-48 mt-auto">
+<div class="px-lg py-4 border-b border-surface-container-highest flex items-center justify-between">
+<h3 class="font-title-lg text-title-lg text-on-surface">系统公告</h3>
+<button class="text-primary font-label-md text-label-md hover:underline">查看全部</button>
+</div>
+<div class="flex-1 p-lg space-y-4 custom-scrollbar overflow-y-auto">
+<div class="flex gap-3">
+<div class="shrink-0 w-8 h-8 rounded bg-error-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-lg" data-icon="campaign">campaign</span>
+</div>
+<div>
+<p class="font-label-md text-label-md font-bold mb-0.5">系统升级：数字人渲染引擎已更新至 v2.4</p>
+<p class="text-[10px] text-outline">1小时前</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="shrink-0 w-8 h-8 rounded bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg" data-icon="event">event</span>
+</div>
+<div>
+<p class="font-label-md text-label-md font-bold mb-0.5">下周三进行服务器例行维护公告</p>
+<p class="text-[10px] text-outline">昨天 14:30</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Projects Table -->
+<div class="col-span-12 bg-surface rounded-xl border border-surface-container-highest overflow-hidden">
+<div class="px-lg py-4 border-b border-surface-container-highest flex items-center justify-between">
+<h3 class="font-title-lg text-title-lg text-on-surface">最近项目</h3>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 rounded-md bg-surface-container border border-outline-variant font-label-md text-label-md hover:bg-surface-container-high transition-colors">筛选</button>
+<button class="px-3 py-1.5 rounded-md bg-primary text-white font-label-md text-label-md hover:bg-primary-container transition-colors">查看全部</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="bg-surface-container-low border-b border-surface-container-highest">
+<th class="px-lg py-3 font-label-md font-bold text-outline">项目名称</th>
+<th class="px-lg py-3 font-label-md font-bold text-outline">创建时间</th>
+<th class="px-lg py-3 font-label-md font-bold text-outline">状态</th>
+<th class="px-lg py-3 font-label-md font-bold text-outline text-right">操作</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-highest">
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-lg py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-6 bg-surface-container rounded overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small cinematic thumbnail of a realistic 3D digital human teacher in a university lecture setting, soft professional lighting, academic atmosphere, light-mode color grade." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDAkft2b-ah2z_yjNpaisb8wugn00UNM-VWEYY8W88FwRdzavDh5HF3XVW-6h4bPBDjpX4Cldix-VMCLwsEJlnctTnHbBaxhxK6d6MPNg4DNp3mcRiKC8inBGyttGpwKS5zlHZ0I1vX46jW21ZTZxW5WA2wS7IRVHx6UmWPj-s4Q3Pqa8bqExdIVB4ZoLtp3vi3pfzmTCRXCyqpJoSR8uFXTyU_dgPjgqVrOUjfOeemR3OPKU475JB">
+</div>
+<span class="font-bold">《人工智能基础》微课 - 第1章</span>
+</div>
+</td>
+<td class="px-lg py-4 text-outline">2023-10-24 10:15</td>
+<td class="px-lg py-4">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary-fixed/50 text-on-primary-fixed-variant border border-primary-fixed-dim">
+<div class="w-1.5 h-1.5 rounded-full bg-primary status-pulse"></div>
+<span class="font-label-md text-label-md">合成中 (85%)</span>
+</div>
+</td>
+<td class="px-lg py-4 text-right">
+<button class="text-primary hover:underline mr-4 font-label-md">详情</button>
+<button class="text-outline hover:text-error transition-colors"><span class="material-symbols-outlined text-lg align-middle" data-icon="delete">delete</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-lg py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-6 bg-surface-container rounded overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A cinematic scene showing a digital human avatar demonstrating a chemistry experiment in a virtual lab, vibrant blue and white lighting, clear professional visual style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_48bZspL7yvNGMvo2493U_LXkc8HkUTvnszvWeY0XCJE4pqq7NqYXzgPyfWeFXoOWR3HaOgd6q3BE1XIKfBdaEgbRK9WF92XmzS7lcfpNs8J8PGYKtdqK9mGJZ5XTTK4u6t5CpBXfsQo7ICQIRuHX7pXLQZwYbQAP50kIHrJHXlGmiCXNqcxbqQM04Y_mqomi6ebOi0O9eizbAuRKBD9YBSGGwCW-XGLuyoFkYEDs5nE_npqlsARA">
+</div>
+<span class="font-bold">《物理化学》实验演示 - 无机合成</span>
+</div>
+</td>
+<td class="px-lg py-4 text-outline">2023-10-23 16:40</td>
+<td class="px-lg py-4">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/50 text-on-secondary-container border border-secondary-container">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+<span class="font-label-md text-label-md">已完成</span>
+</div>
+</td>
+<td class="px-lg py-4 text-right">
+<button class="text-primary hover:underline mr-4 font-label-md">预览</button>
+<button class="text-outline hover:text-error transition-colors"><span class="material-symbols-outlined text-lg align-middle" data-icon="delete">delete</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-lg py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-6 bg-surface-container rounded overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A detailed digital avatar presenting a history lecture with a background of historical artifacts, warm cinematic lighting, high-quality digital human asset, professional light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmAq1yrdIPjYVuBN4zMt0SHnsal91S0M3_hCbCzL6BBaKE3nH_LHljs-GwJ8-9jKEn7age8jWz2e4htP6mrDubkDi-2ajU3gymoQAMvUjH61qrfoMzjqya-fysyGHXs29WKvCc7jKcdZDIIpKg9jGYSW0fQ1qrl4OMKzyEhb0lzSYKn45BEJOOMxMWIF1etbAef-uAc-vRAD5vydhHhl4hz6I4FdOFritpMjUxH0kMukaqhYX5tWWk">
+</div>
+<span class="font-bold">海大校史宣讲 - 数字校园版</span>
+</div>
+</td>
+<td class="px-lg py-4 text-outline">2023-10-23 09:20</td>
+<td class="px-lg py-4">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/50 text-on-secondary-container border border-secondary-container">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+<span class="font-label-md text-label-md">已完成</span>
+</div>
+</td>
+<td class="px-lg py-4 text-right">
+<button class="text-primary hover:underline mr-4 font-label-md">预览</button>
+<button class="text-outline hover:text-error transition-colors"><span class="material-symbols-outlined text-lg align-middle" data-icon="delete">delete</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-lg py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-6 bg-surface-container rounded overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a digital human tutor with a clean academic background, focused lighting, professional 3D model, integrated into a modern web dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBB4WBqaGxza3jkPPN1cCq6cAgqGGB3LGEaFE_7eAIj993mcJu0CBAKtZQOq9v2qN60Ctrg-gWjxAhRVAxVme6m69NAT9xgfcugzBh63L_oXHP__xFgOYwTT-6iwsCDbJotixOiFemSfa8dUf0K7Xf9oytbOU-83JsBALjnevMYA1IUH_d3qSyiReTXAY7TkUC516xh7NSXGxXooKu_If1gk1Poj76qmBUQZBCfaJDOdbF1c00GbUD9">
+</div>
+<span class="font-bold">英语口语对话练习 - Part 2</span>
+</div>
+</td>
+<td class="px-lg py-4 text-outline">2023-10-22 14:05</td>
+<td class="px-lg py-4">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container/50 text-on-error-container border border-error-container">
+<div class="w-1.5 h-1.5 rounded-full bg-error"></div>
+<span class="font-label-md text-label-md">失败 (渲染溢出)</span>
+</div>
+</td>
+<td class="px-lg py-4 text-right">
+<button class="text-primary hover:underline mr-4 font-label-md">重试</button>
+<button class="text-outline hover:text-error transition-colors"><span class="material-symbols-outlined text-lg align-middle" data-icon="delete">delete</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-lg py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-6 bg-surface-container rounded overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A classroom view from the perspective of a digital teacher, modern high-tech educational environment, soft daylighting, minimalist design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUg9kRSBDqSnbcmCivxYHVJWJo6TB9n2uOizd6uIzh7cF5g4xtnWfJ8nYzJMP9fVQ43QCaqj1wHkfxzgInrGHkNqOJsPOxjHmNdz3S6FWjDkqApDaE6oznBN9lZdclJSXvb4OsIyoZxOSR7xaqTrFkZk8W-LyOVZBJppMORAi02iwOrJD4aN1FNUVuRNeFI4I8s580yQGX-kX6_3KKKXiCDNAhMo3qcTA-6Dh2vtzH9Y4l_MSkxsDk">
+</div>
+<span class="font-bold">2023级新生入学教育 - 在线版</span>
+</div>
+</td>
+<td class="px-lg py-4 text-outline">2023-10-21 11:30</td>
+<td class="px-lg py-4">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/50 text-on-secondary-container border border-secondary-container">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+<span class="font-label-md text-label-md">已完成</span>
+</div>
+</td>
+<td class="px-lg py-4 text-right">
+<button class="text-primary hover:underline mr-4 font-label-md">预览</button>
+<button class="text-outline hover:text-error transition-colors"><span class="material-symbols-outlined text-lg align-middle" data-icon="delete">delete</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-lg py-4 border-t border-surface-container-highest flex items-center justify-between">
+<p class="font-label-md text-label-md text-outline">显示 5 条，共 1,284 条记录</p>
+<div class="flex gap-1">
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span></button>
+<button class="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-label-md text-label-md">1</button>
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center hover:bg-surface-container-low transition-colors font-label-md text-label-md">2</button>
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center hover:bg-surface-container-low transition-colors font-label-md text-label-md">3</button>
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Atmospheric footer -->
+<footer class="mt-xl text-center pb-lg">
+<p class="font-label-md text-label-md text-outline">© 2023 海南大学 - 数字人微课平台 | 智能合成 · 赋能教育</p>
+</footer>
+</main>
+<script>
+        // Simple micro-interaction for active states
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                document.querySelectorAll('nav a').forEach(l => l.classList.remove('sidebar-active'));
+                this.classList.add('sidebar-active');
+            });
+        });
+    </script>
+</body></html>

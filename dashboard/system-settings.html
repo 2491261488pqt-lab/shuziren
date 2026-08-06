@@ -1,0 +1,768 @@
+<!DOCTYPE html><html class="light" lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>系统设置 - 数字人微课平台</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#d4e3ff",
+                        "inverse-on-surface": "#f2f0f0",
+                        "tertiary": "#7d5400",
+                        "surface-container-high": "#e9e8e8",
+                        "on-tertiary-fixed": "#281800",
+                        "secondary-fixed": "#88fd54",
+                        "secondary-container": "#85fa51",
+                        "primary": "#005daa",
+                        "surface": "#faf9f9",
+                        "tertiary-fixed-dim": "#ffba45",
+                        "secondary-fixed-dim": "#6de039",
+                        "on-tertiary-fixed-variant": "#614000",
+                        "surface-container-low": "#f4f3f3",
+                        "surface-container-highest": "#e3e2e2",
+                        "on-secondary-container": "#287100",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#a5c8ff",
+                        "on-primary-container": "#fefcff",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#404753",
+                        "on-tertiary-container": "#fffbff",
+                        "secondary": "#266d00",
+                        "primary-container": "#0075d5",
+                        "tertiary-fixed": "#ffddb0",
+                        "background": "#faf9f9",
+                        "on-background": "#1b1c1c",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#a5c8ff",
+                        "on-primary-fixed": "#001c3a",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#005fae",
+                        "on-secondary-fixed-variant": "#1a5200",
+                        "tertiary-container": "#9d6a00",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#004785",
+                        "outline": "#707785",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1b1c1c",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#dbdad9",
+                        "surface-variant": "#e3e2e2",
+                        "on-secondary-fixed": "#062100",
+                        "surface-container": "#efeded",
+                        "inverse-surface": "#2f3031",
+                        "outline-variant": "#c0c7d6",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#faf9f9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "md": "16px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "gutter": "16px",
+                        "sm": "12px",
+                        "lg": "24px",
+                        "sidebar-width": "240px",
+                        "container-margin": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "title-lg": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #1b1c1c;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .sidebar-active {
+            background-color: #d4e3ff;
+            color: #001c3a;
+            border-right: 4px solid #005daa;
+        }
+
+        .status-pulse {
+            position: relative;
+        }
+        .status-pulse::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: inherit;
+            animation: pulse 2s infinite;
+            opacity: 0.5;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c0c7d6;
+            border-radius: 10px;
+        }
+
+        /* Circular Progress for Storage */
+        .circular-progress {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: conic-gradient(#005daa 64%, #e9e8e8 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .circular-progress::before {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            border-radius: 50%;
+            background: #faf9f9;
+        }
+        .circular-progress-icon {
+            position: relative;
+            z-index: 10;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .tab-active { color: var(--primary); position: relative; }
+        .tab-active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background-color: #005daa; }
+        .glass-panel { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.3); }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- SideNavBar (Authority: JSON + Design System) -->
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50">
+<div class="px-6 py-8 flex flex-col items-center">
+<img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6P6wfO4WzAvKB29FOgOhh2gKBA0I5qlzQeKI5vJJL5zJEXfw12NIb54CcvIorfCPPvY-fQA4FkHm5asDVuQALYu2D1o8zxRfu43p9izOJhgYMgdroju-AmDkgli4t4lq01Ffo_k-DYgBUln2qmX5UP14xGigku6x0_0pOdJsQesTtUECqX24MoTFKo1M8JKP2d5y9A-vPoJD2J6NyktJtsf2PCBAPRED9heWexjhF_IQC027pdzqH_ujAzI_uyK2_Yg">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1>
+<p class="font-label-md text-label-md text-outline">Hainan University</p>
+</div>
+<nav class="flex-1 mt-4 px-3 space-y-1">
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html">
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">业务总览</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html">
+<span class="material-symbols-outlined mr-3" data-icon="video_call">video_call</span>
+<span class="font-label-md text-label-md">微课智能体</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html">
+<span class="material-symbols-outlined mr-3">video_library</span>
+<span class="font-label-md text-label-md">视频管理</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html">
+<span class="material-symbols-outlined mr-3" data-icon="folder_open">folder_open</span>
+<span class="font-label-md text-label-md">资产管理</span>
+</a>
+<a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html">
+<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">系统设置</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A professional business headshot of a university administrator in a modern office, bright natural lighting, corporate aesthetic, clean light-mode environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYzMnP2c0Xr56Z5hZGnvtaUbLDy4Di6cbJs3ueJMZ_9qmW3PE6MfWE3wXYOWKXw-0hD60S-nqqIFHaAave39GOhatkdPoHH-rGBI1Wem-PRvbr-SblX11vlTUb3RUQOPMeaZCuC8lPNsIG-wqkMsf5PbDAGL_QLLewnGvY0sifq8wjgVUm_q2mz5R7U9ExKchTV2yEynyaVSel6-K-NQ0iV0c4mDVasvtgUwGduaNp-mmcmRSwmV4l">
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p>
+<p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p>
+</div>
+<a href="../Login/login/index.html"><span class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer" data-icon="logout">logout</span></a>
+</div>
+</div>
+</aside>
+<!-- TopNavBar (Authority: JSON) -->
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest">
+<div class="flex items-center gap-4">
+<div class="flex items-center text-outline font-body-sm text-body-sm">
+<span class="">业务总览</span>
+<span class="material-symbols-outlined text-sm mx-2" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">系统设置</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+<span class="material-symbols-outlined text-outline text-lg" data-icon="search">search</span>
+</div>
+<input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索设置项..." type="text">
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="relative hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span>
+</button>
+<button class="hover:text-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+<span class="font-body-sm text-body-sm">帮助</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width mt-16 p-xl min-h-[calc(100vh-64px)]">
+<div class="max-w-[1200px] mx-auto">
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">系统设置</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">管理数字人微课平台的全局参数、生产配置与安全策略。</p>
+</div>
+<div class="flex gap-md">
+<button class="px-lg py-md border border-outline-variant text-on-surface font-body-md text-body-md rounded-lg hover:bg-surface transition-colors active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+                            重置更改
+                        </button>
+<button class="px-xl py-md bg-primary text-on-primary font-body-md text-body-md rounded-lg hover:bg-primary-container transition-colors shadow-sm active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">save</span>
+                            保存设置
+                        </button>
+</div>
+</div>
+<!-- Tabbed Layout -->
+<div class="bg-surface rounded-xl border border-surface-container-highest shadow-sm overflow-hidden flex flex-col h-[700px]">
+<!-- Tab Headers -->
+<div class="flex border-b border-surface-container-highest bg-surface-bright">
+<button class="px-xl py-lg font-title-lg text-title-lg flex items-center gap-2 transition-all text-primary border-b-2 border-primary" id="tab-general" onclick="switchTab('general')">
+<span class="material-symbols-outlined">tune</span>
+                            基础设置
+                        </button>
+<button class="px-xl py-lg font-title-lg text-title-lg hover:text-on-surface transition-all flex items-center gap-2 text-on-surface-variant" id="tab-production" onclick="switchTab('production')">
+<span class="material-symbols-outlined">movie</span>
+                            生产与导出
+                        </button>
+<button class="px-xl py-lg font-title-lg text-title-lg hover:text-on-surface transition-all flex items-center gap-2 text-on-surface-variant" id="tab-api" onclick="switchTab('api')">
+<span class="material-symbols-outlined">api</span>
+                            API 与集成
+                        </button>
+<button class="px-xl py-lg font-title-lg text-title-lg hover:text-on-surface transition-all flex items-center gap-2 text-on-surface-variant" id="tab-security" onclick="switchTab('security')">
+<span class="material-symbols-outlined">verified_user</span>
+                            安全与权限
+                        </button><button class="px-xl py-lg font-title-lg text-title-lg hover:text-on-surface transition-all flex items-center gap-2 text-on-surface-variant" id="tab-status" onclick="switchTab('status')"><span class="material-symbols-outlined">monitoring</span>系统状态</button>
+</div>
+<!-- Tab Contents Container -->
+<div class="flex-1 overflow-y-auto p-xl scrollbar-hide">
+<!-- 1. General Settings -->
+<div class="space-y-xl max-w-3xl" id="content-general">
+<div>
+<h3 class="font-title-lg text-title-lg mb-4">品牌标识与名称</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg items-start">
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase">系统名称</label>
+<input class="w-full px-md py-2.5 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" type="text" value="海南大学数字人微课平台">
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase">系统简称</label>
+<input class="w-full px-md py-2.5 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" type="text" value="DHMP-HNU">
+</div>
+</div>
+</div>
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant uppercase mb-2 block">平台 Logo 上传</label>
+<div class="flex items-center gap-lg p-lg border-2 border-dashed border-outline-variant rounded-xl hover:bg-surface-container-low hover:border-primary transition-all cursor-pointer group active:scale-[0.98]" onclick="document.getElementById('logo-upload-input').click()" id="logo-upload-area">
+<div class="w-16 h-16 bg-primary-container/30 flex items-center justify-center rounded-lg group-hover:scale-105 transition-transform" id="logo-preview-icon">
+<span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
+</div>
+<div class="flex-1" id="logo-upload-text">
+<p class="font-body-md text-body-md font-bold">点击或拖拽文件以上传</p>
+<p class="font-label-md text-label-md text-on-surface-variant" id="logo-file-name">支持 PNG, JPG, SVG 格式 (建议 512x512px, 最大 2MB)</p>
+</div>
+</div>
+<input type="file" id="logo-upload-input" accept="image/png,image/jpeg,image/svg+xml" class="hidden" onchange="handleLogoUpload(this)">
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg pt-4 pb-6 border-t border-surface-container-highest">
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase">语言偏好 (Language)</label>
+<select class="w-full pl-md pr-10 py-2.5 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+<option selected="">简体中文 (Chinese Simplified)</option>
+<option>English (United States)</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase">系统时区 (Time Zone)</label>
+<select class="w-full pl-md pr-10 py-2.5 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all truncate">
+<option selected="">(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi</option>
+<option>(GMT+00:00) UTC / London</option>
+<option>(GMT-05:00) New York / Eastern Time</option>
+</select>
+</div>
+</div>
+</div>
+<!-- 2. Production & Export -->
+<div class="space-y-xl max-w-3xl hidden" id="content-production">
+<div class="bg-primary-container/10 p-md rounded-lg flex gap-3 border border-primary/20">
+<span class="material-symbols-outlined text-primary">info</span>
+<p class="font-body-md text-body-md text-on-primary-fixed-variant">导出设置将作为全平台的默认预设，教师可以在单个课程导出时进行覆盖。</p>
+</div>
+<div class="space-y-lg">
+<h3 class="font-title-lg text-title-lg">视频质量预设</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="p-lg border-2 border-primary bg-primary/5 rounded-xl flex flex-col gap-2 relative">
+<span class="absolute top-2 right-2 material-symbols-outlined text-primary">check_circle</span>
+<p class="font-bold">4K Ultra HD</p>
+<p class="text-xs text-on-surface-variant">3840 x 2160, 60fps</p>
+<p class="text-xs text-on-surface-variant mt-2">推荐用于大屏教学与高质量档案。</p>
+</div>
+<div class="p-lg border border-outline-variant hover:border-primary transition-colors cursor-pointer rounded-xl flex flex-col gap-2">
+<p class="font-bold">1080p Full HD</p>
+<p class="text-xs text-on-surface-variant">1920 x 1080, 30fps</p>
+<p class="text-xs text-on-surface-variant mt-2">标准平衡配置，适用于多数移动端。</p>
+</div>
+<div class="p-lg border border-outline-variant hover:border-primary transition-colors cursor-pointer rounded-xl flex flex-col gap-2">
+<p class="font-bold">720p HD</p>
+<p class="text-xs text-on-surface-variant">1280 x 720, 30fps</p>
+<p class="text-xs text-on-surface-variant mt-2">低带宽优化，适合在线预览。</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase">默认导出格式</label>
+<select class="w-full px-md py-2.5 rounded-lg border border-outline-variant bg-surface outline-none">
+<option selected="">MP4 (H.264 High Profile)</option>
+<option>MOV (Apple ProRes 422)</option>
+<option>WebM (VP9)</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase">自动导出清理 (天)</label>
+<input class="w-full px-md py-2.5 rounded-lg border border-outline-variant bg-surface outline-none" type="number" value="30">
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase">生成视频存储路径 (NAS/S3)</label>
+<div class="flex gap-2">
+<input class="flex-1 px-md py-2.5 rounded-lg border border-outline-variant bg-surface-container-low font-mono text-sm outline-none" readonly="" type="text" value="/mnt/storage/hainanu/courses/output/">
+<button class="px-md py-2.5 bg-surface-container-highest rounded-lg font-body-md text-body-md hover:bg-outline-variant transition-colors">浏览</button>
+</div>
+<p class="text-xs text-on-surface-variant">系统检测到当前可用空间: 12.4 TB / 20 TB</p>
+</div>
+</div>
+<!-- 3. API & Integration -->
+<div class="space-y-xl max-w-4xl hidden" id="content-api"><div class="mb-lg"><h3 class="font-title-lg text-title-lg mb-4">核心服务集成状态</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-md"><div class="p-md border border-surface-container-highest rounded-xl bg-surface-container-low flex items-center justify-between"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">deployed_code</span><div><p class="font-bold text-sm">数字人渲染引擎</p><p class="text-xs text-on-surface-variant">延迟: 45ms</p></div></div><span class="px-2 py-1 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>已连接</span></div><div class="p-md border border-surface-container-highest rounded-xl bg-surface-container-low flex items-center justify-between"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">record_voice_over</span><div><p class="font-bold text-sm">语音合成接口</p><p class="text-xs text-on-surface-variant">延迟: 120ms</p></div></div><span class="px-2 py-1 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>运行正常</span></div><div class="p-md border border-surface-container-highest rounded-xl bg-surface-container-low flex items-center justify-between"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">cloud_done</span><div><p class="font-bold text-sm">云存储服务</p><p class="text-xs text-on-surface-variant">可用空间: 7.6TB</p></div></div><span class="px-2 py-1 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>状态良好</span></div><div class="p-md border border-surface-container-highest rounded-xl bg-surface-container-low flex items-center justify-between"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">auto_fix_high</span><div><p class="font-bold text-sm">AI 文案增强</p><p class="text-xs text-on-surface-variant">模型: GPT-4o</p></div></div><span class="px-2 py-1 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>已连接</span></div></div></div>
+<div class="grid grid-cols-1 gap-lg">
+<!-- External AI Services -->
+<div class="p-lg border border-surface-container-highest rounded-xl bg-surface-bright">
+<div class="flex justify-between items-center mb-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-[#00A67E]/10 flex items-center justify-center rounded-full">
+<span class="material-symbols-outlined text-[#00A67E]">smart_button</span>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg">大语言模型 API (LLM)</h4>
+<p class="font-label-md text-label-md text-on-surface-variant">用于自动生成课程脚本与智能问答</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-full">已连接</span>
+</div>
+<div class="space-y-md">
+<div class="grid grid-cols-3 gap-md">
+<div class="col-span-1 space-y-1">
+<label class="text-[11px] font-bold text-on-surface-variant uppercase">服务商</label>
+<select class="w-full px-3 py-2 rounded-lg border border-outline-variant text-sm">
+<option>OpenAI GPT-4</option>
+<option>Azure OpenAI</option>
+<option selected="">文心一言 (Ernie Bot)</option>
+</select>
+</div>
+<div class="col-span-2 space-y-1">
+<label class="text-[11px] font-bold text-on-surface-variant uppercase">API Key</label>
+<div class="relative">
+<input class="w-full px-3 py-2 rounded-lg border border-outline-variant text-sm pr-10" type="password" value="sk-hainanu-************************">
+<span class="absolute right-3 top-2.5 material-symbols-outlined text-[18px] text-on-surface-variant cursor-pointer">visibility_off</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SSO Integration -->
+<div class="p-lg border border-surface-container-highest rounded-xl bg-surface-bright">
+<div class="flex justify-between items-center mb-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary/10 flex items-center justify-center rounded-full">
+<span class="material-symbols-outlined text-primary">school</span>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg">海南大学 SSO 认证 (CAS/SAML)</h4>
+<p class="font-label-md text-label-md text-on-surface-variant">同步校园网账号登录权限</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant text-xs font-bold rounded-full">配置中</span>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="space-y-1">
+<label class="text-[11px] font-bold text-on-surface-variant uppercase">认证端点 URL</label>
+<input class="w-full px-3 py-2 rounded-lg border border-outline-variant text-sm" type="text" value="https://sso.hainanu.edu.cn/cas/login">
+</div>
+<div class="space-y-1">
+<label class="text-[11px] font-bold text-on-surface-variant uppercase">Client ID</label>
+<input class="w-full px-3 py-2 rounded-lg border border-outline-variant text-sm" type="text" value="DHMP_V3_CLIENT">
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. Security & Permissions -->
+<div class="space-y-xl max-w-4xl hidden" id="content-security">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-lg">
+<h3 class="font-title-lg text-title-lg border-b border-surface-container-highest pb-2">访问策略</h3>
+<div class="space-y-md">
+<div class="flex items-center justify-between">
+<div>
+<p class="font-body-md text-body-md font-semibold">启用双重身份验证 (2FA)</p>
+<p class="text-xs text-on-surface-variant">管理员登录时强制进行手机验证</p>
+</div>
+<div class="relative inline-block w-10 h-5">
+<input class="peer h-0 w-0 opacity-0" type="checkbox">
+<span class="absolute cursor-pointer inset-0 rounded-full bg-surface-container-highest transition-all duration-300 before:absolute before:left-0.5 before:bottom-0.5 before:h-4 before:w-4 before:rounded-full before:bg-white before:transition-all peer-checked:bg-primary peer-checked:before:translate-x-5"></span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="font-body-md text-body-md font-semibold">登录会话超时 (分钟)</p>
+<p class="text-xs text-on-surface-variant">用户无操作后自动登出</p>
+</div>
+<input class="w-20 px-3 py-1.5 rounded-lg border border-outline-variant text-right" type="number" value="60">
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="font-body-md text-body-md font-semibold">密码复杂度要求</p>
+<p class="text-xs text-on-surface-variant">必须包含大写字母、数字及特殊符号</p>
+</div>
+<div class="relative inline-block w-10 h-5">
+<input checked="" class="peer h-0 w-0 opacity-0" type="checkbox">
+<span class="absolute cursor-pointer inset-0 rounded-full bg-surface-container-highest transition-all duration-300 before:absolute before:left-0.5 before:bottom-0.5 before:h-4 before:w-4 before:rounded-full before:bg-white before:transition-all peer-checked:bg-primary peer-checked:before:translate-x-5"></span>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-lg">
+<h3 class="font-title-lg text-title-lg border-b border-surface-container-highest pb-2">最近管理员日志</h3>
+<div class="space-y-3">
+<div class="flex gap-3 text-sm">
+<div class="w-2 h-2 mt-1.5 rounded-full bg-primary"></div>
+<div class="flex-1">
+<p class="font-semibold">管理员登录成功</p>
+<p class="text-xs text-on-surface-variant">IP: 210.37.0.45 (校园内网) - 今天 09:14</p>
+</div>
+</div>
+<div class="flex gap-3 text-sm">
+<div class="w-2 h-2 mt-1.5 rounded-full bg-secondary"></div>
+<div class="flex-1">
+<p class="font-semibold">修改导出路径成功</p>
+<p class="text-xs text-on-surface-variant">管理员: Wang.L - 昨天 15:42</p>
+</div>
+</div>
+<div class="flex gap-3 text-sm">
+<div class="w-2 h-2 mt-1.5 rounded-full bg-error"></div>
+<div class="flex-1">
+<p class="font-semibold">异常 IP 访问拦截</p>
+<p class="text-xs text-on-surface-variant">IP: 198.51.100.1 - 2023-11-20 02:11</p>
+</div>
+</div>
+<a class="inline-block text-primary text-xs font-bold hover:underline" href="#">查看所有审计日志...</a>
+</div>
+</div>
+</div>
+</div><div class="space-y-xl max-w-4xl hidden" id="content-status"><div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Column 1: Resource Monitoring -->
+<div class="lg:col-span-2 space-y-lg">
+<div class="p-lg bg-surface-bright border border-surface-container-highest rounded-xl">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-title-lg text-title-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">monitoring</span>
+          实时资源监控
+        </h3>
+<span class="text-xs text-on-surface-variant">更新于: 10:30:45</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl">
+<!-- CPU Gauge -->
+<div class="flex flex-col items-center gap-3">
+<div class="relative w-24 h-24 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container-highest" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary transition-all duration-1000" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="145.7" stroke-width="8"></circle>
+</svg>
+<span class="absolute font-bold text-lg">42%</span>
+</div>
+<div class="text-center">
+<p class="font-bold text-sm">CPU 使用率</p>
+<p class="text-[11px] text-on-surface-variant">16 Cores / 3.2GHz</p>
+</div>
+</div>
+<!-- GPU Gauge -->
+<div class="flex flex-col items-center gap-3">
+<div class="relative w-24 h-24 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container-highest" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary transition-all duration-1000" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="55.3" stroke-width="8"></circle>
+</svg>
+<span class="absolute font-bold text-lg">78%</span>
+</div>
+<div class="text-center">
+<p class="font-bold text-sm">GPU 渲染负载</p>
+<p class="text-[11px] text-on-surface-variant">RTX 4090 / 24GB</p>
+</div>
+</div>
+<!-- RAM Gauge -->
+<div class="flex flex-col items-center gap-3">
+<div class="relative w-24 h-24 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container-highest" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary transition-all duration-1000" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="90.4" stroke-width="8"></circle>
+</svg>
+<span class="absolute font-bold text-lg">64%</span>
+</div>
+<div class="text-center">
+<p class="font-bold text-sm">内存占用</p>
+<p class="text-[11px] text-on-surface-variant">41.2GB / 64GB</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Task Queue -->
+<div class="p-lg bg-surface-bright border border-surface-container-highest rounded-xl">
+<h3 class="font-title-lg text-title-lg mb-lg">任务队列状态</h3>
+<div class="grid grid-cols-3 gap-md mb-lg">
+<div class="p-md bg-surface-container-low rounded-lg cursor-pointer hover:shadow-md transition-all active:scale-95" onclick="const body = document.getElementById('modal-body'); document.getElementById('modal-title').innerText = '当前执行项目 (12)'; body.innerHTML = Array(12).fill(0).map((_, i) => `<div class='p-md border border-surface-container-highest rounded-lg'><div class='flex justify-between mb-2'><span class='font-bold'>AI Fundamentals Course - Segment ${i+1}</span><span class='text-primary font-mono'>${65 + i}%</span></div><div class='w-full bg-surface-container-highest h-2 rounded-full overflow-hidden'><div class='bg-primary h-full' style='width: ${65+i}%'></div></div></div>`).join(''); document.getElementById('status-modal').classList.remove('hidden');">
+<p class="text-xs text-on-surface-variant uppercase font-bold">当前执行</p>
+<p class="text-2xl font-bold text-primary">12</p>
+</div>
+<div class="p-md bg-surface-container-low rounded-lg cursor-pointer hover:shadow-md transition-all active:scale-95" onclick="const body = document.getElementById('modal-body'); document.getElementById('modal-title').innerText = '等待中项目 (45)'; body.innerHTML = Array(10).fill(0).map((_, i) => `<div class='p-md border border-surface-container-highest rounded-lg flex items-center gap-4'><span class='w-8 h-8 flex items-center justify-center bg-surface-container-highest rounded-full text-xs font-bold'>${i+1}</span><div class='flex-1'><p class='font-bold'>Queued Project #${1024 + i}</p><p class='text-xs text-on-surface-variant'>预计等待时间: ${5 + i * 2} 分钟</p></div><span class='material-symbols-outlined text-on-surface-variant'>schedule</span></div>`).join('') + '<p class=&quot;text-center text-xs text-on-surface-variant py-4&quot;>...以及另外 35 个项目</p>'; document.getElementById('status-modal').classList.remove('hidden');">
+<p class="text-xs text-on-surface-variant uppercase font-bold">等待中</p>
+<p class="text-2xl font-bold text-on-surface">45</p>
+</div>
+<div class="p-md bg-surface-container-low rounded-lg cursor-pointer hover:shadow-md transition-all active:scale-95" onclick="const body = document.getElementById('modal-body'); document.getElementById('modal-title').innerText = '今日已完成 (128)'; body.innerHTML = Array(10).fill(0).map((_, i) => `<div class='p-md border border-surface-container-highest rounded-lg flex items-center justify-between'><div class='flex items-center gap-3'><span class='material-symbols-outlined text-[#00A67E]'>check_circle</span><div><p class='font-bold'>Completed Course Video ${128 - i}</p><p class='text-xs text-on-surface-variant'>渲染时长: 12m 45s</p></div></div><span class='text-xs font-mono text-on-surface-variant'>今天 ${10 - i}:15</span></div>`).join('') + '<p class=&quot;text-center text-xs text-on-surface-variant py-4&quot;>...以及另外 118 个项目</p>'; document.getElementById('status-modal').classList.remove('hidden');">
+<p class="text-xs text-on-surface-variant uppercase font-bold">今日已完成</p>
+<p class="text-2xl font-bold text-[#00A67E]">128</p>
+</div>
+</div>
+<div class="h-16 flex items-end gap-1">
+<div class="flex-1 bg-primary/20 h-[20%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/20 h-[35%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/20 h-[25%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/20 h-[60%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/20 h-[45%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/20 h-[80%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary h-full rounded-t-sm"></div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-2 text-center">过去 24 小时任务负载趋势</p>
+</div>
+</div>
+<!-- Column 2: Service Health & Uptime -->
+<div class="space-y-lg">
+<div class="p-lg bg-surface-bright border border-surface-container-highest rounded-xl">
+<h3 class="font-title-lg text-title-lg mb-md">服务健康检查</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-sm font-semibold">渲染引擎</span>
+</div>
+<span class="text-xs text-on-surface-variant">120ms</span>
+</div>
+<div class="flex items-center justify-between p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-sm font-semibold">语音合成 (TTS)</span>
+</div>
+<span class="text-xs text-on-surface-variant">85ms</span>
+</div>
+<div class="flex items-center justify-between p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-sm font-semibold">LLM API</span>
+</div>
+<span class="text-xs text-on-surface-variant">1.2s</span>
+</div>
+<div class="flex items-center justify-between p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-sm font-semibold">云存储服务</span>
+</div>
+<span class="text-xs text-on-surface-variant">正常</span>
+</div>
+</div>
+</div>
+<div class="p-lg bg-surface-bright border border-surface-container-highest rounded-xl">
+<h3 class="font-title-lg text-title-lg mb-md">历史运行时间 (7天)</h3>
+<div class="grid grid-cols-7 gap-1 mb-2">
+<div class="h-12 bg-secondary rounded-sm" title="100% Uptime"></div>
+<div class="h-12 bg-secondary rounded-sm" title="100% Uptime"></div>
+<div class="h-12 bg-secondary rounded-sm" title="100% Uptime"></div>
+<div class="h-12 bg-secondary/60 rounded-sm" title="98.2% Uptime"></div>
+<div class="h-12 bg-secondary rounded-sm" title="100% Uptime"></div>
+<div class="h-12 bg-secondary rounded-sm" title="100% Uptime"></div>
+<div class="h-12 bg-secondary rounded-sm" title="100% Uptime"></div>
+</div>
+<div class="flex justify-between text-[10px] text-on-surface-variant font-bold uppercase">
+<span class="">11-15</span>
+<span class="">今天</span>
+</div>
+<div class="mt-4 pt-4 border-t border-surface-container-highest">
+<div class="flex justify-between items-center">
+<span class="text-xs font-semibold">总运行时间</span>
+<span class="text-xs font-bold text-primary">142d 06h 12m</span>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</div>
+</div>
+<!-- Footer Action Bar (Sticky hint) -->
+<div class="mt-lg flex items-center justify-between p-lg glass-panel rounded-xl border border-surface-container-highest">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">history</span>
+<p class="font-body-md text-body-md text-on-surface-variant">上次保存于: 2023年11月21日 10:30</p>
+</div>
+<div class="flex gap-md">
+<button class="px-lg py-2 font-semibold text-primary hover:bg-primary/10 rounded-lg transition-colors">导出设置副本</button>
+<button class="px-lg py-2 bg-primary text-on-primary rounded-lg shadow-md hover:shadow-lg transition-all active:scale-95">更新并重启服务</button>
+</div>
+</div>
+</div>
+</main>
+<script>
+        function handleLogoUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const icon = document.getElementById('logo-preview-icon');
+            const text = document.getElementById('logo-file-name');
+            const area = document.getElementById('logo-upload-area');
+            if (file.size > 2 * 1024 * 1024) {
+                text.textContent = '文件过大，请选择小于 2MB 的图片';
+                text.classList.add('text-error');
+                return;
+            }
+            text.textContent = '已选择: ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+            text.classList.remove('text-error');
+            text.classList.add('text-secondary');
+            icon.innerHTML = '<span class="material-symbols-outlined text-secondary text-3xl">check_circle</span>';
+            area.classList.add('border-secondary');
+            area.classList.remove('border-outline-variant');
+        }
+
+        function switchTab(tabName) {
+            // Hide all contents
+            const contents = ['general', 'production', 'api', 'security', 'status'];
+            contents.forEach(id => {
+                document.getElementById('content-' + id).classList.add('hidden');
+
+                const btn = document.getElementById('tab-' + id);
+                btn.classList.remove('text-primary', 'border-b-2', 'border-primary');
+                btn.classList.add('text-on-surface-variant');
+            });
+
+            // Show selected content
+            document.getElementById('content-' + tabName).classList.remove('hidden');
+
+            // Activate tab button
+            const activeBtn = document.getElementById('tab-' + tabName);
+            activeBtn.classList.remove('text-on-surface-variant');
+            activeBtn.classList.add('text-primary', 'border-b-2', 'border-primary');
+        }
+
+        // Add some micro-interactions
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('focus', () => {
+                el.parentElement.classList.add('scale-[1.01]');
+            });
+            el.addEventListener('blur', () => {
+                el.parentElement.classList.remove('scale-[1.01]');
+            });
+        });
+
+        // Sidebar nav click handler
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                document.querySelectorAll('nav a').forEach(l => l.classList.remove('sidebar-active'));
+                this.classList.add('sidebar-active');
+            });
+        });
+    </script>
+<div class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm hidden" id="status-modal"><div class="bg-surface w-full max-w-2xl max-h-[80vh] rounded-xl shadow-xl flex flex-col overflow-hidden"><div class="p-lg border-b border-surface-container-highest flex justify-between items-center"><h3 class="font-headline-sm text-headline-sm text-on-surface" id="modal-title">当前执行项目 (12)</h3><button class="p-2 hover:bg-surface-container-low rounded-full transition-colors" onclick="document.getElementById('status-modal').classList.add('hidden')"><span class="material-symbols-outlined">close</span></button></div><div class="flex-1 overflow-y-auto p-lg space-y-md" id="modal-body"><div class="p-md border border-surface-container-highest rounded-lg"><div class="flex justify-between mb-2"><span class="font-bold">AI Fundamentals Course - Segment 1</span><span class="text-primary font-mono">65%</span></div><div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden"><div class="bg-primary h-full" style="width: 65%"></div></div></div><div class="p-md border border-surface-container-highest rounded-lg"><div class="flex justify-between mb-2"><span class="font-bold">AI Fundamentals Course - Segment 2</span><span class="text-primary font-mono">66%</span></div><div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden"><div class="bg-primary h-full" style="width: 66%"></div></div></div><div class="p-md border border-surface-container-highest rounded-lg"><div class="flex justify-between mb-2"><span class="font-bold">AI Fundamentals Course - Segment 3</span><span class="text-primary font-mono">67%</span></div><div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden"><div class="bg-primary h-full" style="width: 67%"></div></div></div><div class="p-md border border-surface-container-highest rounded-lg"><div class="flex justify-between mb-2"><span class="font-bold">AI Fundamentals Course - Segment 4</span><span class="text-primary font-mono">68%</span></div><div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden"><div class="bg-primary h-full" style="width: 68%"></div></div></div><div class="p-md border border-surface-container-highest rounded-lg"><div class="flex justify-between mb-2"><span class="font-bold">AI Fundamentals Course - Segment 5</span><span class="text-primary font-mono">69%</span></div><div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden"><div class="bg-primary h-full" style="width: 69%"></div></div></div><div class="p-md border border-surface-container-highest rounded-lg"><div class="flex justify-between mb-2"><span class="font-bold">AI Fundamentals Course - Segment 6</span><span class="text-primary font-mono">70%</span></div><div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden"><div class="bg-primary h-full" style="width: 70%"></div></div></div><div class="p-md border border-surface-container-highest rounded-lg"><div class="flex justify-between mb-2"><span class="font-bold">AI Fundamentals Course - Segment 7</span><span class="text-primary font-mono">71%</span></div><div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden"><div class="bg-primary h-full" style="width: 71%"></div></div></div><div class="p-md border border-surface-container-highest rounded-lg"><div class="flex justify-between mb-2"><span class="font-bold">AI Fundamentals Course - Segment 8</span><span class="text-primary font-mono">72%</span></div><div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden"><div class="bg-primary h-full" style="width: 72%"></div></div></div><div class="p-md border border-surface-container-highest rounded-lg"><div class="flex justify-between mb-2"><span class="font-bold">AI Fundamentals Course - Segment 9</span><span class="text-primary font-mono">73%</span></div><div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden"><div class="bg-primary h-full" style="width: 73%"></div></div></div><div class="p-md border border-surface-container-highest rounded-lg"><div class="flex justify-between mb-2"><span class="font-bold">AI Fundamentals Course - Segment 10</span><span class="text-primary font-mono">74%</span></div><div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden"><div class="bg-primary h-full" style="width: 74%"></div></div></div><div class="p-md border border-surface-container-highest rounded-lg"><div class="flex justify-between mb-2"><span class="font-bold">AI Fundamentals Course - Segment 11</span><span class="text-primary font-mono">75%</span></div><div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden"><div class="bg-primary h-full" style="width: 75%"></div></div></div><div class="p-md border border-surface-container-highest rounded-lg"><div class="flex justify-between mb-2"><span class="font-bold">AI Fundamentals Course - Segment 12</span><span class="text-primary font-mono">76%</span></div><div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden"><div class="bg-primary h-full" style="width: 76%"></div></div></div><div class="mt-lg pt-lg border-t border-surface-container-highest flex flex-col md:flex-row items-center justify-between gap-md">
+  <div class="flex items-center gap-md">
+    <span class="text-body-sm text-on-surface-variant">共 128 个项目</span>
+    <div class="flex items-center gap-2">
+      <span class="text-body-sm text-on-surface-variant">每页显示</span>
+      <select class="bg-surface border border-outline-variant rounded-lg px-2 py-1 text-body-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none">
+        <option>10</option>
+        <option selected="">20</option>
+        <option>50</option>
+      </select>
+    </div>
+  </div>
+  <div class="flex items-center gap-1">
+    <button class="p-2 hover:bg-surface-container-low rounded-lg text-on-surface-variant transition-colors">
+      <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+    </button>
+    <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary text-body-sm font-bold">1</button>
+    <button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container-low text-on-surface text-body-sm transition-colors">2</button>
+    <button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container-low text-on-surface text-body-sm transition-colors">3</button>
+    <span class="px-1 text-on-surface-variant">...</span>
+    <button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container-low text-on-surface text-body-sm transition-colors">7</button>
+    <button class="p-2 hover:bg-surface-container-low rounded-lg text-on-surface-variant transition-colors">
+      <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+    </button>
+  </div>
+</div></div><div class="p-lg border-t border-surface-container-highest flex justify-end"><button class="px-xl py-md bg-primary text-on-primary font-body-md text-body-md rounded-lg hover:bg-primary-container transition-colors" onclick="document.getElementById('status-modal').classList.add('hidden')">关闭</button></div></div></div>
+
+</body></html>

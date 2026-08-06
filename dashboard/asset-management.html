@@ -1,0 +1,584 @@
+<!DOCTYPE html><html class="light" lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Digital Human AI - 资产管理</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#d4e3ff",
+                        "inverse-on-surface": "#f2f0f0",
+                        "tertiary": "#7d5400",
+                        "surface-container-high": "#e9e8e8",
+                        "on-tertiary-fixed": "#281800",
+                        "secondary-fixed": "#88fd54",
+                        "secondary-container": "#85fa51",
+                        "primary": "#005daa",
+                        "surface": "#faf9f9",
+                        "tertiary-fixed-dim": "#ffba45",
+                        "secondary-fixed-dim": "#6de039",
+                        "on-tertiary-fixed-variant": "#614000",
+                        "surface-container-low": "#f4f3f3",
+                        "surface-container-highest": "#e3e2e2",
+                        "on-secondary-container": "#287100",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#a5c8ff",
+                        "on-primary-container": "#fefcff",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#404753",
+                        "on-tertiary-container": "#fffbff",
+                        "secondary": "#266d00",
+                        "primary-container": "#0075d5",
+                        "tertiary-fixed": "#ffddb0",
+                        "background": "#faf9f9",
+                        "on-background": "#1b1c1c",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#a5c8ff",
+                        "on-primary-fixed": "#001c3a",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#005fae",
+                        "on-secondary-fixed-variant": "#1a5200",
+                        "tertiary-container": "#9d6a00",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#004785",
+                        "outline": "#707785",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1b1c1c",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#dbdad9",
+                        "surface-variant": "#e3e2e2",
+                        "on-secondary-fixed": "#062100",
+                        "surface-container": "#efeded",
+                        "inverse-surface": "#2f3031",
+                        "outline-variant": "#c0c7d6",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#faf9f9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "md": "16px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "gutter": "16px",
+                        "sm": "12px",
+                        "lg": "24px",
+                        "sidebar-width": "240px",
+                        "container-margin": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "title-lg": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #1b1c1c;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .sidebar-active {
+            background-color: #d4e3ff;
+            color: #001c3a;
+            border-right: 4px solid #005daa;
+        }
+
+        .status-pulse {
+            position: relative;
+        }
+        .status-pulse::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: inherit;
+            animation: pulse 2s infinite;
+            opacity: 0.5;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c0c7d6;
+            border-radius: 10px;
+        }
+
+        /* Ripple Effect */
+        @keyframes ripple-animation {
+            to { transform: scale(4); opacity: 0; }
+        }
+
+        /* Circular Progress for Storage */
+        .circular-progress {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: conic-gradient(#005daa 64%, #e9e8e8 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .circular-progress::before {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            border-radius: 50%;
+            background: #faf9f9;
+        }
+        .circular-progress-icon {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- SideNavBar (Authority: JSON + Design System) -->
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50">
+<div class="px-6 py-8 flex flex-col items-center">
+<img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6P6wfO4WzAvKB29FOgOhh2gKBA0I5qlzQeKI5vJJL5zJEXfw12NIb54CcvIorfCPPvY-fQA4FkHm5asDVuQALYu2D1o8zxRfu43p9izOJhgYMgdroju-AmDkgli4t4lq01Ffo_k-DYgBUln2qmX5UP14xGigku6x0_0pOdJsQesTtUECqX24MoTFKo1M8JKP2d5y9A-vPoJD2J6NyktJtsf2PCBAPRED9heWexjhF_IQC027pdzqH_ujAzI_uyK2_Yg">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1>
+<p class="font-label-md text-label-md text-outline">Hainan University</p>
+</div>
+<nav class="flex-1 mt-4 px-3 space-y-1">
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html">
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">业务总览</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html">
+<span class="material-symbols-outlined mr-3" data-icon="video_call">video_call</span>
+<span class="font-label-md text-label-md">微课智能体</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html">
+<span class="material-symbols-outlined mr-3">video_library</span>
+<span class="font-label-md text-label-md">视频管理</span>
+</a>
+<a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html">
+<span class="material-symbols-outlined mr-3" data-icon="folder_open">folder_open</span>
+<span class="font-label-md text-label-md">资产管理</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html">
+<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">系统设置</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A professional business headshot of a university administrator in a modern office, bright natural lighting, corporate aesthetic, clean light-mode environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYzMnP2c0Xr56Z5hZGnvtaUbLDy4Di6cbJs3ueJMZ_9qmW3PE6MfWE3wXYOWKXw-0hD60S-nqqIFHaAave39GOhatkdPoHH-rGBI1Wem-PRvbr-SblX11vlTUb3RUQOPMeaZCuC8lPNsIG-wqkMsf5PbDAGL_QLLewnGvY0sifq8wjgVUm_q2mz5R7U9ExKchTV2yEynyaVSel6-K-NQ0iV0c4mDVasvtgUwGduaNp-mmcmRSwmV4l">
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p>
+<p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p>
+</div>
+<a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer" data-icon="logout">logout</a>
+</div>
+</div>
+</aside>
+<!-- TopNavBar (Authority: JSON) -->
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest">
+<div class="flex items-center gap-4">
+<div class="flex items-center text-outline font-body-sm text-body-sm">
+<span class="">业务总览</span>
+<span class="material-symbols-outlined text-sm mx-2" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">资产管理</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+<span class="material-symbols-outlined text-outline text-lg" data-icon="search">search</span>
+</div>
+<input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索资源或项目..." type="text">
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="relative hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span>
+</button>
+<button class="hover:text-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+<span class="font-body-sm text-body-sm">帮助</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width mt-16 p-xl min-h-[calc(100vh-64px)]">
+<div class="mb-lg flex justify-between items-end">
+<div>
+<h3 class="font-display-lg text-display-lg text-on-surface mb-xs">资产总览</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">管理与监控您的所有数字人合成相关资产。</p>
+</div>
+<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-title-lg text-title-lg px-md py-sm rounded-lg transition-colors flex items-center shadow-sm">
+<span class="material-symbols-outlined mr-xs text-[20px]">add</span>
+                    新建资产
+                </button>
+</div>
+<!-- Stats Overview - Bento Grid Style -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-xl">
+<!-- Stat Card 1 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md flex flex-col justify-between hover:shadow-sm transition-shadow relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+<div class="flex justify-between items-start mb-lg relative z-10">
+<span class="font-body-md text-body-md text-on-surface-variant">数字人模型总数</span>
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">person_apron</span>
+</div>
+</div>
+<div class="relative z-10">
+<span class="font-display-lg text-display-lg text-on-surface">128</span>
+<div class="flex items-center mt-xs text-secondary">
+<span class="material-symbols-outlined text-[14px] mr-1">trending_up</span>
+<span class="font-label-md text-label-md">+12% 较上月</span>
+</div>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md flex flex-col justify-between hover:shadow-sm transition-shadow relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-tertiary/5 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+<div class="flex justify-between items-start mb-lg relative z-10">
+<span class="font-body-md text-body-md text-on-surface-variant">声音资产总数</span>
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[18px]">record_voice_over</span>
+</div>
+</div>
+<div class="relative z-10">
+<span class="font-display-lg text-display-lg text-on-surface">345</span>
+<div class="flex items-center mt-xs text-secondary">
+<span class="material-symbols-outlined text-[14px] mr-1">trending_up</span>
+<span class="font-label-md text-label-md">+5% 较上月</span>
+</div>
+</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md flex flex-col justify-between hover:shadow-sm transition-shadow relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary/5 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+<div class="flex justify-between items-start mb-lg relative z-10">
+<span class="font-body-md text-body-md text-on-surface-variant">背景场景总数</span>
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-[18px]">wallpaper</span>
+</div>
+</div>
+<div class="relative z-10">
+<span class="font-display-lg text-display-lg text-on-surface">86</span>
+<div class="flex items-center mt-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] mr-1">horizontal_rule</span>
+<span class="font-label-md text-label-md">持平 较上月</span>
+</div>
+</div>
+</div>
+<!-- Stat Card 4 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md flex flex-col justify-between hover:shadow-sm transition-shadow">
+<div class="flex justify-between items-start mb-md">
+<span class="font-body-md text-body-md text-on-surface-variant">存储使用量</span>
+<span class="material-symbols-outlined text-outline text-[20px]">cloud</span>
+</div>
+<div>
+<div class="flex justify-between items-end mb-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface">845 GB</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">/ 1 TB</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full bg-surface-container-highest rounded-full h-2 mb-xs overflow-hidden">
+<div class="bg-primary h-2 rounded-full" style="width: 85%"></div>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant text-right">已用 85%</p>
+</div>
+</div>
+</div>
+<!-- Quick Entry Cards - Glassmorphism touch for 'production' feel -->
+<h4 class="font-headline-sm text-headline-sm text-on-surface mb-md">快捷入口</h4>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-xl">
+<!-- Entry 1 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl overflow-hidden hover:shadow-md transition-shadow group cursor-pointer relative">
+<div class="h-32 w-full bg-surface-container-low relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-r from-primary-fixed to-surface-container-lowest opacity-50"></div>
+<span class="material-symbols-outlined absolute right-4 bottom-4 text-[64px] text-primary/10 group-hover:scale-110 transition-transform">person_apron</span>
+</div>
+<div class="p-md relative z-10 bg-surface-container-lowest">
+<h5 class="font-title-lg text-title-lg text-on-surface mb-xs flex items-center">
+                            数字人模型
+                            <span class="material-symbols-outlined ml-xs text-[16px] text-primary opacity-0 group-hover:opacity-100 transition-opacity translate-x-[-10px] group-hover:translate-x-0 duration-300">arrow_forward</span>
+</h5>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md h-12">管理2D/3D数字人分身，支持形象定制与动作编排。</p>
+<button class="w-full border border-primary text-primary hover:bg-primary hover:text-on-primary font-label-md text-label-md py-2 rounded-lg transition-colors">进入管理</button>
+</div>
+</div>
+<!-- Entry 2 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl overflow-hidden hover:shadow-md transition-shadow group cursor-pointer relative">
+<div class="h-32 w-full bg-surface-container-low relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-r from-tertiary-fixed to-surface-container-lowest opacity-50"></div>
+<span class="material-symbols-outlined absolute right-4 bottom-4 text-[64px] text-tertiary/10 group-hover:scale-110 transition-transform">record_voice_over</span>
+</div>
+<div class="p-md relative z-10 bg-surface-container-lowest">
+<h5 class="font-title-lg text-title-lg text-on-surface mb-xs flex items-center">
+                            声音库
+                            <span class="material-symbols-outlined ml-xs text-[16px] text-tertiary opacity-0 group-hover:opacity-100 transition-opacity translate-x-[-10px] group-hover:translate-x-0 duration-300">arrow_forward</span>
+</h5>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md h-12">维护AI语音模型，支持多语种、情感音色克隆与管理。</p>
+<button class="w-full border border-tertiary text-tertiary hover:bg-tertiary hover:text-on-tertiary font-label-md text-label-md py-2 rounded-lg transition-colors">进入管理</button>
+</div>
+</div>
+<!-- Entry 3 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl overflow-hidden hover:shadow-md transition-shadow group cursor-pointer relative">
+<div class="h-32 w-full bg-surface-container-low relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-r from-surface-variant to-surface-container-lowest opacity-50"></div>
+<span class="material-symbols-outlined absolute right-4 bottom-4 text-[64px] text-outline/10 group-hover:scale-110 transition-transform">wallpaper</span>
+</div>
+<div class="p-md relative z-10 bg-surface-container-lowest">
+<h5 class="font-title-lg text-title-lg text-on-surface mb-xs flex items-center">
+                            背景管理
+                            <span class="material-symbols-outlined ml-xs text-[16px] text-on-surface opacity-0 group-hover:opacity-100 transition-opacity translate-x-[-10px] group-hover:translate-x-0 duration-300">arrow_forward</span>
+</h5>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md h-12">上传与组织虚拟演播室背景、PPT模板及视频素材。</p>
+<button class="w-full border border-outline text-on-surface-variant hover:bg-surface-variant font-label-md text-label-md py-2 rounded-lg transition-colors">进入管理</button>
+</div>
+</div>
+</div>
+<!-- Recently Added Assets List -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-0 overflow-hidden mb-xl flex flex-col">
+<div class="p-md border-b border-surface-variant flex justify-between items-center bg-surface-container-lowest">
+<h4 class="font-title-lg text-title-lg text-on-surface">最近添加的资产</h4>
+<button class="text-primary hover:text-primary-fixed-variant font-label-md text-label-md">查看全部</button>
+</div>
+<div class="overflow-x-auto flex-1">
+<table class="w-full text-left border-collapse min-w-[800px]">
+<thead>
+<tr class="bg-surface-container-low border-b border-surface-variant font-label-md text-label-md text-on-surface-variant">
+<th class="p-md font-medium w-1/3">资产名称</th>
+<th class="p-md font-medium">类型</th>
+<th class="p-md font-medium">状态</th>
+<th class="p-md font-medium">添加时间</th>
+<th class="p-md font-medium text-right">操作</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md">
+<!-- Row 1 -->
+<tr class="border-b border-surface-variant hover:bg-surface-container-low transition-colors group">
+<td class="p-md flex items-center">
+<div class="w-10 h-10 rounded border border-surface-variant bg-surface-container-lowest flex items-center justify-center mr-sm overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small preview thumbnail of a realistic 3D female digital human avatar wearing a professional blazer. The avatar is centered against a transparent-looking checkerboard or solid light gray background, indicative of an asset management icon in a clean UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBis-tnY-eDFdN4aCG_x4tfELaUpgPiAZTng0bztdJTwrBJYoRLq2HmDESMdhdm6LK9eQ5OP6GEoTcgu5jjC1D-XThq8vPMkHYPiLk_R9Z-g74W5h1qOLSOMi2cFSE0JnCe7ykEKpUG_813AO9il08TxPmMEB-FHwUJbmA-xaiY6PbTZ7JuPsv4KhoY5DbuU6S8dN2Lm5WOCjjmXDlLpnMMQ0PzoeHVPfXNvloIRwH1Xgw0AuWKYufq"/>
+</div>
+<div>
+<p class="text-on-surface font-medium">张教授 - 标准职场形象</p>
+<p class="text-on-surface-variant text-[12px]">Model_ProfZhang_v2</p>
+</div>
+</td>
+<td class="p-md text-on-surface-variant">
+<span class="inline-flex items-center px-2 py-1 rounded bg-primary-fixed text-primary text-[12px] font-medium">
+<span class="material-symbols-outlined text-[14px] mr-1">person_apron</span>
+                                        数字人
+                                    </span>
+</td>
+<td class="p-md">
+<div class="flex items-center text-secondary">
+<div class="w-2 h-2 rounded-full bg-secondary mr-2"></div>
+<span class="font-label-md text-label-md">已就绪</span>
+</div>
+</td>
+<td class="p-md text-on-surface-variant">2023-10-24 14:30</td>
+<td class="p-md text-right whitespace-nowrap">
+<button class="text-primary hover:text-primary-fixed-variant mx-1 font-label-md text-label-md transition-colors">查看</button>
+<button class="text-primary hover:text-primary-fixed-variant mx-1 font-label-md text-label-md transition-colors">编辑</button>
+<button class="text-error hover:text-on-error-container mx-1 font-label-md text-label-md transition-colors">删除</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="border-b border-surface-variant hover:bg-surface-container-low transition-colors group">
+<td class="p-md flex items-center">
+<div class="w-10 h-10 rounded border border-surface-variant bg-tertiary-fixed/30 flex items-center justify-center mr-sm text-tertiary">
+<span class="material-symbols-outlined">graphic_eq</span>
+</div>
+<div>
+<p class="text-on-surface font-medium">女声 - 温暖讲述 (中文)</p>
+<p class="text-on-surface-variant text-[12px]">Voice_WarmCN_F</p>
+</div>
+</td>
+<td class="p-md text-on-surface-variant">
+<span class="inline-flex items-center px-2 py-1 rounded bg-tertiary-fixed text-tertiary text-[12px] font-medium">
+<span class="material-symbols-outlined text-[14px] mr-1">record_voice_over</span>
+                                        声音
+                                    </span>
+</td>
+<td class="p-md">
+<div class="flex items-center text-primary">
+<div class="w-2 h-2 rounded-full bg-primary mr-2 animate-pulse"></div>
+<span class="font-label-md text-label-md">训练中 (85%)</span>
+</div>
+</td>
+<td class="p-md text-on-surface-variant">2023-10-24 09:15</td>
+<td class="p-md text-right whitespace-nowrap">
+<button class="text-primary hover:text-primary-fixed-variant mx-1 font-label-md text-label-md transition-colors">查看</button>
+<button class="text-primary hover:text-primary-fixed-variant mx-1 font-label-md text-label-md transition-colors" disabled="">编辑</button>
+<button class="text-error hover:text-on-error-container mx-1 font-label-md text-label-md transition-colors">删除</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="border-b border-surface-variant hover:bg-surface-container-low transition-colors group">
+<td class="p-md flex items-center">
+<div class="w-10 h-10 rounded border border-surface-variant bg-surface-container-lowest flex items-center justify-center mr-sm overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small preview thumbnail of a modern virtual studio background. It features sleek, minimalist architectural lines, a large virtual screen area, and professional blue ambient lighting, suitable for a digital human newscast or academic presentation background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSxCaabVM8TXETI2yFacmIAHmo1StAxodLjUrVK1iaxjN3pMTyo2ZNYlJkC2Z8rTsBeO69_EVqPWPG9QdvTfaIezBW5g2N_FOcdw4yJkfgsSwYZSGCt-42IHBbUQf-LIqIKkfI4lIqP8MWxAilvUaqQSKYvD0LttsDvVpiw66AUr_vrNjmSh0l89C4RHFhcvoEkahnsuMN6F8D1TFQ3vn8siBJm7PW75VSLxCe8assmDgx4hFQh-vk"/>
+</div>
+<div>
+<p class="text-on-surface font-medium">现代学术演播室 01</p>
+<p class="text-on-surface-variant text-[12px]">BG_Studio_Modern1</p>
+</div>
+</td>
+<td class="p-md text-on-surface-variant">
+<span class="inline-flex items-center px-2 py-1 rounded bg-surface-variant text-on-surface-variant text-[12px] font-medium">
+<span class="material-symbols-outlined text-[14px] mr-1">wallpaper</span>
+                                        背景
+                                    </span>
+</td>
+<td class="p-md">
+<div class="flex items-center text-secondary">
+<div class="w-2 h-2 rounded-full bg-secondary mr-2"></div>
+<span class="font-label-md text-label-md">已就绪</span>
+</div>
+</td>
+<td class="p-md text-on-surface-variant">2023-10-23 16:45</td>
+<td class="p-md text-right whitespace-nowrap">
+<button class="text-primary hover:text-primary-fixed-variant mx-1 font-label-md text-label-md transition-colors">查看</button>
+<button class="text-primary hover:text-primary-fixed-variant mx-1 font-label-md text-label-md transition-colors">编辑</button>
+<button class="text-error hover:text-on-error-container mx-1 font-label-md text-label-md transition-colors">删除</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Component -->
+<div class="p-md bg-surface-container-lowest flex flex-col sm:flex-row items-center justify-between border-t border-surface-variant">
+<div class="text-on-surface-variant font-body-sm text-body-sm mb-4 sm:mb-0">
+        共 <span class="font-medium text-on-surface">120</span> 条资产
+    </div>
+<div class="flex items-center space-x-md">
+<div class="flex items-center text-on-surface-variant font-body-sm text-body-sm">
+<span class="mr-2">每页</span>
+<select class="border border-surface-variant rounded bg-surface-container-lowest text-on-surface py-1 px-2 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm mr-2 cursor-pointer transition-colors">
+<option value="10">10</option>
+<option value="20">20</option>
+<option value="50">50</option>
+</select>
+<span>条</span>
+</div>
+<nav aria-label="Pagination" class="flex items-center space-x-1">
+<button aria-label="Previous page" class="w-8 h-8 flex items-center justify-center rounded border border-surface-variant text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button aria-current="page" class="w-8 h-8 flex items-center justify-center rounded bg-primary text-on-primary font-label-md text-label-md transition-colors">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-transparent text-on-surface hover:bg-surface-container-low font-label-md text-label-md transition-colors">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-transparent text-on-surface hover:bg-surface-container-low font-label-md text-label-md transition-colors">3</button>
+<span class="w-8 h-8 flex items-center justify-center text-on-surface-variant">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-transparent text-on-surface hover:bg-surface-container-low font-label-md text-label-md transition-colors">12</button>
+<button aria-label="Next page" class="w-8 h-8 flex items-center justify-center rounded border border-surface-variant text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</nav>
+</div>
+</div>
+</div>
+<!-- Atmospheric footer -->
+<footer class="mt-xl text-center pb-lg">
+<p class="font-label-md text-label-md text-outline">© 2023 海南大学 - 数字人微课平台 | 智能合成 · 赋能教育</p>
+</footer>
+</main>
+<script>
+        // Sidebar nav click handler
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                document.querySelectorAll('nav a').forEach(l => l.classList.remove('sidebar-active'));
+                this.classList.add('sidebar-active');
+            });
+        });
+
+        // Ripple effect on buttons
+        document.addEventListener('click', function(e) {
+            const target = e.target.closest('button');
+            if (!target) return;
+
+            const ripple = document.createElement('span');
+            const rect = target.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+
+            ripple.style.cssText = [
+                'position: absolute',
+                'width: ' + size + 'px',
+                'height: ' + size + 'px',
+                'left: ' + x + 'px',
+                'top: ' + y + 'px',
+                'border-radius: 50%',
+                'background: rgba(0, 93, 170, 0.2)',
+                'transform: scale(0)',
+                'animation: ripple-animation 0.6s ease-out',
+                'pointer-events: none'
+            ].join(';');
+
+            const position = window.getComputedStyle(target).position;
+            if (position === 'static') {
+                target.style.position = 'relative';
+            }
+            target.style.overflow = 'hidden';
+            target.appendChild(ripple);
+
+            ripple.addEventListener('animationend', function() {
+                ripple.remove();
+            });
+        });
+    </script>
+</body></html>

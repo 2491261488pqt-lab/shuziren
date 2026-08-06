@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>微课智能体 - 数字人微课平台</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#d4e3ff",
+                        "inverse-on-surface": "#f2f0f0",
+                        "tertiary": "#7d5400",
+                        "surface-container-high": "#e9e8e8",
+                        "on-tertiary-fixed": "#281800",
+                        "secondary-fixed": "#88fd54",
+                        "secondary-container": "#85fa51",
+                        "primary": "#005daa",
+                        "surface": "#faf9f9",
+                        "tertiary-fixed-dim": "#ffba45",
+                        "secondary-fixed-dim": "#6de039",
+                        "on-tertiary-fixed-variant": "#614000",
+                        "surface-container-low": "#f4f3f3",
+                        "surface-container-highest": "#e3e2e2",
+                        "on-secondary-container": "#287100",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#a5c8ff",
+                        "on-primary-container": "#fefcff",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#404753",
+                        "on-tertiary-container": "#fffbff",
+                        "secondary": "#266d00",
+                        "primary-container": "#0075d5",
+                        "tertiary-fixed": "#ffddb0",
+                        "background": "#faf9f9",
+                        "on-background": "#1b1c1c",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#a5c8ff",
+                        "on-primary-fixed": "#001c3a",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#005fae",
+                        "on-secondary-fixed-variant": "#1a5200",
+                        "tertiary-container": "#9d6a00",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#004785",
+                        "outline": "#707785",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1b1c1c",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#dbdad9",
+                        "surface-variant": "#e3e2e2",
+                        "on-secondary-fixed": "#062100",
+                        "surface-container": "#efeded",
+                        "inverse-surface": "#2f3031",
+                        "outline-variant": "#c0c7d6",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#faf9f9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "md": "16px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "gutter": "16px",
+                        "sm": "12px",
+                        "lg": "24px",
+                        "sidebar-width": "240px",
+                        "container-margin": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "title-lg": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #f0f2f5;
+            color: #1b1c1c;
+        }
+        @keyframes pulse-blue {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(0.95); opacity: 0.5; }
+        }
+        .sidebar-active {
+            background-color: #d4e3ff;
+            color: #001c3a;
+            border-right: 4px solid #005daa;
+        }
+        .animate-pulse-subtle {
+            animation: pulse-blue 2s infinite ease-in-out;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c0c7d6;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- SideNavBar (shared) -->
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50">
+<div class="px-6 py-8 flex flex-col items-center">
+<img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6P6wfO4WzAvKB29FOgOhh2gKBA0I5qlzQeKI5vJJL5zJEXfw12NIb54CcvIorfCPPvY-fQA4FkHm5asDVuQALYu2D1o8zxRfu43p9izOJhgYMgdroju-AmDkgli4t4lq01Ffo_k-DYgBUln2qmX5UP14xGigku6x0_0pOdJsQesTtUECqX24MoTFKo1M8JKP2d5y9A-vPoJD2J6NyktJtsf2PCBAPRED9heWexjhF_IQC027pdzqH_ujAzI_uyK2_Yg">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1>
+<p class="font-label-md text-label-md text-outline">Hainan University</p>
+</div>
+<nav class="flex-1 mt-4 px-3 space-y-1">
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html">
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">业务总览</span>
+</a>
+<a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html">
+<span class="material-symbols-outlined mr-3" data-icon="video_call">video_call</span>
+<span class="font-label-md text-label-md">微课智能体</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html">
+<span class="material-symbols-outlined mr-3">video_library</span>
+<span class="font-label-md text-label-md">视频管理</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html">
+<span class="material-symbols-outlined mr-3" data-icon="folder_open">folder_open</span>
+<span class="font-label-md text-label-md">资产管理</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html">
+<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">系统设置</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYzMnP2c0Xr56Z5hZGnvtaUbLDy4Di6cbJs3ueJMZ_9qmW3PE6MfWE3wXYOWKXw-0hD60S-nqqIFHaAave39GOhatkdPoHH-rGBI1Wem-PRvbr-SblX11vlTUb3RUQOPMeaZCuC8lPNsIG-wqkMsf5PbDAGL_QLLewnGvY0sifq8wjgVUm_q2mz5R7U9ExKchTV2yEynyaVSel6-K-NQ0iV0c4mDVasvtgUwGduaNp-mmcmRSwmV4l">
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p>
+<p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p>
+</div>
+<a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a>
+</div>
+</div>
+</aside>
+<!-- TopNavBar (shared) -->
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest">
+<div class="flex items-center gap-4">
+<div class="flex items-center text-outline font-body-sm text-body-sm">
+<a href="index.html" class="hover:text-primary transition-colors">业务总览</a>
+<span class="material-symbols-outlined text-sm mx-2">chevron_right</span>
+<span class="text-primary font-bold">微课智能体</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+<span class="material-symbols-outlined text-outline text-lg">search</span>
+</div>
+<input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索资源或项目..." type="text">
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="relative hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span>
+</button>
+<button class="hover:text-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-body-sm text-body-sm">帮助</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-sidebar-width mt-16 p-xl space-y-lg">
+
+<!-- Welcome Banner Section -->
+<section class="relative overflow-hidden rounded-xl bg-primary-container p-xl text-white shadow-sm h-56 flex flex-col justify-center">
+<div class="relative z-10 max-w-2xl">
+<h2 class="font-display-lg text-display-lg mb-sm">欢迎进入微课智能体</h2>
+<p class="font-body-md text-on-primary-container opacity-90 leading-relaxed">
+                Nexus Course Architect 为您提供专业的 AI 课程创作引擎。
+                利用尖端的数字人合成技术与自动化脚本处理，实现高效、高品质的教学微课生产。
+            </p>
+</div>
+</section>
+
+<!-- Primary Action Grid -->
+<div class="space-y-md">
+<h4 class="font-title-lg text-title-lg text-on-surface">核心创作工具</h4>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Script-driven Generation -->
+<div class="group relative overflow-hidden bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60">
+<div class="flex justify-between items-start mb-md">
+<div class="p-base bg-primary-fixed text-primary rounded-lg">
+<span class="material-symbols-outlined text-[32px]">movie_edit</span>
+</div>
+<span class="bg-primary text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-widest">PRO</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">脚本驱动生成</h3>
+<p class="text-on-surface-variant font-body-sm flex-1">
+                    通过输入教学文本脚本，自动匹配数字人与环境，分钟级生成完整教学视频。
+                </p>
+<div class="mt-md flex items-center text-primary font-bold group-hover:translate-x-2 transition-transform duration-300">
+                    立即开始 <span class="material-symbols-outlined ml-xs">arrow_forward</span>
+</div>
+</div>
+<!-- PPT-to-Video -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60">
+<div class="flex justify-between items-start mb-md">
+<div class="p-base bg-secondary-fixed-dim text-secondary rounded-lg">
+<span class="material-symbols-outlined text-[32px]">present_to_all</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">课件转视频</h3>
+<p class="text-on-surface-variant font-body-sm flex-1">
+                    上传现有的 PPT 或 PDF 课件，系统将智能提取大纲并合成数字人讲解视频。
+                </p>
+<div class="mt-md flex items-center text-primary font-bold group-hover:translate-x-2 transition-transform duration-300">
+                    上传课件 <span class="material-symbols-outlined ml-xs">upload_file</span>
+</div>
+</div>
+<!-- AI PPT Generation -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60">
+<div class="flex justify-between items-start mb-md">
+<div class="p-base bg-tertiary-fixed-dim text-tertiary rounded-lg">
+<span class="material-symbols-outlined text-[32px]">auto_awesome_motion</span>
+</div>
+<span class="text-[10px] text-tertiary-container font-bold px-2 py-0.5 bg-tertiary-fixed rounded-full">AI 生成</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">PPT 智能生成</h3>
+<p class="text-on-surface-variant font-body-sm flex-1">
+                    基于课程主题或教学目标，AI 自动生成精美教学 PPT 课件。
+                </p>
+<div class="mt-md flex items-center text-primary font-bold group-hover:translate-x-2 transition-transform duration-300">
+                    生成课件 <span class="material-symbols-outlined ml-xs">magic_button</span>
+</div>
+</div>
+<!-- Script Processing -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60">
+<div class="flex justify-between items-start mb-md">
+<div class="p-base bg-surface-container-highest text-on-surface-variant rounded-lg">
+<span class="material-symbols-outlined text-[32px]">edit_note</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">讲稿处理/生成</h3>
+<p class="text-on-surface-variant font-body-sm flex-1">
+                    AI 助手为您编写、润色教学讲稿，优化口播表达，提升教学感染力。
+                </p>
+<div class="mt-md flex items-center text-primary font-bold group-hover:translate-x-2 transition-transform duration-300">
+                    处理讲稿 <span class="material-symbols-outlined ml-xs">edit_square</span>
+</div>
+</div>
+<!-- Voice Synthesis -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60">
+<div class="flex justify-between items-start mb-md">
+<div class="p-base bg-primary-fixed text-primary rounded-lg">
+<span class="material-symbols-outlined text-[32px]">record_voice_over</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">配音合成</h3>
+<p class="text-on-surface-variant font-body-sm flex-1">
+                    高拟真文本转语音，支持多语种、多音色选择，快速完成课程配音。
+                </p>
+<div class="mt-md flex items-center text-primary font-bold group-hover:translate-x-2 transition-transform duration-300">
+                    开始合成 <span class="material-symbols-outlined ml-xs">settings_voice</span>
+</div>
+</div>
+<!-- Project Library -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60">
+<div class="flex justify-between items-start mb-md">
+<div class="p-base bg-surface-container-highest text-on-surface-variant rounded-lg">
+<span class="material-symbols-outlined text-[32px]">folder_special</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">项目库</h3>
+<p class="text-on-surface-variant font-body-sm flex-1">
+                    管理您的所有创作项目。查看历史草稿、正在渲染的任务以及已完成的精品课程。
+                </p>
+<div class="mt-md flex items-center text-on-surface-variant font-bold group-hover:text-primary transition-colors duration-300">
+                    管理项目 <span class="material-symbols-outlined ml-xs">list_alt</span>
+</div>
+</div>
+<!-- Digital Human Video Generation -->
+<div class="group relative overflow-hidden bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60">
+<div class="flex justify-between items-start mb-md">
+<div class="p-base bg-primary-fixed text-primary rounded-lg">
+<span class="material-symbols-outlined text-[32px]">auto_videocam</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">数字人口播生成</h3>
+<p class="text-on-surface-variant font-body-sm flex-1">
+                    利用数字人技术生成口播原片，支持自定义形象与背景。
+                </p>
+<div class="mt-md flex items-center text-primary font-bold group-hover:translate-x-2 transition-transform duration-300">
+                    立即生成 <span class="material-symbols-outlined ml-xs">arrow_forward</span>
+</div>
+</div>
+<!-- Digital Human Courseware Synthesis -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60">
+<div class="flex justify-between items-start mb-md">
+<div class="p-base bg-primary-fixed text-primary rounded-lg">
+<span class="material-symbols-outlined text-[32px]">library_books</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">数字人课件合成</h3>
+<p class="text-on-surface-variant font-body-sm flex-1">
+                    上传 PPT/PDF 课件，智能解析并驱动数字人生成教学视频。
+                </p>
+<div class="mt-md flex items-center text-primary font-bold group-hover:translate-x-2 transition-transform duration-300">
+                    立即合成 <span class="material-symbols-outlined ml-xs">arrow_forward</span>
+</div>
+</div>
+<!-- PPT Translation & Script Processing -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60">
+<div class="flex justify-between items-start mb-md">
+<div class="p-base bg-tertiary-fixed-dim text-tertiary rounded-lg">
+<span class="material-symbols-outlined text-[32px]">translate</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">PPT 翻译与讲稿处理</h3>
+<p class="text-on-surface-variant font-body-sm flex-1">
+                    支持上传 PPT 文件，自动提取内容并进行多语言翻译，同步优化生成教学讲稿。
+                </p>
+<div class="mt-md flex items-center text-primary font-bold group-hover:translate-x-2 transition-transform duration-300">
+                    立即处理 <span class="material-symbols-outlined ml-xs">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Bottom Dashboard Content -->
+<div class="grid grid-cols-1 xl:grid-cols-4 gap-lg">
+<!-- Templates Section (3/4 width) -->
+<div class="xl:col-span-3 space-y-md">
+<div class="flex items-center justify-between">
+<h4 class="font-title-lg text-title-lg text-on-surface">热门推荐模板</h4>
+<button class="text-primary font-label-md hover:underline">查看全部</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+<!-- Template Card 1 -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant overflow-hidden group">
+<div class="h-32 bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXTBjuqcOgpD1uSfzziTEJg6TjAEzn_qedd6eHzGepgI1o_QY17Ydv1JLRa9BMxk0WNaH5q_-jBtlf63RpUqnWQ2MN_yjnHwdUKXcxIxo22vBfTkRp4T27HGLn-pboQUZOFtWsCK9xzgv6z3yW78WF8c-dv8Nhvud5JOdAv1l75FkD4M2ZtBvlryRjNgZivvT-IRwbOAJfeDxrbrXP4E0JWGO_PUb9pcRfVxArzlhvga2bxEvQpbXY"/>
+</div>
+<div class="p-md">
+<h5 class="font-bold font-body-md text-on-surface">企业级科技风</h5>
+<p class="text-[11px] text-on-surface-variant mt-xs">适用于：技术方案宣讲、产品演示</p>
+<div class="mt-sm flex justify-between items-center">
+<span class="text-[10px] bg-surface-container-high px-2 py-0.5 rounded-full text-on-surface-variant">2.4k 使用</span>
+<button class="text-primary material-symbols-outlined">add_circle</button>
+</div>
+</div>
+</div>
+<!-- Template Card 2 -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant overflow-hidden group">
+<div class="h-32 bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAm19e7DtN9pO6EYAl340rJoHZ3oZAIVa_zvjX_VZ90QQmx5Ist35XCgEXTDjhduhB1Jwb7FsozsHbQAv6RCyRGa7oVLh8HQo4l0Yps8gIRL9arbTs39H1JetWk_gW6JgKUy_R9L78i7TsOPoiRy2MS_OC7xpxuQpyAyWX2LaYcqWZPXFyRyRn9WioKgNMTxjhsVQUbR7A8bfhQwdlMlA5FJ3zwyF6E7sqJUZHI0EEiVokFNQQIL1qX"/>
+</div>
+<div class="p-md">
+<h5 class="font-bold font-body-md text-on-surface">明亮学术风</h5>
+<p class="text-[11px] text-on-surface-variant mt-xs">适用于：教育培训、在线讲座</p>
+<div class="mt-sm flex justify-between items-center">
+<span class="text-[10px] bg-surface-container-high px-2 py-0.5 rounded-full text-on-surface-variant">1.8k 使用</span>
+<button class="text-primary material-symbols-outlined">add_circle</button>
+</div>
+</div>
+</div>
+<!-- Template Card 3 -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant overflow-hidden group">
+<div class="h-32 bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuIqqkQlKG54KVYzG_p9B2SNQ9GFZdBWO1hCI-9KCW2bkfTgvG85mYJ6O8-fyKURMEJwTCnMhaPuCgj_XJjb1iH1tqPd630lqfO-P7EEuogS2uvHOsZHC3zvwe_Zf1pAZbr4Y5oOqJT4-Gie_GtrU3uY5owWYoG7kcJLo-ICejcjl_LYPICTjmeJYxtUsZpHJPugHC5DEbQzZIRTXa0XBQtRYP4N9uzDc-tcsuFWNNQVpUbJfBzq9B"/>
+</div>
+<div class="p-md">
+<h5 class="font-bold font-body-md text-on-surface">前沿未来感</h5>
+<p class="text-[11px] text-on-surface-variant mt-xs">适用于：AI 技术介绍、未来展望</p>
+<div class="mt-sm flex justify-between items-center">
+<span class="text-[10px] bg-surface-container-high px-2 py-0.5 rounded-full text-on-surface-variant">3.1k 使用</span>
+<button class="text-primary material-symbols-outlined">add_circle</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Activities Section (1/4 width) -->
+<div class="xl:col-span-1 space-y-md">
+<h4 class="font-title-lg text-title-lg text-on-surface">创作进行中</h4>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md divide-y divide-outline-variant">
+<!-- Task 1 -->
+<div class="py-md first:pt-0 last:pb-0">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-body-sm font-semibold truncate max-w-[120px]">深度学习入门 02</span>
+<span class="text-[10px] text-primary bg-primary-fixed px-2 py-0.5 rounded flex items-center">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1 animate-pulse-subtle"></span>处理中
+                        </span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-xs">
+<div class="bg-primary h-1.5 rounded-full w-[65%]"></div>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-xs">预计剩余时间: 3分钟</p>
+</div>
+<!-- Task 2 -->
+<div class="py-md">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-body-sm font-semibold truncate max-w-[120px]">财务报表分析</span>
+<span class="text-[10px] text-on-tertiary-fixed-variant bg-tertiary-fixed px-2 py-0.5 rounded">
+                            队列中
+                        </span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-xs">
+<div class="bg-tertiary h-1.5 rounded-full w-[15%]"></div>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-xs">前面还有 2 个任务</p>
+</div>
+<!-- Task 3 -->
+<div class="py-md">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-body-sm font-semibold truncate max-w-[120px]">产品经理解析课程</span>
+<span class="text-[10px] text-secondary bg-secondary-fixed px-2 py-0.5 rounded font-medium">
+                            已完成
+                        </span>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-xs">生成于 2小时前</p>
+</div>
+</div>
+<!-- Quick Assets -->
+<div class="bg-primary-container/10 p-md rounded-xl border border-primary-container/20">
+<h5 class="font-bold font-label-md text-primary mb-sm">常用资源</h5>
+<div class="flex flex-wrap gap-xs">
+<div class="bg-surface-container-lowest p-xs rounded border border-outline-variant cursor-pointer hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-[18px]">mic</span>
+</div>
+<div class="bg-surface-container-lowest p-xs rounded border border-outline-variant cursor-pointer hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-[18px]">photo_library</span>
+</div>
+<div class="bg-surface-container-lowest p-xs rounded border border-outline-variant cursor-pointer hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-[18px]">music_note</span>
+</div>
+<div class="bg-surface-container-lowest p-xs rounded border border-outline-variant cursor-pointer hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-[18px]">closed_caption</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Footer -->
+<footer class="mt-xl text-center pb-lg">
+<p class="font-label-md text-label-md text-outline">© 2023 海南大学 - 数字人微课平台 | 智能合成 · 赋能教育</p>
+</footer>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Sidebar nav click handler
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                document.querySelectorAll('nav a').forEach(l => l.classList.remove('sidebar-active'));
+                this.classList.add('sidebar-active');
+            });
+        });
+        // Card press effect
+        const cards = document.querySelectorAll('.group');
+        cards.forEach(card => {
+            card.addEventListener('mousedown', () => card.classList.add('scale-[0.98]'));
+            card.addEventListener('mouseup', () => card.classList.remove('scale-[0.98]'));
+            card.addEventListener('mouseleave', () => card.classList.remove('scale-[0.98]'));
+        });
+    });
+</script>
+</body></html>

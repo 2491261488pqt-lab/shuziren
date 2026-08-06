@@ -1,0 +1,222 @@
+<!DOCTYPE html><html class="light" lang="zh"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>扫码登录 | 数字人微课平台</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-surface": "#2f3031",
+                      "secondary-fixed-dim": "#6de039",
+                      "on-secondary-fixed": "#062100",
+                      "tertiary-fixed": "#ffddb0",
+                      "on-error-container": "#93000a",
+                      "surface-container-highest": "#e3e2e2",
+                      "inverse-on-surface": "#f2f0f0",
+                      "surface-tint": "#005fae",
+                      "on-tertiary-fixed": "#281800",
+                      "on-secondary-fixed-variant": "#1a5200",
+                      "on-secondary": "#ffffff",
+                      "tertiary-container": "#9d6a00",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary": "#7d5400",
+                      "on-primary-fixed-variant": "#004785",
+                      "surface-variant": "#e3e2e2",
+                      "secondary-fixed": "#88fd54",
+                      "error": "#ba1a1a",
+                      "surface": "#faf9f9",
+                      "secondary-container": "#85fa51",
+                      "error-container": "#ffdad6",
+                      "on-primary-container": "#fefcff",
+                      "tertiary-fixed-dim": "#ffba45",
+                      "on-surface-variant": "#404753",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#614000",
+                      "on-secondary-container": "#287100",
+                      "inverse-primary": "#a5c8ff",
+                      "primary": "#005daa",
+                      "on-surface": "#1b1c1c",
+                      "primary-container": "#0075d5",
+                      "on-error": "#ffffff",
+                      "on-background": "#1b1c1c",
+                      "outline": "#707785",
+                      "surface-container-low": "#f4f3f3",
+                      "surface-bright": "#faf9f9",
+                      "on-tertiary-container": "#fffbff",
+                      "surface-container-high": "#e9e8e8",
+                      "on-primary-fixed": "#001c3a",
+                      "outline-variant": "#c0c7d6",
+                      "on-tertiary": "#ffffff",
+                      "primary-fixed": "#d4e3ff",
+                      "surface-container": "#efeded",
+                      "surface-dim": "#dbdad9",
+                      "secondary": "#266d00",
+                      "primary-fixed-dim": "#a5c8ff",
+                      "background": "#faf9f9"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "lg": "24px",
+                      "base": "4px",
+                      "sidebar-width": "240px",
+                      "gutter": "16px",
+                      "md": "16px",
+                      "container-margin": "24px",
+                      "sm": "12px",
+                      "xs": "8px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "headline-sm": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "title-lg": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "label-md": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "display-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "title-lg": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                      "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-md": ["12px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .shimmer-bg {
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .dot-pulse {
+            animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(1.1); }
+        }
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background overflow-hidden h-screen flex">
+<!-- Left Side: Branding Illustration & Animation -->
+<div class="hidden lg:flex lg:w-3/5 h-full relative overflow-hidden bg-primary items-center justify-center">
+<div class="relative z-10 p-xl flex flex-col items-center text-center max-w-2xl">
+<div class="mb-lg">
+<img alt="Hainan University Logo" class="w-64 h-64 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyD3VjVURmajTPMgKCwqPZt4rvmJ7X6epprOGLEAgSumnd732x4j9IsvCbtkQ9SGrvs1ohPgxbOWGDvZ21Kb9m-MouMuo4bb7_-hDjictaZg3jReSWRoSszJvaLEHCiCrCpbjcY7UOoGBtWkK-v-XAxV_G9veJv4VaTttXrPZ3GHfbkpYrgl5a2aop8EFR1e1b4eLRq3NclPDaVCMAqAldVdO44WuJdEbhuVasGOBbm1n0wXc-tayiErP9HVdfrkK_xA">
+</div>
+<h1 class="font-display-lg text-display-lg text-white mb-md">
+                数字人微课系统
+            </h1>
+<p class="font-body-md text-body-md text-primary-fixed-dim max-w-md opacity-90">
+                为海南大学提供AI驱动的微课合成与下一代教学制作工具。
+            </p>
+<div class="mt-xl flex gap-md">
+<div class="px-md py-xs bg-white/10 rounded-full flex items-center gap-xs border border-white/20">
+<span class="w-2 h-2 bg-secondary rounded-full dot-pulse"></span>
+<span class="text-white font-label-md text-label-md">AI内核已激活</span>
+</div>
+<div class="px-md py-xs bg-white/10 rounded-full flex items-center gap-xs border border-white/20">
+<span class="material-symbols-outlined text-white text-[14px]">shield</span>
+<span class="text-white font-label-md text-label-md">安全统一认证</span>
+</div>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-primary/50 to-transparent"></div>
+</div>
+<!-- Right Side: Login Form -->
+<main class="w-full lg:w-2/5 h-full flex flex-col justify-center px-lg md:px-xl bg-surface"><div class="max-w-md w-full mx-auto">
+<header class="mb-xl text-center">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-xs">海南大学统一身份认证</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Micro-course AI Production Suite</p>
+</header>
+<div class="bg-surface-container-low rounded-xl border border-outline-variant shadow-lg overflow-hidden">
+<div class="flex border-b border-outline-variant" role="tablist">
+<a href="qr.html" class="flex-1 py-md font-title-lg text-title-lg text-primary border-b-2 border-primary transition-all text-center">扫码登录</a>
+<a href="account.html" class="flex-1 py-md font-title-lg text-title-lg text-on-surface-variant border-b-2 border-transparent hover:text-on-surface transition-all text-center">账号登录</a>
+</div>
+<div class="p-xl flex flex-col items-center">
+<div class="relative p-md bg-white rounded-lg border border-outline-variant shadow-sm mb-lg group">
+<div class="w-48 h-48 bg-surface-container flex items-center justify-center relative">
+<span class="material-symbols-outlined text-[120px] text-outline opacity-20">qr_code_2</span>
+<div class="absolute inset-0 flex items-center justify-center">
+<img alt="HNU Logo" class="w-12 h-12 bg-white p-1 rounded shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATHPAKU8iUh4N0S-Kazv5p2DkLt-bpUVo-9WvG2xZYmDgd44Jo38m2dUKGllAA7-zGO6rG9DcJI-09f_-601-HQyx_LY4zF9icb7L4Je7yzaHpiDhwQZhzHmK6z72aGdxMB6PBNwk8RsDbugFBiFPyJbRTqkPj8Ti-dhaikoE_XpIGloNQ7i1K0HdOglTic9II9smx1ySzitCbBteRWOyZuOlhmXY2gqsOTaBxMUtbhhodo2-EnokV">
+</div>
+</div>
+<button class="absolute inset-0 bg-surface/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-primary text-[32px]">refresh</span>
+<span class="text-label-md font-label-md text-primary">点击刷新</span>
+</button>
+</div>
+<p class="text-body-md text-on-surface mb-md">请使用 <span class="font-bold text-primary">海南大学官方App</span> 扫码登录</p>
+<div class="w-full pt-lg border-t border-outline-variant flex justify-between items-center">
+<a class="flex items-center gap-xs text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">contact_support</span>
+                    IT 服务台
+                </a>
+<a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="../forgot-password/step1-verify-account.html">忘记密码?</a>
+</div>
+</div>
+</div>
+<footer class="mt-xl pt-xl border-t border-outline-variant">
+<div class="flex justify-between items-center text-on-surface-variant font-label-md text-label-md">
+<span>© 2024 Digital Human AI Production</span>
+<span class="text-outline">|</span>
+<span>海南大学</span>
+</div>
+<div class="flex items-center justify-center gap-xs py-md">
+<span class="material-symbols-outlined text-[14px] text-secondary">verified_user</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant opacity-70 uppercase">AES-256 Encrypted Session</span>
+</div>
+</footer>
+</div></main>
+<script>
+    // Ripple Effect for buttons
+    document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('mousedown', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const ripple = document.createElement('span');
+            ripple.style.cssText = 'position:absolute;width:100px;height:100px;background:rgba(255,255,255,0.3);border-radius:50%;left:'+(x-50)+'px;top:'+(y-50)+'px;transform:scale(0);animation:ripple 0.6s linear;pointer-events:none';
+            this.style.position = 'relative';
+            this.style.overflow = 'hidden';
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
+</script>
+</body></html>
