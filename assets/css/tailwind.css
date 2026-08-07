@@ -2395,6 +2395,10 @@ video {
   padding-top: 3rem;
 }
 
+.pt-16 {
+  padding-top: 4rem;
+}
+
 .pt-4 {
   padding-top: 1rem;
 }
@@ -3138,6 +3142,11 @@ video {
 
 .last\:pb-0:last-child {
   padding-bottom: 0px;
+}
+
+.focus-within\:border-primary:focus-within {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 93 170 / var(--tw-border-opacity, 1));
 }
 
 .hover\:-translate-y-1:hover {
