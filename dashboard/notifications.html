@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>消息中心 - Digital Human System</title>
+<link rel="stylesheet" href="../assets/css/tailwind.css">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c0c7d6; border-radius: 2px; }
+
+        .view-transition {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        }
+
+        /* Interactive enhancements */
+        .search-container {
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+        }
+        .search-container:focus-within {
+            width: 320px;
+            box-shadow: 0 0 0 2px rgba(0, 93, 170, 0.1);
+        }
+        .dropdown-menu {
+            transform-origin: top right;
+            transition: transform 0.2s ease, opacity 0.2s ease, visibility 0.2s;
+        }
+        .dropdown-menu.hidden {
+            transform: scale(0.95);
+            opacity: 0;
+            visibility: hidden;
+            display: block !important;
+            pointer-events: none;
+        }
+        .filter-drawer {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .message-item {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .message-item.filtered-out {
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            position: absolute;
+            width: 100%;
+        }
+
+        .sidebar-active {
+            background-color: #d4e3ff;
+            color: #001c3a;
+            border-right: 4px solid #005daa;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen overflow-hidden">
+<!-- Filter Drawer -->
+<div class="fixed inset-y-0 right-0 w-80 bg-surface border-l border-outline-variant z-[60] filter-drawer translate-x-full shadow-2xl" id="filter-drawer">
+<div class="p-lg border-b border-outline-variant flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm">高级筛选</h3>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary" onclick="toggleFilterDrawer()">close</a>
+</div>
+<div class="p-lg space-y-lg">
+<div class="space-y-sm">
+<label class="font-label-md text-label-md text-on-surface-variant">消息状态</label>
+<div class="grid grid-cols-2 gap-xs">
+<button class="py-xs px-sm border border-primary bg-primary/5 text-primary text-body-sm rounded">全部</a>
+<button class="py-xs px-sm border border-outline-variant text-on-surface-variant text-body-sm rounded hover:bg-surface-container">未读</a>
+<button class="py-xs px-sm border border-outline-variant text-on-surface-variant text-body-sm rounded hover:bg-surface-container">已读</a>
+<button class="py-xs px-sm border border-outline-variant text-on-surface-variant text-body-sm rounded hover:bg-surface-container">标星</a>
+</div>
+</div>
+<div class="space-y-sm">
+<label class="font-label-md text-label-md text-on-surface-variant">发送时间</label>
+<select class="w-full rounded border-outline-variant text-body-sm focus:ring-primary">
+<option>最近一周</option>
+<option>最近一个月</option>
+<option>最近三月</option>
+<option>更早以前</option>
+</select>
+</div>
+<div class="space-y-sm">
+<label class="font-label-md text-label-md text-on-surface-variant">优先级</label>
+<div class="flex gap-md">
+<label class="flex items-center gap-xs cursor-pointer">
+<input class="rounded text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-body-sm">高</span>
+</label>
+<label class="flex items-center gap-xs cursor-pointer">
+<input class="rounded text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-body-sm">普通</span>
+</label>
+</div>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-lg border-t border-outline-variant flex gap-md bg-surface">
+<button class="flex-1 py-sm border border-outline text-label-md rounded hover:bg-surface-container transition-colors">重置</a>
+<button class="flex-1 py-sm bg-primary text-on-primary text-label-md rounded hover:bg-primary/90 transition-colors" onclick="toggleFilterDrawer()">应用筛选</a>
+</div>
+</div>
+
+<!-- Shared Side Navigation -->
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50">
+<div class="px-6 py-8 flex flex-col items-center">
+<img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1>
+<p class="font-label-md text-label-md text-outline">Hainan University</p>
+</div>
+<nav class="flex-1 mt-4 px-3 space-y-1">
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html">
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">业务总览</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html">
+<span class="material-symbols-outlined mr-3" data-icon="video_call">video_call</span>
+<span class="font-label-md text-label-md">微课智能体</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html">
+<span class="material-symbols-outlined mr-3">video_library</span>
+<span class="font-label-md text-label-md">视频管理</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html">
+<span class="material-symbols-outlined mr-3" data-icon="folder_open">folder_open</span>
+<span class="font-label-md text-label-md">资产管理</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html">
+<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">系统设置</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A professional business headshot of a university administrator in a modern office, bright natural lighting, corporate aesthetic, clean light-mode environment." src="../assets/images/user-avatar.png">
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p>
+<p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p>
+</div>
+<a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer" data-icon="logout">logout</a>
+</div>
+</div>
+</aside>
+
+<!-- Shared Top Navigation -->
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest">
+<div class="flex items-center gap-4">
+<div class="flex items-center text-outline font-body-sm text-body-sm">
+<span class="">业务总览</span>
+<span class="material-symbols-outlined text-sm mx-2" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">消息中心</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+<span class="material-symbols-outlined text-outline text-lg" data-icon="search">search</span>
+</div>
+<input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索资源或项目..." type="text">
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<a href="notifications.html" class="relative hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span>
+</a>
+<a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+<span class="font-body-sm text-body-sm">帮助</span>
+</a>
+</div>
+</div>
+</header>
+
+<!-- Main Content Area -->
+<main class="ml-sidebar-width mt-16 h-screen flex relative">
+<!-- Sequential Message Container -->
+<div class="flex-1 flex flex-col relative overflow-hidden">
+<!-- View 1: Message List -->
+<div class="absolute inset-0 z-20 flex bg-background view-transition" id="message-list-view">
+<!-- Category Sidebar -->
+<div class="w-64 border-r border-outline-variant bg-surface-container-low flex flex-col">
+<div class="p-lg">
+<h2 class="font-headline-sm text-headline-sm text-primary mb-md">消息中心</h2>
+<div class="space-y-1">
+<button class="w-full flex items-center justify-between p-md rounded-lg hover:bg-surface-container-highest transition-colors category-btn active" data-category="系统通知" onclick="filterByCategory('系统通知')">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined">campaign</span>
+<span class="font-body-md text-body-md">系统通知</span>
+</div>
+<span class="bg-error text-white text-[10px] px-1.5 rounded-full">3</span>
+</a>
+<button class="w-full flex items-center justify-between p-md rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors category-btn" data-category="任务进度" onclick="filterByCategory('任务进度')">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined">task_alt</span>
+<span class="font-body-md text-body-md">任务进度</span>
+</div>
+</a>
+<button class="w-full flex items-center justify-between p-md rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors category-btn" data-category="账号安全" onclick="filterByCategory('账号安全')">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined">security</span>
+<span class="font-body-md text-body-md">账号安全</span>
+</div>
+</a>
+<button class="w-full flex items-center justify-between p-md rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors category-btn" data-category="反馈回复" onclick="filterByCategory('反馈回复')">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined">chat_bubble_outline</span>
+<span class="font-body-md text-body-md">反馈回复</span>
+</div>
+</a>
+</div>
+</div>
+<div class="mt-auto p-lg">
+<button class="w-full flex items-center justify-center gap-xs py-sm border border-outline rounded text-label-md hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[18px]">done_all</span>
+                        全部已读
+                    </a>
+</div>
+</div>
+<!-- List Content -->
+<div class="flex-1 bg-surface flex flex-col">
+<div class="p-md border-b border-outline-variant flex items-center justify-between bg-white sticky top-0 z-10">
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm pr-md border-r border-outline-variant">
+<input class="rounded border-outline-variant text-primary focus:ring-primary w-4 h-4" type="checkbox"/>
+<span class="font-title-lg text-title-lg font-bold">收件箱 (<span id="inbox-count">12</span>)</span>
+</div>
+<div class="flex items-center gap-xs">
+<button class="flex items-center gap-xs px-sm py-1.5 rounded hover:bg-surface-container transition-colors text-body-sm">
+<span class="material-symbols-outlined text-[18px]">drafts</span>
+                标记已读
+            </a>
+<button class="flex items-center gap-xs px-sm py-1.5 rounded hover:bg-surface-container transition-colors text-body-sm text-error">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+                删除
+            </a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative">
+<button class="flex items-center gap-xs px-sm py-1.5 border border-outline-variant rounded hover:bg-surface-container transition-colors text-body-sm bg-white" onclick="toggleCategoryDropdown()">
+<span id="current-category-label">所有类别</span>
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</a>
+<!-- Dropdown Menu -->
+<div class="absolute right-0 mt-xs w-48 bg-white border border-outline-variant rounded-xl shadow-xl z-50 dropdown-menu hidden" id="category-dropdown">
+<div class="py-1">
+<button class="w-full text-left px-md py-sm hover:bg-surface-container-low text-body-sm" onclick="filterByCategory('all')">所有类别</a>
+<div class="h-px bg-outline-variant mx-sm"></div>
+<button class="w-full text-left px-md py-sm hover:bg-surface-container-low text-body-sm" onclick="filterByCategory('系统通知')">系统通知</a>
+<button class="w-full text-left px-md py-sm hover:bg-surface-container-low text-body-sm" onclick="filterByCategory('任务进度')">任务进度</a>
+<button class="w-full text-left px-md py-sm hover:bg-surface-container-low text-body-sm" onclick="filterByCategory('账号安全')">账号安全</a>
+<button class="w-full text-left px-md py-sm hover:bg-surface-container-low text-body-sm" onclick="filterByCategory('反馈回复')">反馈回复</a>
+</div>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant text-[20px] hover:text-primary p-1.5 hover:bg-surface-container rounded-lg transition-colors" onclick="toggleFilterDrawer()">filter_list</a>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar bg-white" id="message-items-container">
+<!-- Message Row 1 -->
+<div class="message-item flex items-center gap-md px-lg py-md border-b border-outline-variant hover:bg-surface-container-low cursor-pointer transition-colors group" data-category="系统通知" onclick="showDetail()">
+<input class="rounded border-outline-variant text-primary focus:ring-primary w-4 h-4" onclick="event.stopPropagation()" type="checkbox"/>
+<div class="w-2 h-2 bg-primary rounded-full flex-shrink-0"></div>
+<div class="w-24 flex-shrink-0">
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-[11px] font-bold rounded">系统通知</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-baseline gap-md">
+<h3 class="font-bold text-body-md text-on-surface truncate">系统升级维护公告</h3>
+<p class="text-body-sm text-on-surface-variant truncate opacity-70">尊敬的用户，我们将于本周五凌晨 2:00 进行系统升级...</p>
+</div>
+</div>
+<div class="text-[12px] text-outline whitespace-nowrap ml-lg">10:45 AM</div>
+</div>
+<!-- Message Row 2 -->
+<div class="message-item flex items-center gap-md px-lg py-md border-b border-outline-variant hover:bg-surface-container-low cursor-pointer transition-colors group" data-category="任务进度" onclick="showDetail()">
+<input class="rounded border-outline-variant text-primary focus:ring-primary w-4 h-4" onclick="event.stopPropagation()" type="checkbox"/>
+<div class="w-2 h-2 bg-primary rounded-full flex-shrink-0"></div>
+<div class="w-24 flex-shrink-0">
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded">任务进度</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-baseline gap-md">
+<h3 class="font-bold text-body-md text-on-surface truncate">数字人模型合成成功</h3>
+<p class="text-body-sm text-on-surface-variant truncate opacity-70">您的新数字人模型 "A-04 导师" 已完成合成。现在可以前往资产库...</p>
+</div>
+</div>
+<div class="text-[12px] text-outline whitespace-nowrap ml-lg">昨天</div>
+</div>
+<!-- Message Row 3 (Read) -->
+<div class="message-item flex items-center gap-md px-lg py-md border-b border-outline-variant hover:bg-surface-container-low cursor-pointer transition-colors group opacity-70" data-category="账号安全" onclick="showDetail()">
+<input class="rounded border-outline-variant text-primary focus:ring-primary w-4 h-4" onclick="event.stopPropagation()" type="checkbox"/>
+<div class="w-2 h-2 bg-transparent flex-shrink-0"></div>
+<div class="w-24 flex-shrink-0">
+<span class="px-2 py-0.5 bg-error-container/30 text-error text-[11px] font-bold rounded">账号安全</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-baseline gap-md">
+<h3 class="font-bold text-body-md text-on-surface truncate">登录异常提醒</h3>
+<p class="text-body-sm text-on-surface-variant truncate opacity-70">检测到您的账号在新的设备（北京，Chrome 114.0.0）登录...</p>
+</div>
+</div>
+<div class="text-[12px] text-outline whitespace-nowrap ml-lg">周二</div>
+</div>
+<!-- Message Row 4 (Read) -->
+<div class="message-item flex items-center gap-md px-lg py-md border-b border-outline-variant hover:bg-surface-container-low cursor-pointer transition-colors group opacity-70" data-category="反馈回复" onclick="showDetail()">
+<input class="rounded border-outline-variant text-primary focus:ring-primary w-4 h-4" onclick="event.stopPropagation()" type="checkbox"/>
+<div class="w-2 h-2 bg-transparent flex-shrink-0"></div>
+<div class="w-24 flex-shrink-0">
+<span class="px-2 py-0.5 bg-tertiary-container/20 text-tertiary text-[11px] font-bold rounded">反馈回复</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-baseline gap-md">
+<h3 class="font-bold text-body-md text-on-surface truncate">关于视频渲染速度的反馈</h3>
+<p class="text-body-sm text-on-surface-variant truncate opacity-70">您提交的关于 "GPU 加速渲染" 的反馈已有专人回复...</p>
+</div>
+</div>
+<div class="text-[12px] text-outline whitespace-nowrap ml-lg">06-12</div>
+</div>
+</div>
+</div>
+</div>
+<!-- View 2: Message Detail -->
+<div class="absolute inset-0 z-10 flex flex-col bg-surface-bright translate-x-full opacity-0 view-transition" id="message-detail-view">
+<!-- Decorative background element -->
+<div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -mr-48 -mt-48 blur-3xl pointer-events-none"></div>
+<!-- Detail Header / Action Bar -->
+<div class="sticky top-0 z-30 p-lg bg-surface-bright/80 backdrop-blur border-b border-outline-variant flex items-center justify-between">
+<button class="flex items-center gap-xs px-md py-sm rounded-lg hover:bg-surface-container transition-colors text-primary font-bold" onclick="hideDetail()">
+<span class="material-symbols-outlined">arrow_back</span>
+<span>返回列表</span>
+</a>
+<div class="flex items-center gap-md">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">delete_outline</span>
+</a>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">archive</span>
+</a>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">mark_email_unread</span>
+</a>
+<div class="w-px h-6 bg-outline-variant mx-xs"></div>
+<div class="flex items-center gap-xs">
+<button class="material-symbols-outlined text-on-surface-variant">chevron_left</a>
+<span class="font-label-md text-label-md">1 / 12</span>
+<button class="material-symbols-outlined text-on-surface-variant">chevron_right</a>
+</div>
+</div>
+</div>
+<!-- Detail Content Scrollable -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-xl">
+<div class="max-w-4xl mx-auto">
+<div class="bg-white p-xl rounded-xl shadow-sm border border-outline-variant mb-lg relative z-10">
+<div class="flex items-start justify-between mb-lg">
+<div>
+<h2 class="font-display-lg text-display-lg text-on-background mb-base">系统升级维护公告</h2>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-xs">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-[14px]">系</div>
+<span class="font-label-md text-label-md font-bold">系统管理员</span>
+</div>
+<span class="text-outline text-[12px]">发送至: admin@hainanu.edu.cn</span>
+<span class="text-outline text-[12px]">2023年10月27日 10:45</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-xs">
+<span class="bg-primary-container text-on-primary-container px-sm py-base rounded-full font-label-caps text-label-caps uppercase tracking-wider">High Priority</span>
+<span class="text-outline text-[12px]">ID: MSG-998231</span>
+</div>
+</div>
+<!-- Content Body -->
+<div class="font-body-md text-body-md text-on-surface space-y-md leading-relaxed border-t border-outline-variant pt-lg">
+<p>尊敬的 Digital Human System 用户：</p>
+<p>为了给您提供更加稳定、高效的数字人合成与微课制作体验，我们计划于 <b>2023年10月30日（周五）凌晨 02:00 至 04:00</b> 进行系统核心引擎的全面升级维护。</p>
+<p><b>本次升级内容包括：</b></p>
+<ul class="list-disc ml-lg space-y-xs text-on-surface-variant">
+<li>引入全新的 NeuralRenderer 3.0 引擎，渲染速度提升 40%。</li>
+<li>优化多语种口型同步算法，提升非母语环境下的自然度。</li>
+<li>修复部分用户反馈的 Asset Library 大文件下载中断问题。</li>
+</ul>
+<div class="p-md bg-error-container/30 border-l-4 border-error rounded flex gap-md my-lg">
+<span class="material-symbols-outlined text-error">info</span>
+<p class="font-body-sm text-body-sm text-on-error-container">
+<b>注意：</b>维护期间，所有正在进行的渲染任务将自动暂停，并在系统恢复后自动重启。请提前保存您的工作进度。
+                                </p>
+</div>
+<p>如果您在维护结束后遇到任何使用问题，请通过"反馈回复"模块联系我们的技术支持团队。</p>
+<p>感谢您的理解与配合！</p>
+<div class="pt-xl text-on-surface-variant italic">
+<p>Digital Human System 运营团队</p>
+<p>2023年10月27日</p>
+</div>
+</div>
+</div>
+<!-- Attachments Section -->
+<div class="flex gap-md mb-xl">
+<div class="flex items-center gap-md p-md bg-white border border-outline-variant rounded-lg hover:border-primary cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">picture_as_pdf</span>
+<div class="pr-lg">
+<p class="font-label-md text-label-md font-bold">升级详细手册.pdf</p>
+<p class="text-[11px] text-outline">1.2 MB</p>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px]">download</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<!-- Overlay -->
+<div class="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-[55] hidden opacity-0 transition-opacity duration-300" id="overlay" onclick="toggleFilterDrawer()"></div>
+
+<script>
+    // Navigation Functions
+    function showDetail() {
+        const list = document.getElementById('message-list-view');
+        const detail = document.getElementById('message-detail-view');
+
+        list.style.transform = 'translateX(-20px)';
+        list.style.opacity = '0';
+        list.style.pointerEvents = 'none';
+
+        detail.classList.remove('z-10');
+        detail.classList.add('z-30');
+        detail.style.transform = 'translateX(0)';
+        detail.style.opacity = '1';
+    }
+
+    function hideDetail() {
+        const list = document.getElementById('message-list-view');
+        const detail = document.getElementById('message-detail-view');
+
+        list.style.transform = 'translateX(0)';
+        list.style.opacity = '1';
+        list.style.pointerEvents = 'auto';
+
+        detail.classList.remove('z-30');
+        detail.classList.add('z-10');
+        detail.style.transform = 'translateX(100%)';
+        detail.style.opacity = '0';
+    }
+
+    // Interactive Search
+    function handleSearchInput(input) {
+        const clearBtn = document.getElementById('search-clear');
+        if (input.value.length > 0) {
+            clearBtn.classList.remove('hidden');
+        } else {
+            clearBtn.classList.add('hidden');
+        }
+
+        // Mock filtering
+        filterMessages(input.value);
+    }
+
+    function clearSearch() {
+        const input = document.getElementById('message-search');
+        input.value = '';
+        document.getElementById('search-clear').classList.add('hidden');
+        filterMessages('');
+    }
+
+    // Dropdown Logic
+    function toggleCategoryDropdown() {
+        const dropdown = document.getElementById('category-dropdown');
+        dropdown.classList.toggle('hidden');
+
+        // Close on click outside
+        const closeDropdown = (e) => {
+            if (!e.target.closest('.relative')) {
+                dropdown.classList.add('hidden');
+                document.removeEventListener('click', closeDropdown);
+            }
+        };
+        setTimeout(() => document.addEventListener('click', closeDropdown), 0);
+    }
+
+    // Filter Logic
+    function filterByCategory(category) {
+        const items = document.querySelectorAll('.message-item');
+        const label = document.getElementById('current-category-label');
+        const dropdown = document.getElementById('category-dropdown');
+        const sidebarBtns = document.querySelectorAll('.category-btn');
+
+        dropdown.classList.add('hidden');
+        label.innerText = category === 'all' ? '所有类别' : category;
+
+        // Visual update for sidebar
+        sidebarBtns.forEach(btn => {
+            if (btn.getAttribute('data-category') === category) {
+                btn.classList.add('active', 'bg-surface-container-highest', 'text-primary', 'font-bold');
+                btn.classList.remove('text-on-surface-variant');
+            } else {
+                btn.classList.remove('active', 'bg-surface-container-highest', 'text-primary', 'font-bold');
+                btn.classList.add('text-on-surface-variant');
+            }
+        });
+
+        let count = 0;
+        items.forEach(item => {
+            const itemCat = item.getAttribute('data-category');
+            if (category === 'all' || itemCat === category) {
+                item.classList.remove('filtered-out');
+                item.style.display = 'flex';
+                count++;
+            } else {
+                item.classList.add('filtered-out');
+                setTimeout(() => {
+                    if (item.classList.contains('filtered-out')) item.style.display = 'none';
+                }, 300);
+            }
+        });
+
+        document.getElementById('inbox-count').innerText = count;
+    }
+
+    function filterMessages(query) {
+        const items = document.querySelectorAll('.message-item');
+        query = query.toLowerCase();
+        let count = 0;
+
+        items.forEach(item => {
+            const text = item.innerText.toLowerCase();
+            if (text.includes(query)) {
+                item.classList.remove('filtered-out');
+                item.style.display = 'flex';
+                count++;
+            } else {
+                item.classList.add('filtered-out');
+                setTimeout(() => {
+                    if (item.classList.contains('filtered-out')) item.style.display = 'none';
+                }, 300);
+            }
+        });
+        document.getElementById('inbox-count').innerText = count;
+    }
+
+    // Drawer Logic
+    function toggleFilterDrawer() {
+        const drawer = document.getElementById('filter-drawer');
+        const overlay = document.getElementById('overlay');
+        const isOpen = drawer.classList.contains('translate-x-0');
+
+        if (isOpen) {
+            drawer.classList.remove('translate-x-0');
+            drawer.classList.add('translate-x-full');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('opacity-100');
+        } else {
+            drawer.classList.add('translate-x-0');
+            drawer.classList.remove('translate-x-full');
+            overlay.classList.remove('hidden');
+            setTimeout(() => overlay.classList.add('opacity-100'), 0);
+        }
+    }
+
+    // Micro-interactions
+    document.querySelectorAll('.cursor-pointer').forEach(item => {
+        item.addEventListener('mousedown', () => {
+            if(!item.classList.contains('no-press')) {
+                item.style.transform = 'scale(0.98)';
+                item.style.transition = 'transform 150ms';
+            }
+        });
+        item.addEventListener('mouseup', () => {
+            item.style.transform = '';
+        });
+        item.addEventListener('mouseleave', () => {
+            item.style.transform = '';
+        });
+    });
+</script>
+</body></html>
