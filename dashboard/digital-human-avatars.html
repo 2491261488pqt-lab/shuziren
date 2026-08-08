@@ -1,0 +1,235 @@
+<!DOCTYPE html><html class="light" lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>数字人形象管理 - Digital Human AI</title>
+<link rel="stylesheet" href="../assets/css/tailwind.css">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<style>
+    body {
+        background-color: #f0f2f5;
+        color: #1b1c1c;
+    }
+    .sidebar-active {
+        background-color: #d4e3ff;
+        color: #001c3a;
+        border-right: 4px solid #005daa;
+    }
+    .material-symbols-outlined.fill {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+</style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- SideNavBar -->
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50">
+<div class="px-6 py-8 flex flex-col items-center">
+<img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1>
+<p class="font-label-md text-label-md text-outline">Hainan University</p>
+</div>
+<nav class="flex-1 mt-4 px-3 space-y-1">
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html">
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">业务总览</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html">
+<span class="material-symbols-outlined mr-3" data-icon="video_call">video_call</span>
+<span class="font-label-md text-label-md">微课智能体</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html">
+<span class="material-symbols-outlined mr-3">video_library</span>
+<span class="font-label-md text-label-md">视频管理</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html">
+<span class="material-symbols-outlined mr-3" data-icon="folder_open">folder_open</span>
+<span class="font-label-md text-label-md">资产管理</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html">
+<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">系统设置</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A professional business headshot of a university administrator in a modern office, bright natural lighting, corporate aesthetic, clean light-mode environment." src="../assets/images/user-avatar.png">
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p>
+<p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p>
+</div>
+<span class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer" data-icon="logout">logout</span>
+</div>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest">
+<div class="flex items-center gap-4">
+<div class="flex items-center text-outline font-body-sm text-body-sm">
+<a href="index.html" class="hover:text-primary transition-colors">业务总览</a>
+<span class="material-symbols-outlined text-sm mx-2" data-icon="chevron_right">chevron_right</span>
+<a href="asset-management.html" class="hover:text-primary transition-colors">资产管理</a>
+<span class="material-symbols-outlined text-sm mx-2" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">数字人形象管理</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+<span class="material-symbols-outlined text-outline text-lg" data-icon="search">search</span>
+</div>
+<input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索资源或项目..." type="text">
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<a href="notifications.html" class="relative hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span>
+</a>
+<a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+<span class="font-body-sm text-body-sm">帮助</span>
+</a>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width mt-16 p-xl min-h-[calc(100vh-64px)]">
+<!-- Page Header -->
+<section class="mb-xl flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-2">数字人形象管理</h1>
+<p class="font-body-sm text-body-sm text-outline">管理您的数字人形象库，支持 2D、3D 和 2.5D 类型</p>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">add</span>
+新增形象
+</button>
+</section>
+<!-- Search / Filter Bar -->
+<section class="bg-surface p-lg rounded-xl border border-surface-container-highest mb-xl">
+<div class="flex flex-wrap items-center gap-4">
+<div class="relative flex-1 min-w-[200px]">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+<span class="material-symbols-outlined text-outline text-lg" data-icon="search">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2 bg-surface-container border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/10 rounded-lg font-body-sm text-body-sm transition-all outline-none" placeholder="搜索形象名称..." type="text">
+</div>
+<select class="px-4 py-2 bg-surface-container border border-outline-variant rounded-lg font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none cursor-pointer">
+<option value="">全部类型</option>
+<option value="2d">2D真身</option>
+<option value="3d">3D超写实</option>
+<option value="2.5d">2.5D</option>
+</select>
+<select class="px-4 py-2 bg-surface-container border border-outline-variant rounded-lg font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none cursor-pointer">
+<option value="">全部状态</option>
+<option value="enabled">已启用</option>
+<option value="disabled">已禁用</option>
+</select>
+<button class="px-4 py-2 border border-outline-variant rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors">重置</button>
+<button class="px-6 py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors">查询</button>
+</div>
+</section>
+<!-- Bento Grid: Avatar Cards -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-xl">
+<!-- Card 1: 晓晓 - 2D真身, enabled -->
+<div class="bg-surface rounded-xl border border-surface-container-highest overflow-hidden group hover:shadow-lg transition-shadow">
+<div class="relative aspect-video bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" src="../assets/images/video-thumbnail.svg" data-alt="A friendly 2D digital human avatar with a warm smile, standing in front of a modern classroom setting, soft lighting, professional educational context.">
+<div class="absolute top-3 right-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/80 text-on-secondary-container text-[10px] font-bold border border-secondary-container backdrop-blur">已启用</span>
+</div>
+<div class="absolute bottom-3 left-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface/80 text-on-surface-variant text-[10px] font-medium border border-outline-variant/30 backdrop-blur">2D真身</span>
+</div>
+</div>
+<div class="p-lg">
+<div class="flex items-start justify-between mb-2">
+<h3 class="font-title-lg text-title-lg text-on-surface">晓晓</h3>
+<div class="flex gap-1">
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-outline hover:bg-surface-container-low hover:text-primary transition-colors" title="编辑">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-outline hover:bg-surface-container-low hover:text-error transition-colors" title="删除">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-outline mb-3">女性，知性风格，适用于教学场景</p>
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-outline">创建于 2023-08-15</span>
+</div>
+</div>
+</div>
+<!-- Card 2: 杰克 - 3D超写实, enabled -->
+<div class="bg-surface rounded-xl border border-surface-container-highest overflow-hidden group hover:shadow-lg transition-shadow">
+<div class="relative aspect-video bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" src="../assets/images/video-thumbnail.svg" data-alt="A realistic 3D Caucasian male digital human avatar in a business casual outfit, confident expression, modern studio lighting, high-quality render for corporate training videos.">
+<div class="absolute top-3 right-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/80 text-on-secondary-container text-[10px] font-bold border border-secondary-container backdrop-blur">已启用</span>
+</div>
+<div class="absolute bottom-3 left-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface/80 text-on-surface-variant text-[10px] font-medium border border-outline-variant/30 backdrop-blur">3D超写实</span>
+</div>
+</div>
+<div class="p-lg">
+<div class="flex items-start justify-between mb-2">
+<h3 class="font-title-lg text-title-lg text-on-surface">杰克</h3>
+<div class="flex gap-1">
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-outline hover:bg-surface-container-low hover:text-primary transition-colors" title="编辑">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-outline hover:bg-surface-container-low hover:text-error transition-colors" title="删除">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-outline mb-3">男性，商务风格，适用于企业培训</p>
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-outline">创建于 2023-09-01</span>
+</div>
+</div>
+</div>
+<!-- Card 3: 小智 - 2.5D, disabled -->
+<div class="bg-surface rounded-xl border border-surface-container-highest overflow-hidden group hover:shadow-lg transition-shadow">
+<div class="relative aspect-video bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover grayscale opacity-60" src="../assets/images/video-thumbnail.svg" data-alt="A cartoon-style 2.5D digital human avatar with expressive features, colorful illustrative design, friendly and approachable appearance, educational content creation.">
+<div class="absolute top-3 right-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container/80 text-outline text-[10px] font-bold border border-outline-variant/30 backdrop-blur">已禁用</span>
+</div>
+<div class="absolute bottom-3 left-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface/80 text-on-surface-variant text-[10px] font-medium border border-outline-variant/30 backdrop-blur">2.5D</span>
+</div>
+</div>
+<div class="p-lg">
+<div class="flex items-start justify-between mb-2">
+<h3 class="font-title-lg text-title-lg text-on-surface">小智</h3>
+<div class="flex gap-1">
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-outline hover:bg-surface-container-low hover:text-primary transition-colors" title="编辑">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-outline hover:bg-surface-container-low hover:text-error transition-colors" title="删除">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-outline mb-3">卡通风格，适用于趣味教学</p>
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-outline">创建于 2023-07-20</span>
+</div>
+</div>
+</div>
+<!-- Card 4: Ghost card - Upload new avatar -->
+<div class="bg-surface rounded-xl border-2 border-dashed border-outline-variant hover:border-primary hover:shadow-md transition-all overflow-hidden group cursor-pointer flex flex-col items-center justify-center p-xl min-h-[300px]">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl">add_photo_alternate</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-1">上传新形象</h3>
+<p class="font-body-sm text-body-sm text-outline text-center">支持 2D / 3D / 2.5D 模型<br>一键导入与智能适配</p>
+</div>
+</section>
+<!-- Footer -->
+<footer class="mt-xl text-center pb-lg">
+<p class="font-label-md text-label-md text-outline">2023 海南大学 - 数字人微课平台 | 智能合成 赋能教育</p>
+</footer>
+</main>
+</body></html>
