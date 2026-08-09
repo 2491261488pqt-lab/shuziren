@@ -1,0 +1,321 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>音色管理 - Digital Human System</title>
+<link rel="stylesheet" href="../assets/css/tailwind.css">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .voice-card-hover {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .voice-card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 93, 170, 0.08);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+        }
+        /* Custom scrollbar for professional look */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c0c7d6;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #707785;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+${SHARED}
+<!-- Main Content Area -->
+<main class="ml-sidebar-width mt-16 p-xl min-h-[calc(100vh-64px)]">
+<!-- Top Navigation Bar -->
+<header class="h-16 flex items-center justify-between px-lg bg-surface sticky top-0 z-40 border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<nav class="flex items-center text-on-surface-variant font-body-sm text-body-sm">
+<span>系统配置</span>
+<span class="material-symbols-outlined mx-base text-sm">chevron_right</span>
+<span class="text-on-surface font-bold">音色管理</span>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative flex items-center bg-surface-container-low px-sm py-xs rounded border border-outline-variant focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-outline text-lg">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-48 ml-xs" placeholder="搜索音色名称..." type="text">
+</div>
+<button class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="bg-primary text-white px-md py-xs rounded flex items-center gap-xs font-label-md text-label-md active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-lg">add</span>
+<span>新增音色</span>
+</button>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="p-lg">
+<!-- Stats Summary (Asymmetric UI Pattern) -->
+<div class="grid grid-cols-12 gap-gutter mb-lg">
+<div class="col-span-12 md:col-span-8 bg-white p-lg rounded-xl border border-outline-variant flex justify-between items-center relative overflow-hidden">
+<div class="relative z-10">
+<h2 class="font-headline-md text-headline-md text-on-surface">音色资产库</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-base">当前库中共有 24 个高品质 AI 合成音色，涵盖 8 种语言。</p>
+</div>
+<div class="flex gap-lg relative z-10">
+<div class="text-center">
+<p class="text-display-lg font-display-lg text-primary">12</p>
+<p class="text-label-caps text-outline">专业录音</p>
+</div>
+<div class="text-center">
+<p class="text-display-lg font-display-lg text-secondary">8</p>
+<p class="text-label-caps text-outline">克隆音色</p>
+</div>
+<div class="text-center">
+<p class="text-display-lg font-display-lg text-tertiary">4</p>
+<p class="text-label-caps text-outline">预置风格</p>
+</div>
+</div>
+<!-- Decorative Background Element -->
+<div class="absolute -right-12 -bottom-12 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
+</div>
+<div class="col-span-12 md:col-span-4 bg-primary-container p-lg rounded-xl border border-primary/20 flex flex-col justify-center">
+<span class="font-label-caps text-white/80 mb-xs">最近使用</span>
+<h3 class="font-title-lg text-title-lg text-white">智慧导师 - 晓雅</h3>
+<p class="text-body-sm text-white/70 mt-xs italic">"正在生成《人工智能导论》课程音频..."</p>
+<div class="mt-md flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-primary-container bg-white flex items-center justify-center text-[10px] font-bold text-primary">A1</div>
+<div class="w-8 h-8 rounded-full border-2 border-primary-container bg-white flex items-center justify-center text-[10px] font-bold text-primary">A2</div>
+<div class="w-8 h-8 rounded-full border-2 border-primary-container bg-white flex items-center justify-center text-[10px] font-bold text-primary">A3</div>
+</div>
+</div>
+</div>
+<!-- Filter Controls -->
+<div class="flex items-center gap-md mb-md">
+<button class="bg-primary text-white px-md py-xs rounded-full font-label-md text-label-md">全部音色</button>
+<button class="bg-white border border-outline-variant text-on-surface-variant px-md py-xs rounded-full font-label-md text-label-md hover:bg-surface-container transition-colors">中文</button>
+<button class="bg-white border border-outline-variant text-on-surface-variant px-md py-xs rounded-full font-label-md text-label-md hover:bg-surface-container transition-colors">英文</button>
+<button class="bg-white border border-outline-variant text-on-surface-variant px-md py-xs rounded-full font-label-md text-label-md hover:bg-surface-container transition-colors">新闻</button>
+<button class="bg-white border border-outline-variant text-on-surface-variant px-md py-xs rounded-full font-label-md text-label-md hover:bg-surface-container transition-colors">教育</button>
+</div>
+<!-- Voice List View (Bento-style Cards) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Voice Card 1 -->
+<div class="bg-white rounded-xl border border-outline-variant p-md voice-card-hover flex flex-col justify-between group">
+<div>
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-md">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/10 relative">
+<img class="w-full h-full object-cover" data-alt="Close-up creative portrait of a gentle female teacher character for an AI voice avatar, studio lighting, soft pastel blue background, professional yet approachable vibe, realistic digital art style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9iK9ubA332bDiXAOOi2bWZFsQRlN9D1Cc_DCNMMx-EO2zT2kivJeF32v1hFM7GnC1XZ07u6Rfa6UqlOGmuJcHGF3CeRuQmXlIuFapHjY9_TjRpbZXPjak_SdZOUGi0D1m4c79nCgwNXpjGq8LnH1I2e-ze5AhhYTyt4XgLwrEuc45KIbKCMPFCvbbTMUSIckQ6AdkTU_h72VDpBF537BnQi9pGLPLfEJjQ4lz_heBLEq-2NwOFFKf">
+<button class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg text-on-surface">晓雅 (智慧导师)</h4>
+<p class="text-body-sm text-on-surface-variant">温柔、知性、富有耐心</p>
+</div>
+</div>
+<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-xs mb-lg">
+<span class="px-xs py-[2px] bg-primary/5 text-primary text-[11px] font-bold rounded-lg border border-primary/10">女性</span>
+<span class="px-xs py-[2px] bg-secondary/5 text-secondary text-[11px] font-bold rounded-lg border border-secondary/10">普通话</span>
+<span class="px-xs py-[2px] bg-tertiary/5 text-tertiary text-[11px] font-bold rounded-lg border border-tertiary/10">教育教学</span>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+                            使用此音色
+                        </button>
+<button class="px-md bg-surface-container text-on-surface-variant rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+</div>
+<!-- Voice Card 2 -->
+<div class="bg-white rounded-xl border border-outline-variant p-md voice-card-hover flex flex-col justify-between group">
+<div>
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-md">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/10 relative">
+<img class="w-full h-full object-cover" data-alt="A cinematic portrait of a mature male news anchor, sharp facial features, deep expressive eyes, charcoal grey studio background, high-end professional lighting, elegant corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkHdy5tRUhZTQcWqYtTrLvwG7r0C-tMp5BmXNg6o9yQIFe70Bs7pFznzxFhYgW3B2PN1aLpgHxvLlZ29lxBl8qXwtpWtuxzy9TxLaqLdCJzvkwFyHB6DcOPUu7n12ngYSqbQFRaO_K2mYIqSZlfS1IAQb3fvmR6hngg3DdbSJ1VQ9M-afv3vf2U3Q-vDZeyeZm6GphLWp1trDbVZRh0VUL3fgKDn0Jz5eBtkCi_CTbY409bjszkP6e">
+<button class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg text-on-surface">志远 (新闻播音)</h4>
+<p class="text-body-sm text-on-surface-variant">稳重、专业、富有磁性</p>
+</div>
+</div>
+<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-xs mb-lg">
+<span class="px-xs py-[2px] bg-primary/5 text-primary text-[11px] font-bold rounded-lg border border-primary/10">男性</span>
+<span class="px-xs py-[2px] bg-secondary/5 text-secondary text-[11px] font-bold rounded-lg border border-secondary/10">普通话</span>
+<span class="px-xs py-[2px] bg-tertiary/5 text-tertiary text-[11px] font-bold rounded-lg border border-tertiary/10">新闻报道</span>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+                            使用此音色
+                        </button>
+<button class="px-md bg-surface-container text-on-surface-variant rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+</div>
+<!-- Voice Card 3 -->
+<div class="bg-white rounded-xl border border-outline-variant p-md voice-card-hover flex flex-col justify-between group">
+<div>
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-md">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/10 relative">
+<img class="w-full h-full object-cover" data-alt="Creative stylized portrait of a energetic young female influencer for AI voice branding, vibrant studio lighting with orange and white highlights, trendy tech-chic apparel, upbeat personality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChoOuxdGjqHFgm5R_FC2cHpPmcaru6rkOW2VN6MzKibjOBpdyPZVICWRSUcqbKiybwiF2JnvuY3tPBcxfbSRuoFq41WHBXEw6M_1wA0Dg_sev5tYiOhYGuTsOj3YtvOUIRwYKiClS3GlF7KXi4tqvG6hi_oC7RaR9uTkgYhOlYc2ketnx4OUa6fLXcwYzKvlzDc_bYhCePPABeL8lfLm0vpNUduBmvbfwI_0AJ2a_4zJVxGkoQVi1v">
+<button class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg text-on-surface">可儿 (活力元气)</h4>
+<p class="text-body-sm text-on-surface-variant">活泼、明快、富有感染力</p>
+</div>
+</div>
+<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-xs mb-lg">
+<span class="px-xs py-[2px] bg-primary/5 text-primary text-[11px] font-bold rounded-lg border border-primary/10">女性</span>
+<span class="px-xs py-[2px] bg-secondary/5 text-secondary text-[11px] font-bold rounded-lg border border-secondary/10">普通话</span>
+<span class="px-xs py-[2px] bg-tertiary/5 text-tertiary text-[11px] font-bold rounded-lg border border-tertiary/10">社交营销</span>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+                            使用此音色
+                        </button>
+<button class="px-md bg-surface-container text-on-surface-variant rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+</div>
+<!-- Voice Card 4 -->
+<div class="bg-white rounded-xl border border-outline-variant p-md voice-card-hover flex flex-col justify-between group">
+<div>
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-md">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/10 relative">
+<img class="w-full h-full object-cover" data-alt="Portrait of a sophisticated international business professional, confident male, minimalist urban office backdrop, sleek modern glasses, natural high-key lighting, global corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAr3B3IRyt1NeSZm1gywZJKMZZWq1qkhAMtQGyzhLZpkeRx3mYjsOVToz9YYDhNdWzWfp8ZNGWgliyWc2S74UM47a5xsIvdoBYE0ZLHams-1Mx7jlMCrSDcrXUdPM-BR9ePnZGx-8N5zlglCnqwOJmB84w_IA0lJ1YEURV6D-ttOB3YpWVjhqYdg3rFkqkSGgiU8SGn9vDicaNiaeFm2swB_OIKrvH0QZ69dvw540xd1-iTle4u8Cbo">
+<button class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg text-on-surface">William (English)</h4>
+<p class="text-body-sm text-on-surface-variant">自然、流畅、标准英式口音</p>
+</div>
+</div>
+<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-xs mb-lg">
+<span class="px-xs py-[2px] bg-primary/5 text-primary text-[11px] font-bold rounded-lg border border-primary/10">男性</span>
+<span class="px-xs py-[2px] bg-secondary/5 text-secondary text-[11px] font-bold rounded-lg border border-secondary/10">英语</span>
+<span class="px-xs py-[2px] bg-tertiary/5 text-tertiary text-[11px] font-bold rounded-lg border border-tertiary/10">国际商务</span>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+                            使用此音色
+                        </button>
+<button class="px-md bg-surface-container text-on-surface-variant rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+</div>
+<!-- Add New Voice Card Placeholder -->
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-md flex flex-col items-center justify-center bg-surface-container-low hover:bg-surface-container hover:border-primary/50 transition-all cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-white border border-outline-variant flex items-center justify-center mb-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">add</span>
+</div>
+<p class="font-title-lg text-title-lg text-on-surface-variant">新增音色</p>
+<p class="text-body-sm text-outline mt-xs">上传音频进行 AI 克隆</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Simple Interaction Overlay for Demo -->
+<div class="fixed inset-0 z-[60] flex items-center justify-center bg-black/20 pointer-events-none opacity-0 transition-opacity" id="play-overlay">
+<div class="bg-white p-lg rounded-full shadow-xl flex items-center gap-md border border-primary/20 pointer-events-auto">
+<div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+<div class="flex items-end gap-[2px] h-4">
+<div class="w-1 bg-white animate-[bounce_1s_infinite]"></div>
+<div class="w-1 bg-white animate-[bounce_0.8s_infinite]"></div>
+<div class="w-1 bg-white animate-[bounce_1.2s_infinite]"></div>
+<div class="w-1 bg-white animate-[bounce_0.9s_infinite]"></div>
+</div>
+</div>
+<p class="font-title-lg text-title-lg text-primary mr-sm">正在试听: 晓雅...</p>
+<button class="text-outline-variant hover:text-on-surface" onclick="hidePlayOverlay()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<script>
+        function showPlayOverlay(name) {
+            const overlay = document.getElementById('play-overlay');
+            overlay.querySelector('p').innerText = `正在试听: ${name}...`;
+            overlay.classList.remove('opacity-0');
+            overlay.classList.add('opacity-100');
+            
+            // Auto hide after 3 seconds for realism
+            setTimeout(() => {
+                hidePlayOverlay();
+            }, 3000);
+        }
+
+        function hidePlayOverlay() {
+            const overlay = document.getElementById('play-overlay');
+            overlay.classList.remove('opacity-100');
+            overlay.classList.add('opacity-0');
+        }
+
+        // Add event listeners to play buttons
+        document.querySelectorAll('button').forEach(btn => {
+            if (btn.querySelector('.material-symbols-outlined')?.innerText === 'play_arrow') {
+                btn.addEventListener('click', (e) => {
+                    const card = e.target.closest('.voice-card-hover');
+                    const name = card.querySelector('h4').innerText.split('(')[0].trim();
+                    showPlayOverlay(name);
+                });
+            }
+        });
+    </script>
+
+
+</body></html>
