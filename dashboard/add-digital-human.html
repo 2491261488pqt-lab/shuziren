@@ -10,10 +10,10 @@
     .upload-zone { transition: all 0.2s ease-in-out; border: 2px dashed #c0c7d6; }
     .upload-zone.dragover { border-color: #005daa; background-color: #f4f3f3; }
     .step-content { display: none; }
-    .step-content.active { display: block !important; width: 100% !important; }
+    .step-content.active { display: flex !important; width: 100% !important; }
 </style>
 </head>
-<body class="bg-[#f0f2f5] text-on-surface flex w-full min-h-screen">
+<body class="font-body-md text-body-md overflow-x-hidden">
 
 <!-- SideNavBar (shared) -->
 <aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50">
@@ -24,11 +24,11 @@
 </div>
 <nav class="flex-1 mt-4 px-3 space-y-1">
 <a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html">
-<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
 <span class="font-label-md text-label-md">业务总览</span>
 </a>
 <a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html">
-<span class="material-symbols-outlined mr-3">video_call</span>
+<span class="material-symbols-outlined mr-3" data-icon="video_call">video_call</span>
 <span class="font-label-md text-label-md">微课智能体</span>
 </a>
 <a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html">
@@ -36,24 +36,24 @@
 <span class="font-label-md text-label-md">视频管理</span>
 </a>
 <a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html">
-<span class="material-symbols-outlined mr-3">folder_open</span>
+<span class="material-symbols-outlined mr-3" data-icon="folder_open">folder_open</span>
 <span class="font-label-md text-label-md">资产管理</span>
 </a>
 <a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html">
-<span class="material-symbols-outlined mr-3">settings</span>
+<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
 <span class="font-label-md text-label-md">系统设置</span>
 </a>
 </nav>
 <div class="p-4 mt-auto">
 <div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3">
 <div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm">
-<img class="w-full h-full object-cover" src="../assets/images/user-avatar.png">
+<img class="w-full h-full object-cover" data-alt="A professional business headshot of a university administrator in a modern office, bright natural lighting, corporate aesthetic, clean light-mode environment." src="../assets/images/user-avatar.png">
 </div>
 <div class="flex-1 min-w-0">
 <p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p>
 <p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p>
 </div>
-<a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a>
+<a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" data-icon="logout" title="退出登录">logout</a>
 </div>
 </div>
 </aside>
@@ -92,7 +92,7 @@
 </header>
 
 <!-- Main Content -->
-<main class="ml-sidebar-width mt-16 p-xl h-[calc(100vh-64px)] flex flex-col">
+<main class="ml-sidebar-width mt-16 p-xl" style="min-height: calc(100vh - 64px)">
 <div class="mb-lg flex justify-between items-center">
 <div>
 <h1 class="font-headline-md text-headline-md text-on-surface" id="pageTitle">新增数字人 - 步骤三：完成</h1>
@@ -138,7 +138,7 @@
 <h3 class="font-title-lg text-title-lg text-on-surface">点击或拖拽模型文件到此区域进行上传</h3>
 <p class="font-body-sm text-body-sm text-on-surface-variant">支持格式：.obj, .fbx, .glb, .gltf</p>
 </div>
-<div class="mt-sm pt-sm border-t border-surface-variant w-full max-w-xs text-center">
+<div class="mt-sm pt-sm border-t border-surface-variant w-full text-center">
 <p class="font-label-caps text-label-caps text-outline uppercase tracking-wider mb-2">上传要求</p>
 <ul class="text-body-sm text-on-surface-variant text-left space-y-1 inline-block">
 <li class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-secondary">check_circle</span> 最大文件大小：50MB</li>
@@ -197,14 +197,14 @@
 </div>
 
 <!-- Step 3: Success -->
-<div class="step-content flex-1 w-full bg-surface rounded-xl border border-[#f0f0f0] p-xl flex-col min-h-[500px] active" id="step3">
+<div class="step-content flex-1 w-full bg-surface rounded-xl border border-[#f0f0f0] p-xl flex-col min-h-[500px]" id="step3">
 <div class="text-center w-full flex flex-col items-center">
 <div class="w-20 h-20 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mb-md shadow-sm">
 <span class="material-symbols-outlined text-[40px]">check_circle</span>
 </div>
 <h2 class="font-headline-md text-headline-md text-on-surface mb-xs">新增成功！</h2>
 <p class="font-body-md text-body-md text-on-surface-variant mb-xl">您的新数字人模型已成功上传并处理完毕，现在可以在微课智能体中使用了。</p>
-<div class="w-full max-w-md bg-surface-container-lowest border border-surface-variant rounded-xl p-md mb-xl flex items-center gap-md shadow-sm text-left">
+<div class="w-full bg-surface-container-lowest border border-surface-variant rounded-xl p-md mb-xl flex items-center gap-md shadow-sm text-left">
 <img alt="Avatar Preview" class="w-16 h-16 rounded-lg object-cover border border-outline-variant" src="../assets/images/user-avatar.png">
 <div class="flex-1">
 <div class="flex items-center justify-between mb-xs">
