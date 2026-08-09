@@ -1,324 +1,215 @@
-<!DOCTYPE html><html class="light" lang="zh-CN"><head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>数字人形象配置 - Digital Human AI</title>
+<title>Nexus Course Architect - 角色进阶编辑</title>
 <link rel="stylesheet" href="../assets/css/tailwind.css">
 <link rel="stylesheet" href="../assets/css/fonts.css">
 <style>
         body { font-family: 'Inter', sans-serif; }
         .glass-panel {
             background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: #c0c7d6;
-            border-radius: 20px;
         }
     </style>
 </head>
-<body class="bg-background text-on-background min-h-screen flex overflow-hidden">
-<!-- SideNavBar -->
-<aside class="fixed left-0 top-0 h-full w-[240px] bg-surface border-r border-surface-container-highest flex flex-col px-0 py-lg transition-all duration-200 ease-in-out z-20 md:flex hidden">
-<div class="px-md mb-xl flex items-center gap-sm">
-<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container font-headline-sm font-bold">DH</div>
-<div>
-<h1 class="font-headline-sm text-headline-sm text-primary font-bold">Digital Human AI</h1>
-<p class="font-label-md text-label-md text-on-surface-variant">Hainan University</p>
-</div>
-</div>
-<nav class="flex-1 overflow-y-auto custom-scrollbar px-sm space-y-base">
-<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
-<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">dashboard</span>
-<span class="font-body-md text-body-md font-medium">业务总览</span>
-</a>
-<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
-<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">psychology</span>
-<span class="font-body-md text-body-md font-medium">微课智能体</span>
-</a>
-<!-- Asset Management Parent (Expanded for Context) -->
-<div class="space-y-base">
-<div class="flex items-center gap-md px-md py-sm rounded-lg bg-surface-container-low text-primary font-medium">
-<span class="material-symbols-outlined text-primary">folder_open</span>
-<span class="font-body-md text-body-md">资产管理</span>
-</div>
-<div class="pl-xl space-y-base">
-<!-- Active Child -->
-<a class="flex items-center gap-md px-md py-sm rounded-lg bg-primary-container text-on-primary-container border-r-[3px] border-primary font-semibold transition-colors" href="#">
-<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">face</span>
-<span class="font-body-md text-body-md">数字人形象</span>
-</a>
-<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
-<span class="material-symbols-outlined text-outline">mic</span>
-<span class="font-body-md text-body-md font-medium">配音音色管理</span>
-</a>
-<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
-<span class="material-symbols-outlined text-outline">image</span>
-<span class="font-body-md text-body-md font-medium">背景管理</span>
-</a>
-</div>
-</div>
-<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
-<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">video_library</span>
-<span class="font-body-md text-body-md font-medium">视频管理</span>
-</a>
-<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
-<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">settings</span>
-<span class="font-body-md text-body-md font-medium">系统设置</span>
-</a>
-</nav>
-<div class="p-md mt-auto border-t border-surface-container-highest">
-<div class="flex items-center gap-sm">
-<img alt="Administrator Profile" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of an administrator in a modern office setting. Soft, natural lighting. The person is smiling slightly, wearing smart-casual attire. Clean, corporate aesthetic, matching the light-mode UI theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSxg5jMrrU-E0hdavLrL9sqypj0B6IMSelUDsG475ukY8VFy8LycHeYwdKAgkg4aISM0l7PxfYp1GDVgW7zXDqK-Ep3GLRg1NAF7BklvlrmxMbyVXyPMquVb7xEE9x2lrFoPJveGm1tsSirqo41Hx3yuMxrhD-JwaWycRH9d5QbatDYMcf6p6IBDenGfVFIeMw9qB0JdNqocLwjTTdFyBW-bAwhg_b8NRTwla6P0a9yKyJdhlqNu0u">
-<div class="flex-1 min-w-0">
-<p class="font-label-md text-label-md font-semibold text-on-surface truncate">管理员</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant truncate">admin@nexus.ai</p>
-</div>
-</div>
-</div>
-</aside>
-<!-- Main Content Area -->
-<main class="flex-1 flex flex-col ml-0 md:ml-[240px] h-screen overflow-hidden">
+<body class="bg-background text-on-background min-h-screen flex flex-col">
 <!-- TopAppBar -->
-<header class="h-16 flex justify-between items-center px-lg bg-surface border-b border-surface-container-highest z-10 shrink-0">
+<header class="bg-surface dark:bg-surface-dim fixed top-0 right-0 h-16 left-0 border-b border-outline-variant dark:border-outline flex items-center justify-between px-lg w-full z-50">
 <div class="flex items-center gap-md">
-<button class="md:hidden p-xs rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
-<span class="material-symbols-outlined">menu</span>
-</button>
-<div class="flex items-center text-on-surface-variant font-body-sm text-body-sm space-x-xs">
-<a class="hover:text-primary transition-colors" href="#">首页</a>
-<span class="material-symbols-outlined text-[16px]">chevron_right</span>
-<a class="hover:text-primary transition-colors" href="#">资产管理</a>
-<span class="material-symbols-outlined text-[16px]">chevron_right</span>
-<a class="hover:text-primary transition-colors" href="#">数字人形象</a>
-<span class="material-symbols-outlined text-[16px]">chevron_right</span>
-<span class="text-on-surface font-medium">配置</span>
+<button class="material-symbols-outlined text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-opacity duration-150">arrow_back</button>
+<div class="font-title-lg text-title-lg font-semibold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+                Nexus Course Architect
+            </div>
 </div>
-</div>
-<div class="flex items-center gap-sm">
-<div class="relative hidden sm:flex items-center">
-<span class="material-symbols-outlined absolute left-sm text-outline text-[20px]">search</span>
-<input class="pl-[36px] pr-sm py-xs bg-surface-container-low border-none rounded-full font-body-sm text-body-sm focus:ring-2 focus:ring-primary focus:bg-surface w-[200px] transition-all" placeholder="搜索..." type="text">
-</div>
-<button class="p-xs rounded-full hover:bg-surface-container transition-colors text-on-surface-variant relative">
-<span class="material-symbols-outlined">notifications</span>
-<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
-</button>
-<button class="p-xs rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
-<span class="material-symbols-outlined">help_outline</span>
-</button>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim cursor-pointer transition-opacity duration-150 hover:bg-surface-container-low px-2 py-1 rounded active:scale-95 transition-all" href="#">首页</a>
+<a class="font-label-md text-label-md text-primary dark:text-primary-fixed-dim font-bold cursor-pointer transition-opacity duration-150 hover:bg-surface-container-low px-2 py-1 rounded active:scale-95 transition-all" href="#">生产管理</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim cursor-pointer transition-opacity duration-150 hover:bg-surface-container-low px-2 py-1 rounded active:scale-95 transition-all" href="#">课程编辑</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim cursor-pointer transition-opacity duration-150">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim cursor-pointer transition-opacity duration-150">help_outline</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-label-md font-bold ml-2">
+                U
+            </div>
 </div>
 </header>
-<!-- Page Content -->
-<div class="flex-1 overflow-y-auto p-gutter md:p-container-margin flex flex-col gap-lg bg-surface-container-lowest">
-<!-- Page Header -->
-<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-md shrink-0">
+<!-- Main Content Area -->
+<main class="flex-1 mt-16 flex flex-col md:flex-row h-[calc(100vh-64px)] overflow-hidden bg-surface-container">
+<!-- Left Column: Preview Canvas -->
+<section class="flex-1 relative flex flex-col p-md gap-md">
+<!-- Canvas Header -->
+<div class="flex items-center justify-between bg-surface p-sm rounded-lg border border-outline-variant shadow-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">movie</span>
+<span class="font-title-lg text-title-lg text-on-surface">数字人高级编辑区</span>
+</div>
+<div class="flex gap-2">
+<span class="inline-flex items-center gap-1 px-2 py-1 rounded bg-secondary-container text-on-secondary-container font-label-md">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                        渲染就绪
+                    </span>
+</div>
+</div>
+<!-- Main Preview Area -->
+<div class="flex-1 relative rounded-lg overflow-hidden border border-outline-variant bg-surface-lowest flex items-center justify-center group shadow-inner">
+<!-- Background Environment placeholder -->
+<div class="absolute inset-0 bg-cover bg-center opacity-80" data-alt="A brightly lit, modern virtual studio environment specifically designed for professional digital human presentation. Soft, ambient lighting creates a clean, corporate aesthetic reminiscent of high-end educational or news broadcast settings. The background features subtle geometric panels in professional blue and neutral gray tones. The mood is focused and academic. The style is 3D rendered realism with a smooth, polished finish." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAXnySiqjDvgQfYo9WzxQpdKVbGmDF-UEjqkmiE0vqUgXF4Bu_zVNoqPIxEcVd6JRDsZWeDII67T85MI7snDVPTI1t-V3G3V3IHpGEG8llFQIIMlSjt7UYQbMpWeTSW_qqTqd1UF8dW_ZDJTk9UFwsl9qZ1H9WG1oi_zQK4gjuCPtm3sm2P_ZPfTarGUm-m3pmPwhMr6WWPz1_Pleb1xZROuzWPyRCcYkyurDa3Z8O1RW1vjc0DGbGx')"></div>
+<!-- Digital Human Character Placeholder -->
+<img class="relative z-10 max-h-full object-contain drop-shadow-xl" data-alt="A highly realistic 3D digital human avatar of a professional Asian woman in business attire. She is centered in the frame, directly facing the camera, wearing a dark navy blazer over a light blouse. Her expression is a subtle, polite smile, suitable for an academic presentation or corporate training video. The lighting perfectly illuminates her face, highlighting the detailed texture of her skin and hair. She stands against the previously described modern virtual studio background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFuwQwa3zpDtfq41aA3mLnNYZ331dfa_UnqvRFsIx8MbxbU-IjL6YoR6p_oe5hb8TyF-CrO56WAS5fuh7w7fIVBa0xVk-E76DwsZ_8JC5fMk_ihAHelvG5c_26A1ODAARDGFJxojsfb68iW6ExnIkGCTUwsMvLx9UKKNBgik9mCZ1IwX27bv3pqpTj5xliEOlfW_mzcqNjOjCBB1pRdum9EiCQXnqjjaN0Sw8TyxIu_o82zY0f4Ytv">
+<!-- Overlays & Controls -->
+<div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-4 glass-panel p-sm rounded-full z-20">
+<button class="material-symbols-outlined text-on-surface hover:text-primary transition-colors">skip_previous</button>
+<button class="material-symbols-outlined text-on-surface hover:text-primary transition-colors text-headline-md">play_circle</button>
+<button class="material-symbols-outlined text-on-surface hover:text-primary transition-colors">skip_next</button>
+<div class="w-px h-6 bg-outline-variant mx-2"></div>
+<span class="font-label-md text-label-md text-on-surface-variant">00:00:15 / 00:02:30</span>
+</div>
+</div>
+<!-- Timeline (Simplified) -->
+<div class="h-24 bg-surface rounded-lg border border-outline-variant p-sm flex flex-col gap-2 shadow-sm">
+<div class="flex items-center justify-between font-label-md text-label-md text-on-surface-variant">
+<span class="">时间轴轨道</span>
+<button class="material-symbols-outlined text-sm">zoom_in</button>
+</div>
+<div class="flex-1 relative bg-surface-container-low rounded border border-outline-variant overflow-hidden">
+<!-- Audio Track -->
+<div class="absolute top-0 left-0 w-full h-1/2 border-b border-outline-variant flex items-center px-2 gap-2">
+<span class="material-symbols-outlined text-xs text-outline">graphic_eq</span>
+<div class="flex-1 h-3 bg-primary-fixed-dim rounded-sm opacity-50 relative overflow-hidden">
+<!-- Pseudo waveform -->
+<svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+<path class="text-primary-container" d="M0 5 Q 10 0, 20 5 T 40 5 T 60 2 T 80 8 L80 10 L0 10 Z" fill="currentColor"></path>
+</svg>
+</div>
+</div>
+<!-- Animation/Motion Track -->
+<div class="absolute bottom-0 left-0 w-full h-1/2 flex items-center px-2 gap-2">
+<span class="material-symbols-outlined text-xs text-outline">accessibility_new</span>
+<div class="flex-1 h-3 rounded-sm relative">
+<div class="absolute left-10 w-24 h-full bg-secondary-fixed-dim rounded border border-secondary text-[8px] flex items-center justify-center text-on-secondary-fixed">迎宾手势</div>
+<div class="absolute left-40 w-32 h-full bg-tertiary-fixed-dim rounded border border-tertiary text-[8px] flex items-center justify-center text-on-tertiary-fixed">强调说明</div>
+</div>
+</div>
+<!-- Playhead -->
+<div class="absolute top-0 bottom-0 w-px bg-error left-1/4 z-10 shadow-[0_0_4px_rgba(186,26,26,0.5)]">
+<div class="w-2 h-2 bg-error rounded-full -translate-x-1/2 -mt-1"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Column: Control Panels -->
+<aside class="w-full md:w-[360px] bg-surface border-l border-outline-variant flex flex-col overflow-y-auto">
+<div class="p-md border-b border-outline-variant">
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">高级编辑控制面板</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">针对选定时间段微调数字人表现细节。</p>
+</div>
+<!-- Panel 1: Facial Fine-tuning -->
+<div class="p-md border-b border-outline-variant group transition-all duration-300 ease-in-out">
+<div class="flex items-center justify-between mb-sm cursor-pointer">
+<h3 class="font-title-lg text-title-lg text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">face</span>
+                        面部微调
+                    </h3>
+<span class="material-symbols-outlined text-outline transition-transform group-hover:text-primary">expand_less</span>
+</div>
+<div class="space-y-4">
+<!-- Emotion Intensity -->
 <div>
-<h2 class="font-headline-md text-headline-md font-semibold text-on-surface flex items-center gap-sm">
-                        数字人形象配置：Nexus Alpha <span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-caps text-label-caps tracking-wider ml-sm">PRO</span>
-</h2>
-<p class="font-body-md text-body-md text-on-surface-variant mt-1">调整此数字人模型的视觉参数、动画和音色绑定。</p>
+<label class="flex justify-between font-label-md text-label-md text-on-surface-variant mb-1">
+<span class="">微表情强度</span>
+<span class="text-primary font-bold">75%</span>
+</label>
+<input class="w-full h-1 bg-surface-variant rounded-lg appearance-none cursor-pointer accent-primary" max="100" min="0" type="range" value="75">
 </div>
-<div class="flex gap-sm">
-<button class="px-4 py-2 rounded-lg bg-surface border border-outline text-on-surface font-label-md text-label-md hover:bg-surface-container-low transition-colors flex items-center gap-xs">
-<span class="material-symbols-outlined text-[18px]">restore</span>
-                        恢复默认
+<!-- Pre-set Emotions Grid -->
+<div class="grid grid-cols-3 gap-2">
+<button class="px-2 py-1 rounded border border-primary bg-primary-fixed text-primary font-label-md flex flex-col items-center justify-center gap-1 hover:bg-primary-container hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined text-sm">sentiment_satisfied</span>
+                            微笑
+                        </button>
+<button class="px-2 py-1 rounded border border-outline-variant bg-surface text-on-surface-variant font-label-md flex flex-col items-center justify-center gap-1 hover:border-primary hover:text-primary transition-colors hover:bg-surface-container-low active:bg-surface-container-high">
+<span class="material-symbols-outlined text-sm">sentiment_neutral</span>
+                            严肃
+                        </button>
+<button class="px-2 py-1 rounded border border-outline-variant bg-surface text-on-surface-variant font-label-md flex flex-col items-center justify-center gap-1 hover:border-primary hover:text-primary transition-colors hover:bg-surface-container-low active:bg-surface-container-high">
+<span class="material-symbols-outlined text-sm">psychology</span>
+                            思考
+                        </button>
+</div>
+</div>
+</div>
+<!-- Panel 2: Gesture Sequences -->
+<div class="p-md border-b border-outline-variant group transition-all duration-300 ease-in-out">
+<div class="flex items-center justify-between mb-sm cursor-pointer">
+<h3 class="font-title-lg text-title-lg text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">emoji_people</span>
+                        动作序列管理
+                    </h3>
+<span class="material-symbols-outlined text-outline transition-transform group-hover:text-primary">expand_less</span>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-2 p-2 rounded border-l-4 border-primary bg-primary-fixed-dim bg-opacity-20">
+<span class="material-symbols-outlined text-primary">waving_hand</span>
+<div class="flex-1">
+<div class="font-label-md text-label-md font-bold text-on-surface">迎宾手势</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">00:00:01 - 00:00:04</div>
+</div>
+<button class="material-symbols-outlined text-outline hover:text-error">delete</button>
+</div>
+<div class="flex items-center gap-2 p-2 rounded border border-outline-variant hover:border-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-on-surface-variant">back_hand</span>
+<div class="flex-1">
+<div class="font-label-md text-label-md text-on-surface">强调说明</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">00:00:12 - 00:00:18</div>
+</div>
+</div>
+<button class="w-full py-2 border border-dashed border-primary text-primary font-label-md rounded flex items-center justify-center gap-2 hover:bg-primary-fixed transition-colors active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined">add</span>
+                        添加新动作
                     </button>
-<button class="px-4 py-2 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-medium hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-sm flex items-center gap-xs">
-<span class="material-symbols-outlined text-[18px]">save</span>
-                        保存配置
-                    </button>
 </div>
 </div>
-<!-- Configuration Workspace (Bento Layout) -->
-<div class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-lg min-h-0">
-<!-- Left: Preview Window (Span 7) -->
-<div class="lg:col-span-7 bg-surface rounded-xl border border-surface-container-highest overflow-hidden flex flex-col relative group shadow-sm">
-<!-- Preview Header Overlay -->
-<div class="absolute top-0 left-0 right-0 p-md flex justify-between items-start z-10 pointer-events-none">
-<div class="glass-panel px-3 py-1.5 rounded-full flex items-center gap-2 pointer-events-auto shadow-sm">
-<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-<span class="font-label-md text-label-md font-medium text-on-surface">模型已加载：3D高保真</span>
+<!-- Panel 3: Lip-sync Calibration -->
+<div class="p-md group transition-all duration-300 ease-in-out">
+<div class="flex items-center justify-between mb-sm cursor-pointer">
+<h3 class="font-title-lg text-title-lg text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">record_voice_over</span>
+                        唇音同步校准
+                    </h3>
+<span class="material-symbols-outlined text-outline transition-transform group-hover:text-primary">expand_less</span>
 </div>
-<button class="glass-panel p-2 rounded-full text-on-surface hover:text-primary transition-colors pointer-events-auto shadow-sm" title="Refresh Preview">
-<span class="material-symbols-outlined">refresh</span>
-</button>
+<div class="space-y-4">
+<div class="bg-surface-container-low p-3 rounded border border-outline-variant">
+<div class="font-body-sm text-body-sm text-on-surface-variant mb-2">当前音素/口型</div>
+<div class="flex gap-2">
+<div class="px-3 py-1 bg-surface border border-outline rounded text-center flex-1">
+<span class="font-title-lg text-primary block">/a:/</span>
+<span class="font-label-caps text-outline">元音</span>
 </div>
-<!-- 3D Canvas Area (Simulated with an image for now, typically WebGL) -->
-<div class="flex-1 bg-surface-container-low relative w-full h-full min-h-[400px]">
-<!-- Background Pattern -->
-<div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#707785 1px, transparent 1px); background-size: 20px 20px;"></div>
-<!-- The Model Image -->
-<div class="absolute inset-0 flex items-center justify-center">
-<img alt="High-fidelity 3D digital human character" class="h-full w-full object-cover drop-shadow-2xl transition-transform duration-500 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMSx4spP_W7hN_IBuOVP8N6D1SOrVq1AiyYO8sD05hC4jy6NTg1YAv7v5Dr4-9T3bGLxWF9qvUS2_-l8-vGB3gt9wUYeBdhiHJzpJOUUtVZzyaAhHHGZ2MEnWMixHvtEYUJ-2hXwbtkH_Hz26-LnO3I7lScWqbJSyMdE1Mz3BTDM_APq6iRlda4qgVohmd1uNy19a8qOtKVQ5-86HLif6sldCyG_p2zT06N3yaJdkpCnrqi8B0FrHy">
-</div>
-<!-- Camera Controls Overlay (Bottom) -->
-<div class="absolute bottom-md left-1/2 -translate-x-1/2 glass-panel rounded-lg flex items-center p-1 shadow-md">
-<button class="p-2 rounded hover:bg-surface-container-highest text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">zoom_in</span></button>
-<div class="w-px h-4 bg-outline-variant mx-1"></div>
-<button class="p-2 rounded hover:bg-surface-container-highest text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">zoom_out</span></button>
-<div class="w-px h-4 bg-outline-variant mx-1"></div>
-<button class="p-2 rounded hover:bg-surface-container-highest text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">360</span></button>
-<div class="w-px h-4 bg-outline-variant mx-1"></div>
-<button class="p-2 rounded hover:bg-surface-container-highest text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">center_focus_strong</span></button>
+<div class="flex flex-col justify-center gap-1">
+<button class="w-6 h-6 rounded bg-surface border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-[16px]">arrow_upward</span></button>
+<button class="w-6 h-6 rounded bg-surface border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-[16px]">arrow_downward</span></button>
 </div>
 </div>
 </div>
-<!-- Right: Configuration Panel (Span 5) -->
-<div class="lg:col-span-5 bg-surface rounded-xl border border-surface-container-highest flex flex-col shadow-sm overflow-hidden">
-<!-- Tabs -->
-<div class="flex border-b border-surface-container-highest px-md shrink-0 bg-surface-bright">
-<button class="px-sm py-md font-label-md text-label-md border-b-2 mr-md transition-colors text-primary font-semibold border-primary" id="tab-basic">基础信息</button>
-<button class="px-sm py-md font-label-md text-label-md hover:text-on-surface border-b-2 mr-md transition-colors text-on-surface-variant font-medium border-transparent" id="tab-visual">视觉参数</button>
-<button class="px-sm py-md font-label-md text-label-md hover:text-on-surface border-b-2 mr-md transition-colors flex items-center gap-1 text-on-surface-variant font-medium border-transparent" id="tab-actions">动作库 <span class="bg-primary-container text-on-primary-container text-[10px] px-1.5 py-0.5 rounded-full">12</span></button>
-<button class="px-sm py-md font-label-md text-label-md hover:text-on-surface border-b-2 transition-colors text-on-surface-variant font-medium border-transparent" id="tab-voice">音色绑定</button>
-</div>
-<!-- Scrollable Settings Area -->
-<div class="flex-1 overflow-y-auto custom-scrollbar p-lg space-y-xl">
-<!-- Basic Info Section -->
-<div class="space-y-xl" id="content-basic"><div class="space-y-md">
-<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">选择数字人形象</h3>
-<div class="flex gap-md overflow-x-auto pb-2 custom-scrollbar">
-<!-- Active Avatar -->
-<div class="shrink-0 w-[120px] group cursor-pointer">
-<div class="aspect-[3/4] rounded-lg overflow-hidden border-2 border-primary relative mb-2 shadow-sm">
-<img alt="Nexus Alpha" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMSx4spP_W7hN_IBuOVP8N6D1SOrVq1AiyYO8sD05hC4jy6NTg1YAv7v5Dr4-9T3bGLxWF9qvUS2_-l8-vGB3gt9wUYeBdhiHJzpJOUUtVZzyaAhHHGZ2MEnWMixHvtEYUJ-2hXwbtkH_Hz26-LnO3I7lScWqbJSyMdE1Mz3BTDM_APq6iRlda4qgVohmd1uNy19a8qOtKVQ5-86HLif6sldCyG_p2zT06N3yaJdkpCnrqi8B0FrHy">
-<div class="absolute top-1 right-1 bg-primary text-on-primary rounded-full p-0.5">
-<span class="material-symbols-outlined text-[14px] block">check</span>
-</div>
-</div>
-<p class="font-label-md text-label-md text-center text-primary font-semibold">Nexus Alpha</p>
-</div>
-<!-- Other Avatar 1 -->
-<div class="shrink-0 w-[120px] group cursor-pointer">
-<div class="aspect-[3/4] rounded-lg overflow-hidden border border-outline-variant hover:border-primary transition-colors mb-2 bg-surface-container-low">
-<img alt="Nexus Beta" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSxg5jMrrU-E0hdavLrL9sqypj0B6IMSelUDsG475ukY8VFy8LycHeYwdKAgkg4aISM0l7PxfYp1GDVgW7zXDqK-Ep3GLRg1NAF7BklvlrmxMbyVXyPMquVb7xEE9x2lrFoPJveGm1tsSirqo41Hx3yuMxrhD-JwaWycRH9d5QbatDYMcf6p6IBDenGfVFIeMw9qB0JdNqocLwjTTdFyBW-bAwhg_b8NRTwla6P0a9yKyJdhlqNu0u">
-</div>
-<p class="font-label-md text-label-md text-center text-on-surface-variant group-hover:text-on-surface transition-colors">Nexus Beta</p>
-</div>
-<!-- Other Avatar 2 -->
-<div class="shrink-0 w-[120px] group cursor-pointer">
-<div class="aspect-[3/4] rounded-lg overflow-hidden border border-outline-variant hover:border-primary transition-colors mb-2 bg-surface-container-low">
-<div class="w-full h-full flex items-center justify-center text-outline">
-<span class="material-symbols-outlined text-[32px]">person_add</span>
-</div>
-</div>
-<p class="font-label-md text-label-md text-center text-on-surface-variant group-hover:text-on-surface transition-colors">添加新形象</p>
-</div>
-</div>
-<hr class="border-surface-container-highest mt-md">
-</div>
-<div class="space-y-md">
-<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">身份参数</h3>
-<div class="space-y-sm">
-<label class="block font-label-md text-label-md text-on-surface">角色名称</label>
-<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-sm py-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" type="text" value="Nexus Alpha">
-</div>
-<div class="space-y-sm">
-<label class="block font-label-md text-label-md text-on-surface">描述 / 人设</label>
-<textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-sm py-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors resize-none" rows="3">专为教育微课和正式企业沟通优化的专业企业主持人。</textarea>
-</div>
-<div class="grid grid-cols-2 gap-md">
-<div class="space-y-sm">
-<label class="block font-label-md text-label-md text-on-surface">模型类型</label>
-<div class="relative group/dropdown" data-field="model-type">
-  <button class="w-full flex items-center justify-between bg-surface-container-lowest border border-outline-variant rounded-lg px-sm py-2 font-body-md text-body-md text-on-surface hover:border-primary focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-    <span class="">3D超写实</span>
-    <span class="material-symbols-outlined text-outline group-hover/dropdown:text-primary transition-transform duration-200 group-focus-within/dropdown:rotate-180">expand_more</span>
-  </button>
-  <div class="absolute top-full left-0 right-0 mt-1 bg-surface border border-outline-variant rounded-lg shadow-md z-20 opacity-0 invisible group-focus-within/dropdown:opacity-100 group-focus-within/dropdown:visible transition-all duration-200 origin-top scale-95 group-focus-within/dropdown:scale-100 overflow-hidden">
-    <div class="py-1">
-      <div class="px-sm py-2 bg-primary-container text-on-primary-container font-medium cursor-pointer">3D超写实</div>
-      <div class="px-sm py-2 hover:bg-surface-container-low text-on-surface cursor-pointer transition-colors">2D真人复刻</div>
-      <div class="px-sm py-2 hover:bg-surface-container-low text-on-surface cursor-pointer transition-colors">风格化虚拟形象</div>
-    </div>
-  </div>
-</div>
-</div>
-<div class="space-y-sm">
-<label class="block font-label-md text-label-md text-on-surface">默认语言</label>
-<div class="relative group/dropdown" data-field="default-language">
-  <button class="w-full flex items-center justify-between bg-surface-container-lowest border border-outline-variant rounded-lg px-sm py-2 font-body-md text-body-md text-on-surface hover:border-primary focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-    <span class="">中文 (zh-CN)</span>
-    <span class="material-symbols-outlined text-outline group-hover/dropdown:text-primary transition-transform duration-200 group-focus-within/dropdown:rotate-180">expand_more</span>
-  </button>
-  <div class="absolute top-full left-0 right-0 mt-1 bg-surface border border-outline-variant rounded-lg shadow-md z-20 opacity-0 invisible group-focus-within/dropdown:opacity-100 group-focus-within/dropdown:visible transition-all duration-200 origin-top scale-95 group-focus-within/dropdown:scale-100 overflow-hidden">
-    <div class="py-1">
-      <div class="px-sm py-2 bg-primary-container text-on-primary-container font-medium cursor-pointer">中文 (zh-CN)</div>
-      <div class="px-sm py-2 hover:bg-surface-container-low text-on-surface cursor-pointer transition-colors">英文 (en-US)</div>
-    </div>
-  </div>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-on-surface">自动同步引擎</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value="">
+<div class="w-9 h-5 bg-outline-variant rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-outline after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
 </div>
 </div>
 </div>
+<div class="mt-auto p-md border-t border-outline-variant flex gap-sm bg-surface">
+<button class="flex-1 py-2 px-4 rounded border border-primary text-primary font-title-lg hover:bg-primary-fixed transition-colors active:scale-95 transition-transform duration-200">取消</button>
+<button class="flex-1 py-2 px-4 rounded bg-primary text-on-primary font-title-lg hover:bg-primary-container transition-colors shadow-md active:scale-95 transition-transform duration-200">应用更改</button>
 </div>
-<hr class="border-surface-container-highest">
-<!-- Quick Visual Overrides (Conceptual) -->
-<div class="space-y-md">
-<div class="flex justify-between items-center">
-<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">灯光预设</h3>
-<button class="text-primary font-label-md text-label-md hover:underline">高级编辑</button>
-</div>
-<div class="grid grid-cols-3 gap-sm">
-<button class="flex flex-col items-center gap-xs p-sm rounded-lg border-2 border-primary bg-primary-fixed-dim text-on-primary-container transition-all">
-<span class="material-symbols-outlined">light_mode</span>
-<span class="font-label-caps text-label-caps">明亮演播室</span>
-</button>
-<button class="flex flex-col items-center gap-xs p-sm rounded-lg border border-outline-variant bg-surface hover:bg-surface-container-low text-on-surface-variant transition-all">
-<span class="material-symbols-outlined">wb_twilight</span>
-<span class="font-label-caps text-label-caps">温暖傍晚</span>
-</button>
-<button class="flex flex-col items-center gap-xs p-sm rounded-lg border border-outline-variant bg-surface hover:bg-surface-container-low text-on-surface-variant transition-all">
-<span class="material-symbols-outlined">nights_stay</span>
-<span class="font-label-caps text-label-caps">戏剧性暗调</span>
-</button>
-</div>
-</div>
-</div>
-<div class="hidden" id="content-visual"><div class="space-y-xl"><div class="space-y-md"><h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">画面调节</h3><div class="space-y-lg"><div class="space-y-sm"><div class="flex justify-between"><label class="font-label-md text-label-md text-on-surface">灯光强度</label><span class="text-label-md text-primary">85%</span></div><input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" type="range" value="85"></div><div class="space-y-sm"><div class="flex justify-between"><label class="font-label-md text-label-md text-on-surface">对比度</label><span class="text-label-md text-primary">50%</span></div><input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" type="range" value="50"></div><div class="space-y-sm"><div class="flex justify-between"><label class="font-label-md text-label-md text-on-surface">色温</label><span class="text-label-md text-primary">6500K</span></div><input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" type="range" value="65"></div></div></div><hr class="border-surface-container-highest"><div class="space-y-md"><h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">镜头角度</h3><div class="grid grid-cols-3 gap-sm"><button class="p-sm rounded-lg border-2 border-primary bg-primary-fixed-dim text-on-primary-container text-center"><span class="block font-label-caps text-label-caps">正面</span></button><button class="p-sm rounded-lg border border-outline-variant bg-surface hover:bg-surface-container-low text-on-surface-variant text-center"><span class="block font-label-caps text-label-caps">侧面</span></button><button class="p-sm rounded-lg border border-outline-variant bg-surface hover:bg-surface-container-low text-on-surface-variant text-center"><span class="block font-label-caps text-label-caps">特写</span></button></div></div></div></div>
-<div class="hidden" id="content-actions"><div class="grid grid-cols-2 gap-md"><div class="bg-surface-container-low rounded-lg p-2 border border-outline-variant group"><div class="aspect-video bg-surface-dim rounded mb-2 flex items-center justify-center"><span class="material-symbols-outlined text-outline">back_hand</span></div><div class="flex justify-between items-center"><span class="font-label-md text-label-md text-on-surface">挥手致意</span><button class="text-primary font-label-caps text-[10px] hover:underline">预览</button></div></div><div class="bg-surface-container-low rounded-lg p-2 border border-outline-variant group"><div class="aspect-video bg-surface-dim rounded mb-2 flex items-center justify-center"><span class="material-symbols-outlined text-outline">pointing_at_away</span></div><div class="flex justify-between items-center"><span class="font-label-md text-label-md text-on-surface">指向左侧</span><button class="text-primary font-label-caps text-[10px] hover:underline">预览</button></div></div><div class="bg-surface-container-low rounded-lg p-2 border border-outline-variant group"><div class="aspect-video bg-surface-dim rounded mb-2 flex items-center justify-center"><span class="material-symbols-outlined text-outline">person_check</span></div><div class="flex justify-between items-center"><span class="font-label-md text-label-md text-on-surface">点头示意</span><button class="text-primary font-label-caps text-[10px] hover:underline">预览</button></div></div><div class="bg-surface-container-low rounded-lg p-2 border border-outline-variant group"><div class="aspect-video bg-surface-dim rounded mb-2 flex items-center justify-center"><span class="material-symbols-outlined text-outline">record_voice_over</span></div><div class="flex justify-between items-center"><span class="font-label-md text-label-md text-on-surface">自然解说</span><button class="text-primary font-label-caps text-[10px] hover:underline">预览</button></div></div></div></div>
-<div class="hidden" id="content-voice"><div class="space-y-md"><h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">音色选择</h3><div class="space-y-sm"><div class="flex items-center justify-between p-md rounded-xl border-2 border-primary bg-primary-fixed-dim"><div class="flex items-center gap-md"><button class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center"><span class="material-symbols-outlined">play_arrow</span></button><div><p class="font-label-md text-label-md font-bold text-on-surface">晓晓 (默认)</p><div class="flex gap-1 mt-1"><span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-[10px] text-on-surface-variant">专业</span><span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-[10px] text-on-surface-variant">亲切</span></div></div></div><input checked="" class="text-primary focus:ring-primary" name="voice" type="radio"></div><div class="flex items-center justify-between p-md rounded-xl border border-outline-variant bg-surface hover:bg-surface-container-low transition-colors"><div class="flex items-center gap-md"><button class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center"><span class="material-symbols-outlined">play_arrow</span></button><div><p class="font-label-md text-label-md font-bold text-on-surface">云希</p><div class="flex gap-1 mt-1"><span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-[10px] text-on-surface-variant">沉稳</span><span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-[10px] text-on-surface-variant">商务</span></div></div></div><input class="text-primary focus:ring-primary" name="voice" type="radio"></div><div class="flex items-center justify-between p-md rounded-xl border border-outline-variant bg-surface hover:bg-surface-container-low transition-colors"><div class="flex items-center gap-md"><button class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center"><span class="material-symbols-outlined">play_arrow</span></button><div><p class="font-label-md text-label-md font-bold text-on-surface">阿强</p><div class="flex gap-1 mt-1"><span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-[10px] text-on-surface-variant">浑厚</span><span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-[10px] text-on-surface-variant">叙述</span></div></div></div><input class="text-primary focus:ring-primary" name="voice" type="radio"></div></div></div></div>
-</div>
-</div>
-</div>
-</div>
+</aside>
 </main>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const tabs = [
-        { btn: document.getElementById('tab-basic'), content: document.getElementById('content-basic') },
-        { btn: document.getElementById('tab-visual'), content: document.getElementById('content-visual') },
-        { btn: document.getElementById('tab-actions'), content: document.getElementById('content-actions') },
-        { btn: document.getElementById('tab-voice'), content: document.getElementById('content-voice') }
-    ];
-
-    tabs.forEach(tab => {
-        if (!tab.btn) return;
-        tab.btn.addEventListener('click', () => {
-            tabs.forEach(t => {
-                if (!t.btn) return;
-                // Remove active classes
-                t.btn.classList.remove('text-primary', 'font-semibold', 'border-primary');
-                // Add inactive classes
-                t.btn.classList.add('text-on-surface-variant', 'font-medium', 'border-transparent');
-                if (t.content) t.content.classList.add('hidden');
-            });
-            
-            // Add active classes to clicked
-            tab.btn.classList.remove('text-on-surface-variant', 'font-medium', 'border-transparent');
-            tab.btn.classList.add('text-primary', 'font-semibold', 'border-primary');
-            if (tab.content) tab.content.classList.remove('hidden');
-        });
-    });
-});
-</script>
 
 
 </body></html>
