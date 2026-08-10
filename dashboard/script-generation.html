@@ -49,81 +49,16 @@
         });
     </script>
 </head>
-<body class="bg-background text-on-background min-h-screen flex">
-<!-- SideNavBar (from JSON) -->
-<nav class="hidden md:flex bg-surface dark:bg-surface-dim font-body-md text-body-md w-sidebar-width h-screen fixed left-0 top-0 border-r border-surface-variant dark:border-outline-variant flex-col px-0 py-lg transition-all duration-200 ease-in-out z-50 shadow-none">
-<!-- Brand Header -->
-<div class="px-md pb-xl flex items-center gap-xs">
-<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center overflow-hidden">
-<span class="material-symbols-outlined text-on-primary text-[20px]" data-icon="account_balance">account_balance</span>
-</div>
-<div>
-<h1 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-inverse-primary truncate">Nexus Architect</h1>
-<p class="font-label-caps text-label-caps text-on-surface-variant truncate">Hainan University</p>
-</div>
-</div>
-<!-- Navigation Links -->
-<div class="flex-1 overflow-y-auto w-full">
-<ul class="flex flex-col w-full">
-<li class="w-full">
-<a class="flex items-center gap-md px-md py-sm w-full text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
-<span class="truncate">业务总览</span>
-</a>
-</li>
-<li class="w-full">
-<a class="flex items-center gap-md px-md py-sm w-full bg-primary-container text-on-primary-container font-bold border-r-4 border-primary transition-all duration-200 ease-in-out" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="psychology">psychology</span>
-<span class="truncate">微课智能体</span>
-</a>
-</li>
-<li class="w-full">
-<a class="flex items-center gap-md px-md py-sm w-full text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="video_library">video_library</span>
-<span class="truncate">视频管理</span>
-</a>
-</li>
-<li class="w-full">
-<a class="flex items-center gap-md px-md py-sm w-full text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="settings_voice">settings_voice</span>
-<span class="truncate">配音音色管理</span>
-</a>
-</li>
-<li class="w-full">
-<a class="flex items-center gap-md px-md py-sm w-full text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
-<span class="truncate">系统设置</span>
-</a>
-</li>
-</ul>
-</div>
-</nav>
-<!-- TopAppBar (from JSON) -->
-<header class="hidden md:flex bg-surface dark:bg-surface-dim font-title-lg text-title-lg fixed top-0 right-0 w-[calc(100%-240px)] h-16 border-b border-surface-variant dark:border-outline-variant justify-between items-center px-lg z-40 ml-[240px] shadow-none focus-within:ring-2 focus-within:ring-primary">
-<div class="flex items-center gap-md">
-<span class="font-headline-sm text-headline-sm font-black text-primary dark:text-inverse-primary">Nexus Course Architect</span>
-</div>
-<!-- Search (on_left structural requirement met by flex-1 or pushing items) -->
-<div class="flex-1 flex justify-start px-xl">
-<div class="relative w-64">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]" data-icon="search">search</span>
-<input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-body-md focus:ring-0 focus:outline-none placeholder:text-on-surface-variant/50" placeholder="搜索项目或功能..." type="text"/>
-</div>
-</div>
-<div class="flex items-center gap-sm">
-<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-variant rounded-full transition-colors">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-</button>
-<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-variant rounded-full transition-colors">
-<span class="material-symbols-outlined" data-icon="help">help</span>
-</button>
-<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-variant rounded-full transition-colors">
-<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
-</button>
-</div>
-</header>
+<body class="bg-background text-on-background min-h-screen flex overflow-x-hidden">
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50">
+<div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div>
+<nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav>
+<div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest">
+<div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="micro-lecture-agent.html" class="hover:text-primary transition-colors">微课智能体</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">脚本驱动生成</span></div></div>
+<div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
 <!-- Main Content Canvas -->
-<main class="flex-1 ml-0 md:ml-[240px] mt-16 p-container-margin md:p-container-margin flex flex-col min-h-[calc(100vh-64px)]">
+<main class="ml-sidebar-width mt-16 p-xl flex flex-col min-h-[calc(100vh-64px)]">
 <!-- Breadcrumbs -->
 <nav aria-label="Breadcrumb" class="flex text-body-sm text-on-surface-variant mb-lg shrink-0">
 <ol class="inline-flex items-center space-x-1 md:space-x-2">
