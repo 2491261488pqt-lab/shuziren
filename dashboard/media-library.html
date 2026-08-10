@@ -107,7 +107,7 @@
 <p class="text-body-sm text-on-surface-variant">温柔、知性、富有耐心</p>
 </div>
 </div>
-<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50" onclick="if(confirm('确定要删除此音色吗？此操作不可撤销。')){this.closest('.bg-white').remove()}">
+<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50" onclick="event.stopPropagation();showConfirm('确认删除', '确定要删除此音色吗？此操作不可撤销。', 'delete', '#ba1a1a', '确认删除', 'error', (function(el){return function(){el.closest('.bg-white, .voice-card-hover').remove()}})(this))">
 <span class="material-symbols-outlined text-lg">delete</span>
 </button>
 </div>
@@ -118,7 +118,7 @@
 </div>
 </div>
 <div class="flex gap-sm">
-<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors" onclick="alert('已应用此音色到默认数字人！'")">
+<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors" onclick="showToast('已应用此音色到默认数字人！')">
 <span class="material-symbols-outlined text-lg">check_circle</span>
                             使用此音色
                         </button>
@@ -143,7 +143,7 @@
 <p class="text-body-sm text-on-surface-variant">稳重、专业、富有磁性</p>
 </div>
 </div>
-<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50" onclick="if(confirm('确定要删除此音色吗？此操作不可撤销。')){this.closest('.bg-white').remove()}">
+<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50" onclick="event.stopPropagation();showConfirm('确认删除', '确定要删除此音色吗？此操作不可撤销。', 'delete', '#ba1a1a', '确认删除', 'error', (function(el){return function(){el.closest('.bg-white, .voice-card-hover').remove()}})(this))">
 <span class="material-symbols-outlined text-lg">delete</span>
 </button>
 </div>
@@ -154,7 +154,7 @@
 </div>
 </div>
 <div class="flex gap-sm">
-<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors" onclick="alert('已应用此音色到默认数字人！'")">
+<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors" onclick="showToast('已应用此音色到默认数字人！')">
 <span class="material-symbols-outlined text-lg">check_circle</span>
                             使用此音色
                         </button>
@@ -179,7 +179,7 @@
 <p class="text-body-sm text-on-surface-variant">活泼、明快、富有感染力</p>
 </div>
 </div>
-<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50" onclick="if(confirm('确定要删除此音色吗？此操作不可撤销。')){this.closest('.bg-white').remove()}">
+<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50" onclick="event.stopPropagation();showConfirm('确认删除', '确定要删除此音色吗？此操作不可撤销。', 'delete', '#ba1a1a', '确认删除', 'error', (function(el){return function(){el.closest('.bg-white, .voice-card-hover').remove()}})(this))">
 <span class="material-symbols-outlined text-lg">delete</span>
 </button>
 </div>
@@ -190,7 +190,7 @@
 </div>
 </div>
 <div class="flex gap-sm">
-<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors" onclick="alert('已应用此音色到默认数字人！'")">
+<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors" onclick="showToast('已应用此音色到默认数字人！')">
 <span class="material-symbols-outlined text-lg">check_circle</span>
                             使用此音色
                         </button>
@@ -215,7 +215,7 @@
 <p class="text-body-sm text-on-surface-variant">自然、流畅、标准英式口音</p>
 </div>
 </div>
-<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50" onclick="if(confirm('确定要删除此音色吗？此操作不可撤销。')){this.closest('.bg-white').remove()}">
+<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50" onclick="event.stopPropagation();showConfirm('确认删除', '确定要删除此音色吗？此操作不可撤销。', 'delete', '#ba1a1a', '确认删除', 'error', (function(el){return function(){el.closest('.bg-white, .voice-card-hover').remove()}})(this))">
 <span class="material-symbols-outlined text-lg">delete</span>
 </button>
 </div>
@@ -226,7 +226,7 @@
 </div>
 </div>
 <div class="flex gap-sm">
-<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors" onclick="alert('已应用此音色到默认数字人！'")">
+<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors" onclick="showToast('已应用此音色到默认数字人！')">
 <span class="material-symbols-outlined text-lg">check_circle</span>
                             使用此音色
                         </button>
@@ -386,15 +386,5 @@ function showToast(msg) {
     setTimeout(() => toast.classList.add('opacity-0', 'translate-y-4'), 2000);
 }
 
-// Replace inline alert/confirm calls with custom dialogs
-document.querySelectorAll('[onclick*="alert"]').forEach(el => {
-    const match = el.getAttribute('onclick').match(/alert\('([^']+)'\)/);
-    if (match) {
-        el.setAttribute('onclick', "showToast('"+match[1]+"')");
-    }
-});
-document.querySelectorAll('[onclick*="confirm"]').forEach(el => {
-    el.setAttribute('onclick', "event.stopPropagation(); showConfirm('确认删除', '确定要删除此音色吗？此操作不可撤销。', 'delete', '#ba1a1a', '确认删除', 'error', function(){ this.closest('.bg-white, .voice-card-hover').remove(); }.bind(el))");
-});
 </script>
 </body></html>
