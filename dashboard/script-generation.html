@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../assets/css/tailwind.css">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-background": "#1b1c1c",
+                      "on-secondary-fixed": "#062100",
+                      "surface-dim": "#dbdad9",
+                      "tertiary": "#7d5400",
+                      "inverse-surface": "#2f3031",
+                      "surface-container": "#efeded",
+                      "primary-fixed-dim": "#a5c8ff",
+                      "tertiary-fixed-dim": "#ffba45",
+                      "on-secondary-fixed-variant": "#1a5200",
+                      "on-tertiary-fixed-variant": "#614000",
+                      "on-tertiary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#c0c7d6",
+                      "on-surface-variant": "#404753",
+                      "on-error": "#ffffff",
+                      "tertiary-container": "#9d6a00",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "primary-container": "#0075d5",
+                      "surface-bright": "#faf9f9",
+                      "surface": "#faf9f9",
+                      "on-primary-container": "#fefcff",
+                      "on-primary-fixed-variant": "#004785",
+                      "on-tertiary-fixed": "#281800",
+                      "on-surface": "#1b1c1c",
+                      "inverse-on-surface": "#f2f0f0",
+                      "surface-variant": "#e3e2e2",
+                      "primary": "#005daa",
+                      "surface-tint": "#005fae",
+                      "secondary": "#266d00",
+                      "on-secondary-container": "#287100",
+                      "on-secondary": "#ffffff",
+                      "background": "#faf9f9",
+                      "error": "#ba1a1a",
+                      "on-tertiary-container": "#fffbff",
+                      "secondary-fixed-dim": "#6de039",
+                      "on-primary-fixed": "#001c3a",
+                      "outline": "#707785",
+                      "surface-container-high": "#e9e8e8",
+                      "secondary-fixed": "#88fd54",
+                      "secondary-container": "#85fa51",
+                      "surface-container-highest": "#e3e2e2",
+                      "tertiary-fixed": "#ffddb0",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed": "#d4e3ff",
+                      "surface-container-low": "#f4f3f3",
+                      "inverse-primary": "#a5c8ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "gutter": "16px",
+                      "sidebar-width": "240px",
+                      "sm": "12px",
+                      "xs": "8px",
+                      "lg": "24px",
+                      "container-margin": "24px",
+                      "md": "16px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "headline-sm": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "title-lg": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "22px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "30px",
+                              {
+                                      "lineHeight": "38px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "title-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+    </style>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const steps = [1, 2, 3];
+            let currentStep = 1;
+
+            const updateUI = () => {
+                // Update Step Indicators
+                steps.forEach(step => {
+                    const stepCircle = document.getElementById(`step-circle-${step}`);
+                    const stepText = document.getElementById(`step-text-${step}`);
+                    
+                    if (step === currentStep) {
+                        stepCircle.className = "w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-title-lg text-title-lg mb-2 shadow-[0_0_0_4px_rgba(250,249,249,1)]";
+                        stepText.className = "font-title-lg text-title-lg text-primary";
+                    } else if (step < currentStep) {
+                        stepCircle.className = "w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-title-lg text-title-lg mb-2 shadow-[0_0_0_4px_rgba(250,249,249,1)] opacity-75";
+                        stepText.className = "font-title-lg text-title-lg text-primary opacity-75";
+                    } else {
+                        stepCircle.className = "w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-title-lg text-title-lg mb-2 shadow-[0_0_0_4px_rgba(250,249,249,1)] border border-outline-variant";
+                        stepText.className = "font-body-md text-body-md text-on-surface-variant";
+                    }
+                });
+
+                // Update Content Sections
+                document.getElementById('section-step-1').classList.toggle('hidden', currentStep !== 1);
+                document.getElementById('section-step-2').classList.toggle('hidden', currentStep !== 2);
+                document.getElementById('section-step-3').classList.toggle('hidden', currentStep !== 3);
+            };
+
+            // Event Listeners for Buttons
+            document.getElementById('btn-next-1')?.addEventListener('click', () => { currentStep = 2; updateUI(); });
+            document.getElementById('btn-prev-2')?.addEventListener('click', () => { currentStep = 1; updateUI(); });
+            document.getElementById('btn-next-2')?.addEventListener('click', () => { currentStep = 3; updateUI(); });
+            
+            // Initialize
+            updateUI();
+        });
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- SideNavBar (from JSON) -->
+<nav class="hidden md:flex bg-surface dark:bg-surface-dim font-body-md text-body-md w-sidebar-width h-screen fixed left-0 top-0 border-r border-surface-variant dark:border-outline-variant flex-col px-0 py-lg transition-all duration-200 ease-in-out z-50 shadow-none">
+<!-- Brand Header -->
+<div class="px-md pb-xl flex items-center gap-xs">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-on-primary text-[20px]" data-icon="account_balance">account_balance</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-inverse-primary truncate">Nexus Architect</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant truncate">Hainan University</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 overflow-y-auto w-full">
+<ul class="flex flex-col w-full">
+<li class="w-full">
+<a class="flex items-center gap-md px-md py-sm w-full text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+<span class="truncate">业务总览</span>
+</a>
+</li>
+<li class="w-full">
+<a class="flex items-center gap-md px-md py-sm w-full bg-primary-container text-on-primary-container font-bold border-r-4 border-primary transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychology">psychology</span>
+<span class="truncate">微课智能体</span>
+</a>
+</li>
+<li class="w-full">
+<a class="flex items-center gap-md px-md py-sm w-full text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="video_library">video_library</span>
+<span class="truncate">视频管理</span>
+</a>
+</li>
+<li class="w-full">
+<a class="flex items-center gap-md px-md py-sm w-full text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings_voice">settings_voice</span>
+<span class="truncate">配音音色管理</span>
+</a>
+</li>
+<li class="w-full">
+<a class="flex items-center gap-md px-md py-sm w-full text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span class="truncate">系统设置</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- TopAppBar (from JSON) -->
+<header class="hidden md:flex bg-surface dark:bg-surface-dim font-title-lg text-title-lg fixed top-0 right-0 w-[calc(100%-240px)] h-16 border-b border-surface-variant dark:border-outline-variant justify-between items-center px-lg z-40 ml-[240px] shadow-none focus-within:ring-2 focus-within:ring-primary">
+<div class="flex items-center gap-md">
+<span class="font-headline-sm text-headline-sm font-black text-primary dark:text-inverse-primary">Nexus Course Architect</span>
+</div>
+<!-- Search (on_left structural requirement met by flex-1 or pushing items) -->
+<div class="flex-1 flex justify-start px-xl">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-body-md focus:ring-0 focus:outline-none placeholder:text-on-surface-variant/50" placeholder="搜索项目或功能..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-0 md:ml-[240px] mt-16 p-container-margin md:p-container-margin flex flex-col min-h-[calc(100vh-64px)]">
+<!-- Breadcrumbs -->
+<nav aria-label="Breadcrumb" class="flex text-body-sm text-on-surface-variant mb-lg shrink-0">
+<ol class="inline-flex items-center space-x-1 md:space-x-2">
+<li class="inline-flex items-center">
+<a class="inline-flex items-center hover:text-primary transition-colors" href="#">
+                        首页
+                    </a>
+</li>
+<li>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">微课智能体</a>
+</div>
+</li>
+<li aria-current="page">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<span class="text-on-surface font-medium">脚本驱动生成</span>
+</div>
+</li>
+</ol>
+</nav>
+<!-- Step Indicator -->
+<div class="w-full bg-surface rounded-xl border border-surface-variant p-md mb-lg flex justify-between items-center relative z-10 shrink-0">
+<!-- Progress Line Background -->
+<div class="absolute top-1/2 left-0 w-full h-[2px] bg-surface-variant -z-10 translate-y-[-50%] px-16"></div>
+<!-- Step 1 -->
+<div class="flex flex-col items-center flex-1 bg-surface relative z-10">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-title-lg text-title-lg mb-2 shadow-[0_0_0_4px_rgba(250,249,249,1)]" id="step-circle-1">
+                    1
+                </div>
+<span class="font-title-lg text-title-lg text-primary" id="step-text-1">步骤 1: 脚本编辑</span>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center flex-1 bg-surface relative z-10">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-title-lg text-title-lg mb-2 shadow-[0_0_0_4px_rgba(250,249,249,1)] border border-outline-variant" id="step-circle-2">
+                    2
+                </div>
+<span class="font-body-md text-body-md text-on-surface-variant" id="step-text-2">步骤 2: 视觉配置</span>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center flex-1 bg-surface relative z-10">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-title-lg text-title-lg mb-2 shadow-[0_0_0_4px_rgba(250,249,249,1)] border border-outline-variant" id="step-circle-3">
+                    3
+                </div>
+<span class="font-body-md text-body-md text-on-surface-variant" id="step-text-3">步骤 3: 开始生成</span>
+</div>
+</div>
+<!-- Step 1 Content -->
+<div class="flex-1 flex flex-col" id="section-step-1">
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter flex-1">
+<!-- Main Editor Area (Left 8 cols) -->
+<div class="lg:col-span-8 flex flex-col gap-gutter">
+<!-- Editor Card -->
+<div class="bg-surface border border-surface-variant rounded-xl flex flex-col overflow-hidden h-[600px]">
+<!-- Toolbar -->
+<div class="h-14 border-b border-surface-variant bg-surface-bright flex items-center justify-between px-md">
+<div class="flex items-center gap-xs">
+<h2 class="font-title-lg text-title-lg text-on-surface mr-4">课程脚本</h2>
+<button class="flex items-center gap-1 px-3 py-1.5 rounded bg-surface-container-low hover:bg-surface-container-high text-primary border border-surface-variant transition-colors text-body-sm font-medium">
+<span class="material-symbols-outlined text-[18px]" data-icon="auto_awesome">auto_awesome</span>
+                                AI 润色
+                            </button>
+<button class="flex items-center gap-1 px-3 py-1.5 rounded bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant border border-surface-variant transition-colors text-body-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="view_agenda">view_agenda</span>
+                                智能分段
+                            </button>
+</div>
+<div class="text-body-sm text-on-surface-variant">
+<span class="text-primary">0</span> / 2000
+                        </div>
+</div>
+<!-- Text Area -->
+<textarea class="flex-1 w-full p-lg font-body-md text-body-md text-on-surface resize-none focus:outline-none focus:ring-0 border-none bg-surface" placeholder="在此输入您的课程脚本，或从右侧选择模板..."></textarea>
+</div>
+</div>
+<!-- Configuration Sidebar (Right 4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Project Details Card -->
+<div class="bg-surface border border-surface-variant rounded-xl p-lg">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-md pb-xs border-b border-surface-variant">项目配置</h3>
+<div class="mb-md">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">项目名称</label>
+<input class="w-full bg-surface border border-surface-variant rounded px-3 py-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow" placeholder="例如：机器学习导论" type="text"/>
+</div>
+<div>
+<div class="flex justify-between items-center mb-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant">音色选择</label>
+<button class="text-primary font-label-md hover:underline">修改</button>
+</div>
+<div class="flex items-center gap-sm p-sm border border-surface-variant rounded bg-surface-container-lowest">
+<div class="w-10 h-10 rounded-full bg-primary-container text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="record_voice_over">record_voice_over</span>
+</div>
+<div class="flex-1">
+<div class="font-title-lg text-title-lg text-on-surface">林教授 (专业男声)</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">标准普通话，语速平缓</div>
+</div>
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined" data-icon="play_circle">play_circle</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Templates Card -->
+<div class="bg-surface border border-surface-variant rounded-xl p-lg flex-1 overflow-hidden flex flex-col">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-md pb-xs border-b border-surface-variant">脚本模板</h3>
+<div class="flex-1 overflow-y-auto pr-2 flex flex-col gap-sm">
+<!-- Template 1 -->
+<div class="border border-outline-variant hover:border-primary rounded-lg p-sm cursor-pointer transition-colors bg-surface-container-lowest group relative">
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg pointer-events-none"></div>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="school">school</span>
+<span class="font-title-lg text-title-lg text-on-surface">教育科普</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">结构化导入、核心知识点拆解、总结回顾。</p>
+</div>
+<!-- Template 2 -->
+<div class="border border-outline-variant hover:border-primary rounded-lg p-sm cursor-pointer transition-colors bg-surface-container-lowest group relative">
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg pointer-events-none"></div>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="business_center">business_center</span>
+<span class="font-title-lg text-title-lg text-on-surface">企业内训</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">语气正式，适合要点罗列，强调合规与政策。</p>
+</div>
+<!-- Template 3 -->
+<div class="border border-outline-variant hover:border-primary rounded-lg p-sm cursor-pointer transition-colors bg-surface-container-lowest group relative">
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg pointer-events-none"></div>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-tertiary text-[18px]" data-icon="menu_book">menu_book</span>
+<span class="font-title-lg text-title-lg text-on-surface">故事引入</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">引人入胜的故事钩子，衔接可落地的见解。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Action Bar -->
+<div class="mt-lg pt-md border-t border-surface-variant flex justify-end shrink-0">
+<button class="bg-primary hover:bg-primary-fixed-dim text-on-primary px-6 py-2.5 rounded font-title-lg text-title-lg transition-colors flex items-center gap-2 shadow-sm" id="btn-next-1">
+                下一步：视觉配置
+                <span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Step 2 Content -->
+<div class="hidden flex-1 flex flex-col" id="section-step-2">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter flex-1">
+<div class="lg:col-span-8 bg-surface border border-surface-variant rounded-xl overflow-hidden flex items-center justify-center p-md">
+<img alt="Video Preview" class="max-w-full max-h-full object-contain rounded" src="https://lh3.googleusercontent.com/aida/AP1WRLs5t4a-8-1k3xiq-yVAwA8X2BSDaINF4wERagfxDt1-kaFtkvB0PKweoE26WKCjTsr-5XHyHYeGn1Se4wdVCviyxdiQNx2MDcsj9HV5OoX0u_42TBsuJVdN2yJ0CklW_Kqutf9OaABA-rHaJq7GVKKYgXfMSz91xdc-UNNL7V7rWXjBCASAz2eHWqEplKZsQVl92Ju4G7xep5c2Vi04_3lGKQs1pKV41M9aNbmyxLyfvex-p5ca72bGlYw"/>
+</div>
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface border border-surface-variant rounded-xl p-lg flex-1">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-md pb-xs border-b border-surface-variant">数字人配置</h3>
+<div class="space-y-4">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">数字人形象</label>
+<select class="w-full bg-surface border border-surface-variant rounded px-3 py-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+<option>职业女性 (默认)</option>
+<option>学术教授</option>
+<option>客服代表</option>
+</select>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">背景设置</label>
+<select class="w-full bg-surface border border-surface-variant rounded px-3 py-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+<option>现代演播室 (默认)</option>
+<option>纯色背景 (绿幕)</option>
+<option>企业办公室</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-lg pt-md border-t border-surface-variant flex justify-between shrink-0">
+<button class="bg-surface-container-high hover:bg-surface-container-highest text-on-surface px-6 py-2.5 rounded font-title-lg text-title-lg transition-colors flex items-center gap-2" id="btn-prev-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="arrow_back">arrow_back</span>
+                上一步
+            </button>
+<button class="bg-primary hover:bg-primary-fixed-dim text-on-primary px-6 py-2.5 rounded font-title-lg text-title-lg transition-colors flex items-center gap-2 shadow-sm" id="btn-next-2">
+                下一步：开始生成
+                <span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Step 3 Content -->
+<div class="hidden flex-1 flex flex-col items-center justify-center" id="section-step-3">
+<div class="bg-surface border border-surface-variant rounded-xl p-xl w-full max-w-2xl text-center shadow-sm">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-lg">生成进度</h2>
+<div class="relative w-48 h-48 mx-auto mb-lg">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle class="text-surface-variant stroke-current" cx="50" cy="50" fill="transparent" r="45" stroke-width="10"></circle>
+<circle class="text-primary stroke-current" cx="50" cy="50" fill="transparent" r="45" stroke-dasharray="283" stroke-dashoffset="99" stroke-linecap="round" stroke-width="10"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display-lg text-display-lg text-primary">65%</span>
+<span class="font-label-md text-label-md text-on-surface-variant">正在渲染视频...</span>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-lg p-md text-left mb-xl max-w-md mx-auto">
+<div class="font-title-lg text-title-lg text-on-surface mb-sm border-b border-surface-variant pb-xs">技术参数</div>
+<ul class="space-y-2 font-body-sm text-body-sm text-on-surface-variant">
+<li class="flex justify-between"><span>预计剩余时间:</span> <span class="font-medium text-on-surface">约 2 分钟</span></li>
+<li class="flex justify-between"><span>输出分辨率:</span> <span class="font-medium text-on-surface">1920x1080 (1080p)</span></li>
+<li class="flex justify-between"><span>输出格式:</span> <span class="font-medium text-on-surface">MP4 (H.264)</span></li>
+</ul>
+</div>
+<div class="flex justify-center gap-md">
+<button class="bg-surface-container-high hover:bg-surface-container-highest text-on-surface px-6 py-2.5 rounded font-title-lg text-title-lg transition-colors">
+                返回工作台
+            </button>
+<button class="bg-primary hover:bg-primary-fixed-dim text-on-primary px-6 py-2.5 rounded font-title-lg text-title-lg transition-colors">
+                查看历史记录
+            </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>
