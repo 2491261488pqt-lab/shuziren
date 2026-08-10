@@ -268,38 +268,27 @@
 </div>
 <!-- Recent Projects Table -->
 <div class="col-span-12 bg-surface rounded-xl border border-surface-container-highest overflow-hidden">
-<div class="px-lg py-4 border-b border-surface-container-highest flex items-center justify-between">
-<h3 class="font-title-lg text-title-lg text-on-surface">最近项目</h3>
-<div class="flex gap-2 relative">
-<button class="px-3 py-1.5 rounded-md bg-surface-container border border-outline-variant font-label-md text-label-md hover:bg-surface-container-high transition-colors" onclick="document.getElementById('filterDropdown').classList.toggle('hidden')">筛选</button>
-<button class="px-3 py-1.5 rounded-md bg-primary text-white font-label-md text-label-md hover:bg-primary-container transition-colors">查看全部</button>
-<div class="absolute right-0 top-full mt-2 w-64 bg-surface rounded-xl border border-surface-container-highest shadow-xl z-50 hidden" id="filterDropdown">
-<div class="p-lg space-y-lg">
-<div class="space-y-sm">
-<label class="font-label-md text-label-md text-on-surface-variant block">项目状态</label>
-<div class="flex flex-wrap gap-xs">
+<div class="px-lg py-4 border-b border-surface-container-highest flex items-center justify-between gap-lg flex-wrap">
+<h3 class="font-title-lg text-title-lg text-on-surface shrink-0">最近项目</h3>
+<div class="flex items-center gap-md flex-1">
+<div class="flex items-center gap-xs">
+<span class="font-label-md text-label-md text-outline">状态</span>
 <button class="px-md py-xs rounded-full bg-primary-fixed text-primary font-label-md text-label-md">全部</button>
 <button class="px-md py-xs rounded-full border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors">合成中</button>
 <button class="px-md py-xs rounded-full border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors">已完成</button>
 <button class="px-md py-xs rounded-full border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors">失败</button>
 </div>
-</div>
-<div class="space-y-sm">
-<label class="font-label-md text-label-md text-on-surface-variant block">创建时间</label>
-<select class="w-full px-md py-sm bg-surface-container border border-outline-variant rounded-lg font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none">
-<option>不限时间</option>
+<div class="flex items-center gap-xs">
+<span class="font-label-md text-label-md text-outline">时间</span>
+<select class="px-md py-xs bg-surface-container border border-outline-variant rounded-lg font-label-md text-label-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+<option>不限</option>
 <option>最近一周</option>
 <option>最近一月</option>
 <option>最近三月</option>
 </select>
 </div>
-<div class="flex gap-sm pt-sm border-t border-surface-container-highest">
-<button class="flex-1 px-md py-sm border border-outline-variant text-on-surface-variant font-label-md text-label-md rounded-lg hover:bg-surface-container-low transition-colors" onclick="document.getElementById('filterDropdown').classList.add('hidden')">重置</button>
-<button class="flex-1 px-md py-sm bg-primary text-on-primary font-label-md text-label-md rounded-lg hover:bg-primary-container transition-colors" onclick="document.getElementById('filterDropdown').classList.add('hidden')">应用</button>
 </div>
-</div>
-</div>
-</div>
+<button class="px-3 py-1.5 rounded-md bg-primary text-white font-label-md text-label-md hover:bg-primary-container transition-colors">查看全部</button>
 </div>
 <div class="overflow-x-auto">
 <table class="w-full text-left font-body-sm text-body-sm">
