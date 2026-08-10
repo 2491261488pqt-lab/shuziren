@@ -236,7 +236,7 @@
 </div>
 </div>
 <!-- Add New Voice Card Placeholder -->
-<div class="border-2 border-dashed border-outline-variant rounded-xl p-md flex flex-col items-center justify-center bg-surface-container-low hover:bg-surface-container hover:border-primary/50 transition-all cursor-pointer group">
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-md flex flex-col items-center justify-center bg-surface-container-low hover:bg-surface-container hover:border-primary/50 transition-all cursor-pointer group" onclick="document.getElementById('voiceModal').style.display='flex'">
 <div class="w-12 h-12 rounded-full bg-white border border-outline-variant flex items-center justify-center mb-sm group-hover:scale-110 transition-transform">
 <span class="material-symbols-outlined text-primary">add</span>
 </div>
@@ -295,4 +295,39 @@
     </script>
 
 
+<div class="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-50 flex items-center justify-center p-md hidden" id="voiceModal" style="display:none">
+<div class="bg-surface w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+<div class="px-lg py-md border-b border-outline-variant flex items-center justify-between bg-surface-bright">
+<div class="flex items-center gap-xs"><div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center"><span class="material-symbols-outlined text-primary">mic_external_on</span></div><h2 class="font-headline-sm text-headline-sm text-primary">新增音色</h2></div>
+<button class="text-on-surface-variant hover:bg-surface-container p-base rounded-full transition-colors" onclick="document.getElementById('voiceModal').style.display='none'"><span class="material-symbols-outlined">close</span></button>
+</div>
+<div class="flex-1 overflow-y-auto p-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-md">
+<div class="space-y-base"><label class="font-label-md text-on-surface-variant block">音色名称</label><input class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md" placeholder="输入名称，如：海南大学播报员" type="text"></div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="space-y-base"><label class="font-label-md text-on-surface-variant block">性别</label><select class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md"><option>男</option><option>女</option><option>其他</option></select></div>
+<div class="space-y-base"><label class="font-label-md text-on-surface-variant block">语言</label><select class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md"><option>中文</option><option>英文</option><option>日语</option></select></div>
+</div>
+<div class="space-y-base"><label class="font-label-md text-on-surface-variant block">音色描述</label><textarea class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md resize-none" placeholder="描述该音色的特点，如：沉稳、亲切、适合学术报告..." rows="3"></textarea></div>
+</div>
+<div class="space-y-md flex flex-col">
+<label class="font-label-md text-on-surface-variant block">上传参考音频</label>
+<div class="flex-1 border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center p-lg bg-surface-container-low hover:bg-surface-container transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-primary mb-sm group-hover:scale-110 transition-transform">cloud_upload</span>
+<p class="text-body-sm font-semibold text-on-surface">点击或拖拽上传音频文件</p>
+<p class="text-label-md text-on-surface-variant mt-1 text-center">支持 MP3/WAV 格式，大小不超过10MB，时长30s-1min效果更佳</p>
+</div>
+</div>
+</div>
+<div class="mt-xl p-md bg-primary-fixed/30 rounded-xl border border-primary-fixed">
+<div class="flex items-center justify-between mb-md"><div class="flex items-center gap-xs"><span class="material-symbols-outlined text-primary">record_voice_over</span><span class="font-title-lg text-primary">预览与试听</span></div><button class="bg-primary text-on-primary px-md py-base rounded-lg text-sm font-bold flex items-center gap-xs hover:shadow-lg transition-all active:scale-95"><span class="material-symbols-outlined text-sm">auto_fix_high</span>生成试听</button></div>
+<div class="space-y-sm"><textarea class="w-full bg-surface border-none rounded-lg p-sm text-sm focus:ring-0" placeholder="在此输入试听文本..." rows="2">海南大学欢迎您的到来，在这里您可以体验最前沿的数字人克隆技术。</textarea>
+<div class="flex items-center gap-md bg-white p-sm rounded-lg border border-outline-variant"><button class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-on-primary hover:bg-primary-container transition-colors"><span class="material-symbols-outlined">play_arrow</span></button><div class="flex-1"><div class="flex items-center justify-between mb-1"><span class="text-[10px] font-bold text-on-surface-variant uppercase">Preview_Output_01.wav</span><span class="text-[10px] font-bold text-on-surface-variant">00:08 / 00:15</span></div><div class="h-1 bg-surface-container-highest rounded-full overflow-hidden"><div class="h-full bg-primary w-[45%]"></div></div></div><div class="flex items-end gap-[2px] h-6 px-sm"><div class="w-[3px] bg-primary rounded-sm animate-pulse" style="height:4px;animation-delay:0.1s;animation:bounce 0.8s ease-in-out infinite alternate"></div><div class="w-[3px] bg-primary rounded-sm animate-pulse" style="height:12px;animation-delay:0.3s;animation:bounce 0.6s ease-in-out infinite alternate"></div><div class="w-[3px] bg-primary rounded-sm animate-pulse" style="height:8px;animation-delay:0.2s;animation:bounce 0.7s ease-in-out infinite alternate"></div><div class="w-[3px] bg-primary rounded-sm animate-pulse" style="height:16px;animation-delay:0.4s;animation:bounce 0.5s ease-in-out infinite alternate"></div></div></div></div></div></div>
+<div class="px-lg py-md border-t border-outline-variant flex items-center justify-end gap-md bg-surface-bright">
+<button class="px-lg py-sm text-on-surface-variant font-bold hover:bg-surface-container rounded-lg transition-colors" onclick="document.getElementById('voiceModal').style.display='none'">取消</button>
+<button class="px-xl py-sm bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:opacity-90 active:scale-95 transition-all" onclick="alert('音色创建成功！');document.getElementById('voiceModal').style.display='none'">确认创建</button>
+</div>
+</div>
+</div>
 </body></html>
