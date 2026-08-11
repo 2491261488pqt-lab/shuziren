@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../assets/css/tailwind.css">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen overflow-hidden flex">
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50">
+<div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div>
+<nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav>
+<div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest">
+<div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="micro-lecture-agent.html" class="hover:text-primary transition-colors">微课智能体</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">课件转视频</span></div></div>
+<div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width mt-16 p-xl flex flex-col min-h-[calc(100vh-64px)]">
+<!-- Page Content -->
+<div class="flex-1 overflow-y-auto p-container-margin bg-background">
+<!-- Stepper Navigation -->
+<div class="max-w-4xl mx-auto mb-8 bg-surface-container-lowest p-6 rounded-xl border border-outline-variant" id="stepper-container">
+<div class="flex items-center justify-between relative">
+<!-- Progress Line -->
+<div class="absolute top-1/2 left-0 w-full h-0.5 bg-surface-variant -z-10 -translate-y-1/2"></div>
+<div class="absolute top-1/2 left-0 w-0 h-0.5 bg-primary -z-10 -translate-y-1/2 transition-all duration-500" id="progress-line"></div>
+<!-- Step 1 Indicator -->
+<div class="flex flex-col items-center gap-2 bg-surface-container-lowest px-4" id="step-ind-1">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-title-lg text-title-lg ring-4 ring-primary-fixed step-circle">
+                            1
+                        </div>
+<span class="font-label-md text-label-md text-primary font-semibold step-text">上传素材</span>
+</div>
+<!-- Step 2 Indicator -->
+<div class="flex flex-col items-center gap-2 bg-surface-container-lowest px-4" id="step-ind-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-title-lg text-title-lg step-circle transition-all">
+                            2
+                        </div>
+<span class="font-label-md text-label-md text-on-surface-variant step-text transition-all">视觉配置</span>
+</div>
+<!-- Step 3 Indicator -->
+<div class="flex flex-col items-center gap-2 bg-surface-container-lowest px-4" id="step-ind-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-title-lg text-title-lg step-circle transition-all">
+                            3
+                        </div>
+<span class="font-label-md text-label-md text-on-surface-variant step-text transition-all">合成导出</span>
+</div>
+</div>
+</div>
+<!-- Step 1: Upload -->
+<div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6" id="step-1-content">
+<!-- Main Upload Panel -->
+<div class="md:col-span-2 bg-surface-container-lowest rounded-xl border border-outline-variant p-6 flex flex-col gap-6">
+<div>
+<h2 class="font-title-lg text-title-lg text-on-surface mb-1">上传教学课件</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">支持 PDF, PPTX, DOCX 格式，单个文件不超过 50MB。</p>
+</div>
+<!-- Dropzone -->
+<div class="border-2 border-dashed border-primary/30 rounded-lg bg-primary-fixed/20 hover:bg-primary-fixed/40 transition-colors p-8 flex flex-col items-center justify-center gap-4 cursor-pointer min-h-[240px] group">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[32px]" data-icon="cloud_upload">cloud_upload</span>
+</div>
+<div class="text-center">
+<p class="font-title-lg text-title-lg text-primary mb-1">点击或拖拽文件到此处上传</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">AI 将自动解析课件内容并生成分镜脚本</p>
+</div>
+</div>
+<!-- Uploaded Files List -->
+<div class="flex flex-col gap-3">
+<h3 class="font-label-md text-label-md text-on-surface-variant font-semibold uppercase tracking-wider">已上传文件 (1)</h3>
+<div class="flex items-center justify-between p-4 rounded-lg border border-outline-variant bg-surface-bright hover:border-primary/50 transition-colors group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#d32f2f] text-[28px]" data-icon="picture_as_pdf">picture_as_pdf</span>
+<div>
+<p class="font-title-lg text-title-lg text-on-surface text-sm">2024秋季_AI导论_第一章.pdf</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-xs">2.4 MB • 解析完成</p>
+</div>
+</div>
+<div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-primary p-1 rounded-DEFAULT hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+<button class="text-on-surface-variant hover:text-error p-1 rounded-DEFAULT hover:bg-error-container transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Settings Sidebar -->
+<div class="md:col-span-1 bg-surface-container-lowest rounded-xl border border-outline-variant p-6 flex flex-col h-full">
+<h2 class="font-title-lg text-title-lg text-on-surface mb-6">解析设置</h2>
+<div class="flex flex-col gap-6 flex-1">
+<!-- Auto Extract Script Toggle -->
+<div class="flex items-center justify-between bg-surface-bright p-4 rounded-lg border border-outline-variant">
+<div>
+<p class="font-title-lg text-title-lg text-on-surface text-sm mb-0.5">智能提取脚本</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-xs">自动从课件备注和正文生成口播词</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-outline-variant after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Language Selection -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface-variant">生成语言</label>
+<select class="form-select w-full rounded-lg border-outline-variant bg-surface-bright text-on-surface text-sm focus:ring-primary focus:border-primary py-2 px-3">
+<option>中文 (普通话)</option>
+<option>English (US)</option>
+<option>中英混合</option>
+</select>
+</div>
+<!-- Info Box -->
+<div class="mt-auto bg-primary-fixed/30 p-4 rounded-lg border border-primary/20 flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="info">info</span>
+<p class="font-body-sm text-body-sm text-primary-fixed-variant text-xs leading-relaxed">
+                                上传课件后，系统大约需要 1-3 分钟进行 OCR 识别和语意解析。请确保课件文字清晰以获得最佳效果。
+                            </p>
+</div>
+</div>
+<!-- Action Button -->
+<div class="mt-6 pt-6 border-t border-outline-variant">
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary hover:text-on-primary-container font-title-lg text-title-lg py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow active:scale-[0.98]" onclick="switchStep(2)">
+                            下一步：视觉配置
+                            <span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Step 2: Visual Config -->
+<div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 hidden" id="step-2-content">
+<div class="md:col-span-2 bg-surface-container-lowest rounded-xl border border-outline-variant p-6 flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h2 class="font-title-lg text-title-lg text-on-surface">视频预览</h2>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-surface-variant rounded text-xs text-on-surface-variant">1080P</span>
+<span class="px-2 py-1 bg-surface-variant rounded text-xs text-on-surface-variant">16:9</span>
+</div>
+</div>
+<div class="relative aspect-video bg-black rounded-lg overflow-hidden group border border-outline-variant">
+<img alt="Digital Human Preview" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLs5t4a-8-1k3xiq-yVAwA8X2BSDaINF4wERagfxDt1-kaFtkvB0PKweoE26WKCjTsr-5XHyHYeGn1Se4wdVCviyxdiQNx2MDcsj9HV5OoX0u_42TBsuJVdN2yJ0CklW_Kqutf9OaABA-rHaJq7GVKKYgXfMSz91xdc-UNNL7V7rWXjBCASAz2eHWqEplKZsQVl92Ju4G7xep5c2Vi04_3lGKQs1pKV41M9aNbmyxLyfvex-p5ca72bGlYw"/>
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-black/60 backdrop-blur-md px-6 py-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">play_arrow</span>
+<div class="w-48 h-1 bg-white/30 rounded-full"><div class="w-1/3 h-full bg-primary rounded-full"></div></div>
+<span class="text-xs">00:12 / 00:45</span>
+</div>
+</div>
+</div>
+<div class="md:col-span-1 flex flex-col gap-6">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-4">数字人形象</h3>
+<div class="grid grid-cols-2 gap-3">
+<div class="aspect-square rounded-lg border-2 border-primary overflow-hidden relative cursor-pointer">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLs5t4a-8-1k3xiq-yVAwA8X2BSDaINF4wERagfxDt1-kaFtkvB0PKweoE26WKCjTsr-5XHyHYeGn1Se4wdVCviyxdiQNx2MDcsj9HV5OoX0u_42TBsuJVdN2yJ0CklW_Kqutf9OaABA-rHaJq7GVKKYgXfMSz91xdc-UNNL7V7rWXjBCASAz2eHWqEplKZsQVl92Ju4G7xep5c2Vi04_3lGKQs1pKV41M9aNbmyxLyfvex-p5ca72bGlYw"/>
+<div class="absolute bottom-0 w-full bg-primary/90 text-white text-[10px] text-center py-1">当前选择</div>
+</div>
+<div class="aspect-square rounded-lg border border-outline-variant bg-surface-variant/30 flex items-center justify-center cursor-pointer hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">add</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-4">背景场景</h3>
+<div class="flex flex-col gap-3">
+<div class="p-3 rounded-lg border-2 border-primary bg-primary-fixed/10 flex items-center gap-3 cursor-pointer">
+<div class="w-12 h-8 bg-surface-variant rounded"></div>
+<span class="text-sm font-medium text-primary">现代简约演播室</span>
+</div>
+<div class="p-3 rounded-lg border border-outline-variant hover:bg-surface-container-low flex items-center gap-3 cursor-pointer transition-colors">
+<div class="w-12 h-8 bg-surface-variant rounded"></div>
+<span class="text-sm text-on-surface">纯色背景 (绿幕)</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-4">配音音色</h3>
+<select class="form-select w-full rounded-lg border-outline-variant bg-surface-bright text-on-surface text-sm focus:ring-primary focus:border-primary py-2 px-3">
+<option>知性女声 - 默认</option>
+<option>沉稳男声</option>
+<option>活泼女声</option>
+</select>
+</div>
+<div class="mt-auto flex flex-col gap-3">
+<button class="w-full py-3 border border-outline-variant rounded-lg font-title-lg text-title-lg text-on-surface hover:bg-surface-container-low transition-colors" onclick="switchStep(1)">上一步</button>
+<button class="w-full py-3 bg-primary text-on-primary rounded-lg font-title-lg text-title-lg flex items-center justify-center gap-2 hover:bg-primary-container hover:text-on-primary-container transition-all shadow-sm active:scale-[0.98]" onclick="switchStep(3)">
+            下一步：开始合成
+            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Step 3: Synthesis Export -->
+<div class="max-w-4xl mx-auto hidden" id="step-3-content">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-12 flex flex-col items-center justify-center min-h-[500px]">
+<div class="relative w-48 h-48 mb-8">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle class="text-surface-variant" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary transition-all duration-1000" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-dasharray="283" stroke-dashoffset="99" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-display-lg font-display-lg font-bold text-primary">65%</span>
+<span class="text-label-md font-label-md text-on-surface-variant">合成中...</span>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">正在生成您的专属视频</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8">预计剩余时间: 约 2 分 15 秒</p>
+<div class="flex gap-4 w-full max-w-md">
+<button class="flex-1 py-3 border border-outline-variant rounded-lg font-title-lg text-title-lg text-on-surface hover:bg-surface-container-low transition-colors" onclick="switchStep(1)">返回项目列表</button>
+<button class="flex-1 py-3 bg-surface-variant text-on-surface-variant rounded-lg font-title-lg text-title-lg flex items-center justify-center gap-2 cursor-not-allowed opacity-70">
+                下载视频
+                <span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+function switchStep(step) {
+    // Hide all step contents
+    document.getElementById('step-1-content').classList.add('hidden');
+    document.getElementById('step-2-content').classList.add('hidden');
+    document.getElementById('step-3-content').classList.add('hidden');
+    
+    // Show target step content
+    document.getElementById('step-' + step + '-content').classList.remove('hidden');
+    
+    // Update Stepper Line
+    const progressLine = document.getElementById('progress-line');
+    if(step === 1) progressLine.style.width = '0%';
+    else if(step === 2) progressLine.style.width = '50%';
+    else if(step === 3) progressLine.style.width = '100%';
+
+    // Update Stepper Indicators
+    for(let i=1; i<=3; i++) {
+        const ind = document.getElementById('step-ind-' + i);
+        const circle = ind.querySelector('.step-circle');
+        const text = ind.querySelector('.step-text');
+        
+        if (i < step) {
+            // Completed
+            circle.innerHTML = '<span class="material-symbols-outlined">check</span>';
+            circle.className = 'w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-title-lg text-title-lg step-circle transition-all';
+            text.className = 'font-label-md text-label-md text-primary font-semibold step-text transition-all';
+        } else if (i === step) {
+            // Current
+            circle.innerHTML = i;
+            circle.className = 'w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-title-lg text-title-lg ring-4 ring-primary-fixed step-circle transition-all';
+            text.className = 'font-label-md text-label-md text-primary font-semibold step-text transition-all';
+        } else {
+            // Upcoming
+            circle.innerHTML = i;
+            circle.className = 'w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-title-lg text-title-lg step-circle transition-all';
+            text.className = 'font-label-md text-label-md text-on-surface-variant step-text transition-all';
+        }
+    }
+}
+</script></body></html>
