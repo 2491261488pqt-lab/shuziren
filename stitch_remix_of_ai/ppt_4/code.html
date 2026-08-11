@@ -1,0 +1,619 @@
+<!DOCTYPE html><html lang="zh-CN" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>PPT 预览与大纲编辑 - 数字人微课平台</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style type="text/css">
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for outline */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #c0c7d6; /* outline-variant */
+            border-radius: 4px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#7d5400",
+                      "on-background": "#1b1c1c",
+                      "secondary": "#266d00",
+                      "on-tertiary-fixed-variant": "#614000",
+                      "primary-container": "#0075d5",
+                      "surface-dim": "#dbdad9",
+                      "inverse-surface": "#2f3031",
+                      "on-primary-container": "#fefcff",
+                      "secondary-fixed-dim": "#6de039",
+                      "outline-variant": "#c0c7d6",
+                      "primary-fixed-dim": "#a5c8ff",
+                      "surface-container-low": "#f4f3f3",
+                      "on-secondary-fixed": "#062100",
+                      "primary-fixed": "#d4e3ff",
+                      "tertiary-fixed-dim": "#ffba45",
+                      "on-tertiary-fixed": "#281800",
+                      "tertiary-container": "#9d6a00",
+                      "on-secondary-fixed-variant": "#1a5200",
+                      "surface-container-highest": "#e3e2e2",
+                      "on-surface": "#1b1c1c",
+                      "error-container": "#ffdad6",
+                      "on-error": "#ffffff",
+                      "on-surface-variant": "#404753",
+                      "surface-tint": "#005fae",
+                      "on-tertiary-container": "#fffbff",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed": "#88fd54",
+                      "secondary-container": "#85fa51",
+                      "error": "#ba1a1a",
+                      "surface": "#faf9f9",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed-variant": "#004785",
+                      "surface-bright": "#faf9f9",
+                      "background": "#faf9f9",
+                      "on-primary-fixed": "#001c3a",
+                      "tertiary-fixed": "#ffddb0",
+                      "on-secondary": "#ffffff",
+                      "surface-variant": "#e3e2e2",
+                      "surface-container-high": "#e9e8e8",
+                      "inverse-on-surface": "#f2f0f0",
+                      "primary": "#005daa",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-container": "#287100",
+                      "on-primary": "#ffffff",
+                      "surface-container": "#efeded",
+                      "outline": "#707785",
+                      "inverse-primary": "#a5c8ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "container-margin": "24px",
+                      "sidebar-width": "240px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "sm": "12px",
+                      "gutter": "16px",
+                      "xs": "8px",
+                      "xl": "32px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "headline-sm": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "title-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "22px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "30px",
+                              {
+                                      "lineHeight": "38px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "title-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface h-screen overflow-hidden flex" data-mode="connect">
+<!-- Sidebar (Shared Component Blueprint Logic) -->
+<aside class="hidden md:flex flex-col fixed left-0 top-0 h-full w-[240px] border-r border-outline-variant z-20 bg-surface-container-low"><div class="h-16 flex items-center px-lg border-b border-outline-variant"><img alt="数字人系统" class="w-auto object-contain h-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZcLEbzHzI5_iDEz5cjnKtGDMS7N3voJqQdZgLSLbLRrnphDsgAtsqhd32tvF8fw09D-W28AJQ8EomaX8zVCi1fqpOYo7ZzcscBnZ6W1tERmzX51NsoeKakIjByStgx0CWj-V6YYdt_nZ01RYOu87aYuTaug5E3GxhaFa6OklnPbj2k1b8fZ2XYnAEy3A3c4exDu5IDCOYrYpTzKMymOtEceJAJnY1ZDBNC9Qj6nGy9AY9ZmUjn7wnhHHA1Am0q3Bmkw"></div><nav class="flex-1 overflow-y-auto py-md px-sm space-y-xs"><div class="px-sm py-2 text-label-caps text-on-surface-variant opacity-60">MAIN MENU</div><a class="flex items-center px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#"><span class="material-symbols-outlined mr-sm group-hover:text-primary transition-colors">dashboard</span><span class="font-body-md text-body-md group-hover:text-primary transition-colors">业务总览</span></a><a class="flex items-center px-sm py-sm rounded-lg bg-secondary-fixed text-on-secondary-fixed border-r-[3px] border-secondary group" href="#"><span class="material-symbols-outlined mr-sm" style="font-variation-settings: 'FILL' 1;">movie_edit</span><span class="font-body-md text-body-md font-medium">课程智能体</span></a><a class="flex items-center px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#"><span class="material-symbols-outlined mr-sm group-hover:text-primary transition-colors">folder_open</span><span class="font-body-md text-body-md group-hover:text-primary transition-colors">资产管理</span></a><a class="flex items-center px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#"><span class="material-symbols-outlined mr-sm group-hover:text-primary transition-colors">video_library</span><span class="font-body-md text-body-md group-hover:text-primary transition-colors">视频管理</span></a><a class="flex items-center px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#"><span class="material-symbols-outlined mr-sm group-hover:text-primary transition-colors">settings</span><span class="font-body-md text-body-md group-hover:text-primary transition-colors">系统设置</span></a></nav><div class="p-md border-t border-outline-variant"><div class="bg-surface-container-low p-sm rounded-lg border border-outline-variant/30"><div class="flex justify-between items-center mb-xs"><span class="font-label-md text-label-md text-on-surface-variant">存储计划</span><span class="font-label-md text-label-md text-primary">升级</span></div><div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden"><div class="h-full bg-primary rounded-full w-[60%]"></div></div><div class="mt-xs font-label-caps text-label-caps text-on-surface-variant">已使用 68.4GB / 共 100GB</div></div></div></aside>
+<!-- Main Workspace -->
+<main class="flex-1 flex flex-col md:ml-[240px] h-full relative">
+<!-- TopAppBar (Mirrored structure) -->
+<header class="h-16 bg-surface-container-lowest border-b border-outline-variant flex justify-between items-center px-lg shrink-0 z-10"><div class="flex items-center space-x-lg"><h2 class="text-primary font-headline-md text-headline-md">Micro-course AI</h2></div><div class="flex items-center space-x-md"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-2 text-on-surface-variant">search</span><input class="pl-8 pr-4 py-1.5 bg-surface-container rounded-full border-none focus:ring-1 focus:ring-primary w-40 text-body-sm" placeholder="搜索..." type="text"></div><button class="p-1 text-on-surface-variant hover:bg-surface-container rounded-full"><span class="material-symbols-outlined">notifications</span></button><button class="p-1 text-on-surface-variant hover:bg-surface-container rounded-full"><span class="material-symbols-outlined">help_outline</span></button><div class="flex items-center space-x-2 ml-2 cursor-pointer hover:bg-surface-container p-1 rounded-lg"><div class="w-8 h-8 rounded-full bg-outline-variant flex items-center justify-center overflow-hidden"><span class="material-symbols-outlined">account_circle</span></div><span class="text-body-sm font-medium">Admin</span></div></div></header>
+<!-- Content Area -->
+<div class="flex-1 flex overflow-hidden p-container-margin gap-gutter pb-[88px] /* space for bottom bar */">
+<!-- Left Panel: PPT Preview & Thumbnails -->
+<div class="flex-1 flex flex-col min-w-0 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm"><div class="w-full bg-surface border-b border-outline-variant py-4 px-lg flex justify-center items-center"><div class="flex items-center w-full max-w-3xl justify-between relative"><!-- Step 1 --><div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded bg-primary flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-on-primary text-[18px]">check</span></div><span class="mt-2 text-label-md text-primary font-medium">输入主题</span></div><div class="flex-1 h-px bg-outline-variant/50 mx-2 mt-[-24px]"></div><!-- Step 2 --><div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded bg-primary flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-on-primary text-[18px]">check</span></div><span class="mt-2 text-label-md text-primary font-medium">选择模板</span></div><div class="flex-1 h-px bg-outline-variant/50 mx-2 mt-[-24px]"></div><!-- Step 3 (Active) --><div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded bg-primary flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-on-primary text-[18px]">check</span></div><span class="mt-2 text-label-md text-primary font-medium">AI 智能生成</span></div><div class="flex-1 h-px bg-outline-variant/50 mx-2 mt-[-24px]"></div><!-- Step 4 --><div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded bg-primary flex items-center justify-center shadow-sm ring-4 ring-primary/10"><span class="text-on-primary font-bold text-sm">4</span></div><span class="mt-2 text-label-md text-primary font-bold">预览与导出</span></div></div></div>
+<!-- Preview Header -->
+<div class="h-12 border-b border-outline-variant flex items-center justify-between px-md bg-surface">
+<span class="font-title-lg text-title-lg text-on-surface">幻灯片预览</span>
+<div class="flex space-x-sm">
+<button class="px-sm py-1.5 rounded text-primary hover:bg-primary/10 transition-colors flex items-center font-label-md text-label-md border border-transparent hover:border-primary/20">
+<span class="material-symbols-outlined text-[18px] mr-1">download</span> 导出
+                        </button>
+<button class="p-1.5 rounded text-on-surface-variant hover:bg-surface-container-low transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">fullscreen</span>
+</button>
+</div>
+</div>
+<!-- Main Preview Canvas -->
+<div class="flex-1 bg-surface-variant relative overflow-hidden flex items-center justify-center p-md" id="preview-canvas">
+<!-- The PPT Slide -->
+<div class="w-full max-w-[800px] aspect-video bg-surface-container-lowest shadow-md rounded border border-outline-variant flex flex-col">
+<div class="flex-1 p-8 flex flex-col justify-center" id="slide-content">
+<h1 class="font-display-lg text-display-lg text-primary mb-6 text-center border-b-2 border-primary/20 pb-4 inline-block mx-auto" id="slide-title">新页面标题</h1>
+<ul class="space-y-4 font-headline-md text-headline-md text-on-surface w-3/4 mx-auto list-disc pl-8" id="slide-list"><li class="">新增知识点 1</li><li class="">新增知识点 2</li></ul>
+</div>
+<div class="h-8 border-t border-outline-variant/50 flex items-center justify-between px-4 text-outline font-label-caps text-label-caps">
+<span class="">数字人微课平台 | <span id="slide-chapter" class="">新增章</span></span>
+<span id="slide-number" class="">17</span>
+</div>
+</div>
+</div>
+<!-- Thumbnail Strip -->
+<div class="h-32 border-t border-outline-variant bg-surface flex items-center px-sm gap-sm overflow-x-auto custom-scrollbar flex-nowrap" id="thumbnail-strip">
+<!-- P1 -->
+
+<!-- P2 (Active) -->
+
+<!-- P3 -->
+
+<!-- Add New -->
+<div class="thumbnail-item w-40 aspect-video bg-surface-container-lowest rounded flex-shrink-0 relative group cursor-pointer transition-colors border-2 border-primary active" data-id="p17">
+                    <div class="absolute inset-0 p-2 flex flex-col justify-center items-center opacity-60">
+                        <div class="font-label-md font-bold mb-1 thumbnail-title text-primary">新页面</div>
+                        <div class="h-0.5 w-3/4 bg-outline-variant/50 rounded mt-1"></div>
+                        <div class="h-0.5 w-full bg-outline-variant/50 rounded mt-1"></div>
+                    </div>
+                    <div class="absolute bottom-1 left-2 px-1 rounded font-label-caps text-[10px] bg-primary text-on-primary">P17</div>
+                    <button class="delete-btn absolute top-1 right-1 p-1 bg-error/10 text-error rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-error hover:text-on-error"><span class="material-symbols-outlined text-[14px]">delete</span></button>
+                </div><div class="thumbnail-item w-40 aspect-video bg-surface-container-lowest rounded flex-shrink-0 relative group cursor-pointer transition-colors border border-outline-variant hover:border-primary/50" data-id="p18">
+                    <div class="absolute inset-0 p-2 flex flex-col justify-center items-center opacity-60">
+                        <div class="font-label-md font-bold mb-1 thumbnail-title text-on-surface">新页面</div>
+                        <div class="h-0.5 w-3/4 bg-outline-variant/50 rounded mt-1"></div>
+                        <div class="h-0.5 w-full bg-outline-variant/50 rounded mt-1"></div>
+                    </div>
+                    <div class="absolute bottom-1 left-2 px-1 rounded font-label-caps text-[10px] bg-background/80 text-on-surface-variant">P18</div>
+                    <button class="delete-btn absolute top-1 right-1 p-1 bg-error/10 text-error rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-error hover:text-on-error"><span class="material-symbols-outlined text-[14px]">delete</span></button>
+                </div><div class="thumbnail-item w-40 aspect-video bg-surface-container-lowest rounded flex-shrink-0 relative group cursor-pointer transition-colors border border-outline-variant hover:border-primary/50" data-id="p19">
+                    <div class="absolute inset-0 p-2 flex flex-col justify-center items-center opacity-60">
+                        <div class="font-label-md font-bold mb-1 thumbnail-title text-on-surface">新页面</div>
+                        <div class="h-0.5 w-3/4 bg-outline-variant/50 rounded mt-1"></div>
+                        <div class="h-0.5 w-full bg-outline-variant/50 rounded mt-1"></div>
+                    </div>
+                    <div class="absolute bottom-1 left-2 px-1 rounded font-label-caps text-[10px] bg-background/80 text-on-surface-variant">P19</div>
+                    <button class="delete-btn absolute top-1 right-1 p-1 bg-error/10 text-error rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-error hover:text-on-error"><span class="material-symbols-outlined text-[14px]">delete</span></button>
+                </div><div class="w-20 aspect-video border border-dashed border-outline-variant rounded flex-shrink-0 flex items-center justify-center cursor-pointer hover:bg-primary/5 hover:border-primary/50 transition-colors text-outline" id="add-page-btn-strip">
+<span class="material-symbols-outlined text-xl">add</span>
+</div>
+</div>
+</div>
+<!-- Right Panel: Outline Adjustment -->
+<div class="w-[360px] bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col shadow-sm h-full overflow-hidden">
+<div class="h-12 border-b border-outline-variant flex items-center px-md bg-surface shrink-0">
+<span class="font-title-lg text-title-lg text-on-surface flex-1">大纲调整</span>
+<span class="material-symbols-outlined text-on-surface-variant text-lg">format_list_bulleted</span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar p-md space-y-md min-h-0 max-h-full" id="outline-list">
+<!-- Chapter P1 -->
+
+<!-- Chapter P2 (Active/Editable) -->
+
+<!-- Chapter P3 -->
+
+<!-- Add New Page Button -->
+<div class="outline-item rounded-lg p-sm group cursor-pointer transition-colors border-2 border-primary bg-surface-container-lowest shadow-sm active" data-id="p17">
+                    <div class="flex items-center justify-between mb-sm">
+                        <div class="flex items-center flex-1"><span class="w-1.5 h-1.5 rounded-full bg-primary mr-2 animate-pulse active-indicator"></span><span class="font-label-md text-label-md font-bold title-text text-primary">P17 - 新页面</span></div>
+                        <input class="hidden font-label-md text-label-md text-primary font-bold border border-primary rounded px-2 py-1 bg-surface-container-lowest focus:outline-none focus:ring-1 focus:ring-primary w-full mr-2 title-input" type="text" value="P17 - 新页面">
+                        <div class="flex space-x-1 transition-opacity opacity-100">
+                            <button class="edit-btn p-1 text-on-surface-variant hover:text-primary rounded transition-colors"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+                            <button class="delete-btn p-1 text-on-surface-variant hover:text-error rounded transition-colors"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+                        </div>
+                    </div>
+                    <div class="font-body-sm text-body-sm text-on-surface pl-xs border-l-2 border-outline-variant/30 content-area">
+                        • 新增知识点 1<br>
+                        • 新增知识点 2
+                    </div>
+                </div><div class="outline-item rounded-lg p-sm group cursor-pointer transition-colors border border-outline-variant bg-surface hover:border-outline" data-id="p18">
+                    <div class="flex items-center justify-between mb-sm">
+                        <div class="flex items-center flex-1"><span class="font-label-md text-label-md font-bold title-text text-on-surface-variant">P18 - 新页面</span></div>
+                        <input class="hidden font-label-md text-label-md text-primary font-bold border border-primary rounded px-2 py-1 bg-surface-container-lowest focus:outline-none focus:ring-1 focus:ring-primary w-full mr-2 title-input" type="text" value="P18 - 新页面">
+                        <div class="flex space-x-1 transition-opacity opacity-0 group-hover:opacity-100">
+                            <button class="edit-btn p-1 text-on-surface-variant hover:text-primary rounded transition-colors"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+                            <button class="delete-btn p-1 text-on-surface-variant hover:text-error rounded transition-colors"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+                        </div>
+                    </div>
+                    <div class="font-body-sm text-body-sm text-on-surface pl-xs border-l-2 border-outline-variant/30 content-area">
+                        • 新增知识点 1<br>
+                        • 新增知识点 2
+                    </div>
+                </div><div class="outline-item rounded-lg p-sm group cursor-pointer transition-colors border border-outline-variant bg-surface hover:border-outline" data-id="p19">
+                    <div class="flex items-center justify-between mb-sm">
+                        <div class="flex items-center flex-1"><span class="font-label-md text-label-md font-bold title-text text-on-surface-variant">P19 - 新页面</span></div>
+                        <input class="hidden font-label-md text-label-md text-primary font-bold border border-primary rounded px-2 py-1 bg-surface-container-lowest focus:outline-none focus:ring-1 focus:ring-primary w-full mr-2 title-input" type="text" value="P19 - 新页面">
+                        <div class="flex space-x-1 transition-opacity opacity-0 group-hover:opacity-100">
+                            <button class="edit-btn p-1 text-on-surface-variant hover:text-primary rounded transition-colors"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+                            <button class="delete-btn p-1 text-on-surface-variant hover:text-error rounded transition-colors"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+                        </div>
+                    </div>
+                    <div class="font-body-sm text-body-sm text-on-surface pl-xs border-l-2 border-outline-variant/30 content-area">
+                        • 新增知识点 1<br>
+                        • 新增知识点 2
+                    </div>
+                </div><button class="w-full py-2 border border-dashed border-outline-variant rounded-lg text-on-surface-variant hover:text-primary hover:border-primary hover:bg-primary/5 transition-colors flex items-center justify-center font-label-md text-label-md mt-lg" id="add-page-btn-outline">
+<span class="material-symbols-outlined mr-1 text-[18px]">post_add</span> 添加新页面
+                    </button>
+</div>
+</div>
+<div class="absolute bottom-24 left-1/2 -translate-x-1/2 text-on-surface-variant opacity-40 font-label-md">海南大学</div></div>
+<!-- Bottom Action Bar (Floating) -->
+<div class="absolute bottom-0 left-0 right-0 h-20 bg-surface-container-lowest/90 backdrop-blur-sm border-t border-outline-variant flex items-center justify-end px-container-margin z-20 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
+<div class="flex space-x-md"><button class="px-6 py-2.5 rounded-lg border border-primary text-primary font-label-md text-label-md font-medium hover:bg-primary/5 transition-colors">保存草稿</button><button class="px-6 py-2.5 rounded-lg border border-primary text-primary font-label-md text-label-md font-medium hover:bg-primary/5 transition-colors">导出 PDF</button><button class="px-6 py-2.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-medium hover:bg-primary/90 transition-colors shadow-sm flex items-center">导出 PPT <span class="material-symbols-outlined ml-2 text-[18px]">download</span></button></div>
+</div>
+</main>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const outlineList = document.getElementById('outline-list');
+        const thumbnailStrip = document.getElementById('thumbnail-strip');
+        const addPageBtnOutline = document.getElementById('add-page-btn-outline');
+        const addPageBtnStrip = document.getElementById('add-page-btn-strip');
+        const slideTitle = document.getElementById('slide-title');
+        const slideList = document.getElementById('slide-list');
+        const slideNumber = document.getElementById('slide-number');
+        const slideChapter = document.getElementById('slide-chapter');
+        let pageCount = 3;
+
+        // --- Data Mocking for Preview ---
+        const pageData = {
+            'p1': {
+                title: '封面页',
+                chapter: '封面',
+                number: '01',
+                list: ['课程标题展示', '讲师信息介绍']
+            },
+            'p2': {
+                title: '人工智能简介',
+                chapter: '第一章',
+                number: '02',
+                list: ['什么是人工智能 (AI)？', 'AI 的发展历史与核心里程碑。', '机器学习与深度学习的区别。', '在现代教育与工业中的应用案例。']
+            },
+            'p3': {
+                title: '发展历史',
+                chapter: '第二章',
+                number: '03',
+                list: ['早期探索阶段 (1950s-1970s)', '专家系统时期 (1980s)', '深度学习爆发 (2010s至今)']
+            }
+        };
+
+        // --- Utility Functions ---
+
+        function updatePreview(id) {
+            const data = pageData[id] || { title: `P${id.replace('p', '')} - 新页面`, chapter: '新增章', number: id.replace('p', '').padStart(2, '0'), list: ['新增知识点 1', '新增知识点 2'] };
+            slideTitle.textContent = data.title;
+            slideChapter.textContent = data.chapter;
+            slideNumber.textContent = data.number;
+            
+            slideList.innerHTML = '';
+            data.list.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                slideList.appendChild(li);
+            });
+        }
+
+        function setActive(id) {
+            // Update Outline
+            document.querySelectorAll('.outline-item').forEach(item => {
+                if (item.dataset.id === id) {
+                    item.classList.add('border-2', 'border-primary', 'bg-surface-container-lowest', 'shadow-sm', 'active');
+                    item.classList.remove('border', 'border-outline-variant', 'bg-surface', 'hover:border-outline');
+                    const titleText = item.querySelector('.title-text');
+                    titleText.classList.add('text-primary');
+                    titleText.classList.remove('text-on-surface-variant');
+                    
+                    // Add active indicator if not present
+                    let flexContainer = item.querySelector('.flex.items-center.flex-1');
+                    if(flexContainer) {
+                         if (!flexContainer.querySelector('.active-indicator')) {
+                            const indicator = document.createElement('span');
+                            indicator.className = 'w-1.5 h-1.5 rounded-full bg-primary mr-2 animate-pulse active-indicator';
+                            flexContainer.insertBefore(indicator, titleText);
+                        }
+                    } else {
+                        // restructure for active state if needed, simplified here
+                         const header = item.querySelector('.flex.items-center.justify-between');
+                         const firstChild = header.firstElementChild;
+                         if(!firstChild.classList.contains('flex-1')) {
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'flex items-center flex-1';
+                            const indicator = document.createElement('span');
+                            indicator.className = 'w-1.5 h-1.5 rounded-full bg-primary mr-2 animate-pulse active-indicator';
+                            wrapper.appendChild(indicator);
+                            header.insertBefore(wrapper, firstChild);
+                            wrapper.appendChild(firstChild); // move title inside
+                         }
+                    }
+                    
+                    // keep action buttons visible
+                    item.querySelector('.flex.space-x-1').classList.remove('opacity-0', 'group-hover:opacity-100');
+                    item.querySelector('.flex.space-x-1').classList.add('opacity-100');
+
+                } else {
+                    item.classList.remove('border-2', 'border-primary', 'bg-surface-container-lowest', 'shadow-sm', 'active');
+                    item.classList.add('border', 'border-outline-variant', 'bg-surface', 'hover:border-outline');
+                    const titleText = item.querySelector('.title-text');
+                    if(titleText) {
+                         titleText.classList.remove('text-primary');
+                         titleText.classList.add('text-on-surface-variant');
+                    }
+                   
+                    const indicator = item.querySelector('.active-indicator');
+                    if (indicator) indicator.remove();
+                    
+                     const actionBtns = item.querySelector('.flex.space-x-1');
+                     if(actionBtns) {
+                         actionBtns.classList.add('opacity-0', 'group-hover:opacity-100');
+                         actionBtns.classList.remove('opacity-100');
+                     }
+                }
+            });
+
+            // Update Thumbnails
+            document.querySelectorAll('.thumbnail-item').forEach(item => {
+                if (item.dataset.id === id) {
+                    item.classList.add('border-2', 'border-primary', 'active');
+                    item.classList.remove('border', 'border-outline-variant', 'hover:border-primary/50');
+                    const title = item.querySelector('.thumbnail-title');
+                    if(title) title.classList.add('text-primary');
+                    if(title) title.classList.remove('text-on-surface');
+                    
+                    const label = item.querySelector('.absolute.bottom-1');
+                    label.classList.add('bg-primary', 'text-on-primary');
+                    label.classList.remove('bg-background/80', 'text-on-surface-variant');
+
+                } else {
+                    item.classList.remove('border-2', 'border-primary', 'active');
+                    item.classList.add('border', 'border-outline-variant', 'hover:border-primary/50');
+                    const title = item.querySelector('.thumbnail-title');
+                    if(title) title.classList.remove('text-primary');
+                    if(title) title.classList.add('text-on-surface');
+
+                    const label = item.querySelector('.absolute.bottom-1');
+                    label.classList.remove('bg-primary', 'text-on-primary');
+                    label.classList.add('bg-background/80', 'text-on-surface-variant');
+                }
+            });
+
+            updatePreview(id);
+        }
+
+        function deletePage(id) {
+            const outlineItem = document.querySelector(`.outline-item[data-id="${id}"]`);
+            const thumbnailItem = document.querySelector(`.thumbnail-item[data-id="${id}"]`);
+            
+            if (outlineItem) outlineItem.remove();
+            if (thumbnailItem) thumbnailItem.remove();
+
+            // Auto-select another page if the deleted one was active
+            if (outlineItem && outlineItem.classList.contains('active')) {
+                const remaining = document.querySelector('.outline-item');
+                if (remaining) {
+                    setActive(remaining.dataset.id);
+                }
+            }
+        }
+
+        function attachEventListeners(element) {
+            // Edit Button
+            const editBtn = element.querySelector('.edit-btn');
+            const titleText = element.querySelector('.title-text');
+            const titleInput = element.querySelector('.title-input');
+            
+            if (editBtn && titleText && titleInput) {
+                editBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    titleText.classList.add('hidden');
+                    titleInput.classList.remove('hidden');
+                    titleInput.focus();
+                });
+
+                const saveTitle = () => {
+                    const newTitle = titleInput.value.trim();
+                    if (newTitle) {
+                        titleText.textContent = newTitle;
+                        // update corresponding thumbnail if exists
+                        const id = element.closest('.outline-item').dataset.id;
+                        const thumb = document.querySelector(`.thumbnail-item[data-id="${id}"] .thumbnail-title`);
+                        if(thumb) thumb.textContent = newTitle.split(' - ')[1] || newTitle;
+                    } else {
+                        titleInput.value = titleText.textContent;
+                    }
+                    titleInput.classList.add('hidden');
+                    titleText.classList.remove('hidden');
+                };
+
+                titleInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') saveTitle();
+                });
+                titleInput.addEventListener('blur', saveTitle);
+                titleInput.addEventListener('click', e => e.stopPropagation());
+            }
+
+            // Delete Button
+            const deleteBtn = element.querySelector('.delete-btn');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = element.closest('[data-id]').dataset.id;
+                    deletePage(id);
+                });
+            }
+
+            // Selection
+            element.addEventListener('click', () => {
+                const id = element.closest('[data-id]').dataset.id;
+                setActive(id);
+            });
+        }
+
+        function createNewPage() {
+            pageCount++;
+            const newId = `p${pageCount}`;
+            const newTitle = `P${pageCount} - 新页面`;
+            
+            // Add to mock data
+            pageData[newId] = {
+                title: '新页面标题',
+                chapter: '新增章',
+                number: pageCount.toString().padStart(2, '0'),
+                list: ['新增知识点 1', '新增知识点 2']
+            };
+
+            // Create Outline Item
+            const outlineHtml = `
+                <div class="outline-item border border-outline-variant rounded-lg p-sm bg-surface group cursor-pointer hover:border-outline transition-colors" data-id="${newId}">
+                    <div class="flex items-center justify-between mb-sm">
+                        <span class="font-label-md text-label-md text-on-surface-variant font-bold title-text">${newTitle}</span>
+                        <input class="hidden font-label-md text-label-md text-primary font-bold border border-primary rounded px-2 py-1 bg-surface-container-lowest focus:outline-none focus:ring-1 focus:ring-primary w-full mr-2 title-input" type="text" value="${newTitle}">
+                        <div class="flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button class="edit-btn p-1 text-on-surface-variant hover:text-primary rounded transition-colors"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+                            <button class="delete-btn p-1 text-on-surface-variant hover:text-error rounded transition-colors"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+                        </div>
+                    </div>
+                    <div class="font-body-sm text-body-sm text-on-surface pl-xs border-l-2 border-outline-variant/30 content-area">
+                        • 新增知识点 1<br>
+                        • 新增知识点 2
+                    </div>
+                </div>
+            `;
+            const outlineTemp = document.createElement('div');
+            outlineTemp.innerHTML = outlineHtml;
+            const newOutlineItem = outlineTemp.firstElementChild;
+            outlineList.insertBefore(newOutlineItem, addPageBtnOutline);
+            attachEventListeners(newOutlineItem);
+
+            // Create Thumbnail
+            const thumbnailHtml = `
+                <div class="thumbnail-item w-40 aspect-video bg-surface-container-lowest border border-outline-variant rounded flex-shrink-0 relative group cursor-pointer hover:border-primary/50 transition-colors" data-id="${newId}">
+                    <div class="absolute inset-0 p-2 flex flex-col justify-center items-center opacity-60">
+                        <div class="font-label-md text-on-surface font-bold mb-1 thumbnail-title">新页面</div>
+                        <div class="h-0.5 w-3/4 bg-outline-variant/50 rounded mt-1"></div>
+                        <div class="h-0.5 w-full bg-outline-variant/50 rounded mt-1"></div>
+                    </div>
+                    <div class="absolute bottom-1 left-2 bg-background/80 px-1 rounded font-label-caps text-[10px] text-on-surface-variant">P${pageCount}</div>
+                    <button class="delete-btn absolute top-1 right-1 p-1 bg-error/10 text-error rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-error hover:text-on-error"><span class="material-symbols-outlined text-[14px]">delete</span></button>
+                </div>
+            `;
+            const thumbTemp = document.createElement('div');
+            thumbTemp.innerHTML = thumbnailHtml;
+            const newThumbItem = thumbTemp.firstElementChild;
+            thumbnailStrip.insertBefore(newThumbItem, addPageBtnStrip);
+            attachEventListeners(newThumbItem);
+            
+            // set up delete for the new thumbnail button specifically as well
+            newThumbItem.querySelector('.delete-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                deletePage(newId);
+            });
+
+            setActive(newId);
+            thumbnailStrip.scrollLeft = thumbnailStrip.scrollWidth;
+        }
+
+        // --- Initialization ---
+        
+        // Attach events to existing items
+        document.querySelectorAll('.outline-item').forEach(attachEventListeners);
+        document.querySelectorAll('.thumbnail-item').forEach(item => {
+            item.addEventListener('click', () => setActive(item.dataset.id));
+            const delBtn = item.querySelector('.delete-btn');
+            if(delBtn) {
+                 delBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deletePage(item.dataset.id);
+                });
+            }
+        });
+
+        // Add page buttons
+        addPageBtnOutline.addEventListener('click', createNewPage);
+        addPageBtnStrip.addEventListener('click', createNewPage);
+    });
+</script>
+
+
+
+
+</body></html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html><html class="light" lang="zh-CN" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>历史与草稿 - AI 生产系统</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#614000",
+                        "on-surface": "#1b1c1c",
+                        "inverse-on-surface": "#f2f0f0",
+                        "secondary-fixed": "#88fd54",
+                        "primary-container": "#0075d5",
+                        "secondary-fixed-dim": "#6de039",
+                        "on-primary-fixed": "#001c3a",
+                        "on-secondary-fixed": "#062100",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#004785",
+                        "on-tertiary-fixed": "#281800",
+                        "tertiary-container": "#9d6a00",
+                        "on-primary": "#ffffff",
+                        "surface": "#faf9f9",
+                        "on-secondary-container": "#287100",
+                        "surface-tint": "#005fae",
+                        "on-background": "#1b1c1c",
+                        "surface-container-high": "#e9e8e8",
+                        "secondary-container": "#85fa51",
+                        "surface-variant": "#e3e2e2",
+                        "surface-container": "#efeded",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#a5c8ff",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#404753",
+                        "primary-fixed": "#d4e3ff",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#266d00",
+                        "inverse-surface": "#2f3031",
+                        "surface-bright": "#faf9f9",
+                        "outline-variant": "#c0c7d6",
+                        "primary": "#005daa",
+                        "tertiary-fixed": "#ffddb0",
+                        "on-secondary-fixed-variant": "#1a5200",
+                        "on-primary-container": "#fefcff",
+                        "surface-container-highest": "#e3e2e2",
+                        "surface-container-low": "#f4f3f3",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#a5c8ff",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#7d5400",
+                        "on-tertiary-container": "#fffbff",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#ffba45",
+                        "background": "#faf9f9",
+                        "surface-dim": "#dbdad9",
+                        "outline": "#707785"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xl": "32px",
+                        "container-margin": "24px",
+                        "lg": "24px",
+                        "sm": "12px",
+                        "gutter": "16px",
+                        "sidebar-width": "240px",
+                        "base": "4px",
+                        "xs": "8px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "title-lg": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+                        "display-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #f0f2f5;
+        }
+    </style>
+</head>
+<body class="text-on-surface font-body-md bg-background antialiased h-screen overflow-hidden flex">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full w-[240px] bg-surface-container-lowest dark:bg-surface-dim border-r border-outline-variant dark:border-outline flex flex-col overflow-y-auto z-20">
+<!-- Brand Header -->
+<div class="px-lg py-md flex items-center gap-sm mb-md mt-sm">
+<div class="w-10 h-10 bg-primary rounded flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[24px]">view_in_ar</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-fixed-dim">Hainan University</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">AI Production Lab</p>
+</div>
+</div>
+<!-- CTA -->
+<div class="px-md mb-md">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-sm rounded-lg flex items-center justify-center gap-xs hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">add</span>
+                New Project
+            </button>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 px-sm">
+<ul class="space-y-1">
+<li class="">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="">业务总览</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center gap-md px-md py-sm rounded-lg bg-secondary-container text-on-secondary-container border-r-[3px] border-secondary font-body-md text-body-md scale-[0.99] transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">movie_edit</span>
+<span class="">微课智能体</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">auto_awesome_motion</span>
+<span class="">资产管理</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">folder_open</span>
+<span class="">视频管理</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+<span class="">系统设置</span>
+</a>
+</li>
+</ul>
+</div>
+<!-- Storage Plan Widget -->
+<div class="p-md mt-auto mb-md mx-md bg-surface border border-outline-variant rounded-lg">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">存储计划</span>
+<a class="font-label-md text-label-md text-primary" href="#">升级</a>
+</div>
+<div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden mb-sm">
+<div class="bg-primary h-full w-[68%] rounded-full"></div>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant">已使用 68.4GB / 共 100GB</p>
+</div>
+<!-- Footer Links -->
+<div class="px-sm pb-md">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">help</span>
+<span class="">Help Center</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 ml-[240px] flex flex-col h-screen overflow-hidden">
+<!-- TopAppBar -->
+<header class="h-16 bg-surface dark:bg-surface-container-lowest border-b border-outline-variant dark:border-outline flex justify-between items-center px-lg flex-shrink-0 z-10">
+<div class="flex items-center gap-md">
+<span class="font-title-lg text-title-lg font-semibold text-on-surface dark:text-on-surface">Micro-course AI</span>
+<nav class="ml-xl hidden md:flex items-center gap-lg">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">首页</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">工作流</a>
+<a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1" href="#">生产</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">支持</a>
+</nav>
+</div>
+<div class="flex items-center gap-lg">
+<div class="relative hidden lg:block w-64">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]" style="font-variation-settings: 'FILL' 0;">search</span>
+<input class="w-full pl-[36px] pr-sm py-[6px] bg-surface-container-low border border-transparent focus:border-primary focus:bg-surface rounded-full text-body-sm font-body-sm text-on-surface placeholder:text-on-surface-variant outline-none transition-all" placeholder="搜索工作流..." type="text">
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-xs text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">help_outline</span>
+</button>
+</div>
+<div class="flex items-center gap-sm pl-sm border-l border-outline-variant">
+<img alt="Admin User Profile" class="w-8 h-8 rounded-full border border-outline-variant object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP6kvVxw_8VvxxYbmHhOfxsEttJePzS-RmqK93fqncOHhWYitxcnbWipE_NjnL8X3i62CMxcq-XHzY6Rao_3QR6wT37VlZw8s-l-Seu1jU__pLYeOOYKM9LxH9KwPFRN3N6DXHmKTOO73QAGTmbDd7s-V5ueDkIcYR5Icq8K5lO22aqP9XV6rtHvjs67kMRHh-gWM77ktsEDDgJkwfqsLx0k7sYkbZmjAS8Lk5IvZ5rhYAjF46OZS1">
+<span class="font-label-md text-label-md text-on-surface hidden md:inline">Admin</span>
+</div>
+</div>
+</header>
+<!-- Page Canvas -->
+<main class="flex-1 overflow-y-auto p-container-margin">
+<!-- Page Header & Actions -->
+<div class="flex justify-between items-end mb-lg">
+<div>
+<div class="text-on-surface-variant font-label-md text-label-md mb-xs flex items-center gap-xs">
+<span class="">Micro-course AI</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="">生产</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="">PPT 生成</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface font-medium">历史与草稿</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">历史记录</h2>
+</div>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded-lg flex items-center gap-xs hover:bg-primary-container transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    新建 PPT
+                </button>
+</div>
+<!-- Filters & Search -->
+<div class="bg-surface border border-outline-variant rounded-xl p-sm mb-lg flex items-center justify-between">
+<div class="flex gap-sm">
+<button class="px-md py-xs rounded bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-variant transition-colors">全部状态</button>
+<button class="px-md py-xs rounded text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors">已完成</button>
+<button class="px-md py-xs rounded text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors">草稿</button>
+<button class="px-md py-xs rounded text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors">失败</button>
+</div>
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full pl-[32px] pr-sm py-1.5 border border-outline-variant rounded bg-surface text-body-sm font-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="搜索课程标题..." type="text">
+</div>
+</div>
+<!-- Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-md">
+<!-- Card 1: Completed -->
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+<div class="h-32 bg-surface-container-low relative border-b border-outline-variant">
+<div class="w-full h-full bg-cover bg-center" data-alt="A clean, modern corporate presentation slide template featuring blue and white data visualizations and crisp typography." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuADX4_E2SxNZ1shCBywj8P27K8AdeDwTPsdxTL7jY-pEpSWnlgz1gOn74pRjzvlMMBLJnIphLVwqbq-QKz3gM10tewmkOLfzBKRsP533Ie9ibdekc1iv1_1gH_a3EfZy4ULfHTpbtWgOB5LVMcdiB1ooxSaH1XFcMm4pLvvuSD3Bn49Rh3BGx7gL9PeiwRrrbo7bKNqhPT3EWsArFVXEU9RFLalWBSWohhW0f0wv0n5sDzCru9Cx1as')"></div>
+<div class="absolute top-sm right-sm bg-surface/90 backdrop-blur px-2 py-0.5 rounded text-[10px] font-bold text-on-secondary-container flex items-center gap-1 border border-secondary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> 已完成
+                        </div>
+</div>
+<div class="p-md flex-1 flex flex-col">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-xs line-clamp-2">人工智能在现代医疗中的应用</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md flex-1">包含3个主要章节：诊断、药物研发、患者管理。模板：学术严谨 (16:9)</p>
+<div class="flex items-center justify-between mt-auto pt-sm border-t border-outline-variant">
+<span class="font-label-caps text-label-caps text-on-surface-variant">2023-10-24 14:30</span>
+<div class="flex gap-xs">
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors" title="预览"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors" title="编辑"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors" title="下载"><span class="material-symbols-outlined text-[18px]">download</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: Processing (Active) -->
+<div class="bg-surface border-2 border-primary rounded-xl overflow-hidden flex flex-col relative shadow-sm">
+<div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+<div class="h-32 bg-surface-container-low relative border-b border-outline-variant flex items-center justify-center">
+<div class="w-full h-full bg-cover bg-center opacity-40 grayscale" data-alt="A dark mode technology presentation slide template with glowing blue accents and a minimalist layout." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCtuwqeueo_Dfe8CEXE9_mAGW__l_jFzL2hIx1swFfMdgv4gfk4_J9ZB9rKVf_RRFQ8lyFyCArZH_6m2fHI3ThTF_5ls5PBpBNaaMWfN1ErpOhrsVk8I-IlGx51aeYD0VWMeq9jIcP0rdJFbLRNFZ36TyCvtZQMD2s8nk3ryLJtGoRhAN7CjEgbpufsgdoqH2eUoZ1gkeUNbHS5XAdw3XhlFvhY6iiMWD5wqUe5r13M_84GtKy1pFMx')"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center z-10">
+<div class="w-10 h-10 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-2"></div>
+<span class="font-label-md text-label-md text-primary font-bold">生成中 64%</span>
+</div>
+<div class="absolute top-sm right-sm bg-surface/90 backdrop-blur px-2 py-0.5 rounded text-[10px] font-bold text-primary flex items-center gap-1 border border-primary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> 处理中
+                        </div>
+</div>
+<div class="p-md flex-1 flex flex-col">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-xs line-clamp-2">全球经济趋势分析与数字化转型策略</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md flex-1">基于最新经济数据报告生成的分析简报。模板：商务汇报 (16:9)</p>
+<div class="flex items-center justify-between mt-auto pt-sm border-t border-outline-variant">
+<span class="font-label-caps text-label-caps text-on-surface-variant">2023-10-25 09:15</span>
+<div class="flex gap-xs">
+<button class="p-1 text-on-surface-variant hover:text-error transition-colors" title="取消"><span class="material-symbols-outlined text-[18px]">close</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3: Draft -->
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+<div class="h-32 bg-surface-variant relative border-b border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-[40px]">edit_document</span>
+<div class="absolute top-sm right-sm bg-surface px-2 py-0.5 rounded text-[10px] font-bold text-on-surface-variant flex items-center gap-1 border border-outline-variant">
+                            草稿
+                        </div>
+</div>
+<div class="p-md flex-1 flex flex-col">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-xs line-clamp-2 italic text-on-surface-variant">未命名课程主题...</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md flex-1">包含初步的大纲结构，尚未选择视觉模板。</p>
+<div class="flex items-center justify-between mt-auto pt-sm border-t border-outline-variant">
+<span class="font-label-caps text-label-caps text-on-surface-variant">2023-10-23 16:45</span>
+<div class="flex gap-xs">
+<button class="px-sm py-1 border border-primary text-primary rounded font-label-md text-label-md hover:bg-primary-container/10 transition-colors">继续编辑</button>
+<button class="p-1 text-on-surface-variant hover:text-error transition-colors ml-sm" title="删除"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 4: Failed -->
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+<div class="h-32 bg-error-container/20 relative border-b border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-error text-[40px]">error</span>
+<div class="absolute top-sm right-sm bg-surface px-2 py-0.5 rounded text-[10px] font-bold text-error flex items-center gap-1 border border-error-container">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> 失败
+                        </div>
+</div>
+<div class="p-md flex-1 flex flex-col">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-xs line-clamp-2">探索前端架构演进</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-xs flex-1">从单页应用到微前端的演变过程。</p>
+<p class="font-label-md text-label-md text-error mb-md bg-error-container/50 p-1 rounded">错误：大纲生成超时，请重试。</p>
+<div class="flex items-center justify-between mt-auto pt-sm border-t border-outline-variant">
+<span class="font-label-caps text-label-caps text-on-surface-variant">2023-10-22 11:20</span>
+<div class="flex gap-xs">
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors" title="重试"><span class="material-symbols-outlined text-[18px]">refresh</span></button>
+<button class="p-1 text-on-surface-variant hover:text-error transition-colors" title="删除"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 5: Completed -->
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+<div class="h-32 bg-surface-container-low relative border-b border-outline-variant">
+<div class="w-full h-full bg-cover bg-center" data-alt="A clean, minimalist presentation slide template featuring elegant typography and soft pastel color blocks." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAFbZuo3Evn3RQim9S671Vn5ckEY8eGs0-8tqOVRe4YMTdJhbNbnU7hqz3m-EaG5uXPUZNJ4y8PtEgvQzztdkqM9zXLm6W7nxed1gIYplGmavg8eFNjlATQ55vgeRq0zuTjaftGmeWJisxld_m5RSMz52elA9v7kFWL3WzKIUI7bUeSVEDNN683RUAl1tp-8nAUerjJFXjjlSnW8YzHfRiZGSLoPZU3YqQQLVcL1n8sO8TVKxH2xK0f')"></div>
+<div class="absolute top-sm right-sm bg-surface/90 backdrop-blur px-2 py-0.5 rounded text-[10px] font-bold text-on-secondary-container flex items-center gap-1 border border-secondary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> 已完成
+                        </div>
+</div>
+<div class="p-md flex-1 flex flex-col">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-xs line-clamp-2">新员工入职培训 2023</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md flex-1">公司文化、制度介绍及IT系统操作指南。模板：极简清新 (4:3)</p>
+<div class="flex items-center justify-between mt-auto pt-sm border-t border-outline-variant">
+<span class="font-label-caps text-label-caps text-on-surface-variant">2023-10-20 09:00</span>
+<div class="flex gap-xs">
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors" title="预览"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors" title="编辑"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors" title="下载"><span class="material-symbols-outlined text-[18px]">download</span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+
+<script class="">
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabs = document.querySelectorAll('.bg-surface.border.border-outline-variant.rounded-xl.p-sm.mb-lg .flex.gap-sm button');
+    const cards = document.querySelectorAll('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3.xl\\:grid-cols-4 > div');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // 1. Update Tab Styles
+        tabs.forEach(t => {
+          t.classList.remove('bg-surface-container-low', 'text-on-surface');
+          t.classList.add('text-on-surface-variant', 'hover:bg-surface-container-low');
+        });
+        tab.classList.add('bg-surface-container-low', 'text-on-surface');
+        tab.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-low');
+
+        // 2. Filter Cards
+        const statusText = tab.textContent.trim();
+        cards.forEach(card => {
+          if (statusText === '全部状态') {
+            card.classList.remove('hidden');
+            return;
+          }
+
+          // Find the status badge text inside the card
+          const badge = card.querySelector('.absolute.top-sm.right-sm');
+          if (badge && badge.textContent.trim().includes(statusText)) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+  });
+</script><script class="">
+  (function() {
+    const filterContainer = document.querySelector('.bg-surface.border.border-outline-variant.rounded-xl.p-sm.mb-lg .flex.gap-sm');
+    if (!filterContainer) return;
+
+    const tabs = filterContainer.querySelectorAll('button');
+    const cards = document.querySelectorAll('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3.xl\\:grid-cols-4 > div');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // 1. Update Tab Styles using Design System classes
+        tabs.forEach(t => {
+          t.classList.remove('bg-secondary-container', 'text-on-secondary-container', 'font-bold');
+          t.classList.add('text-on-surface-variant', 'hover:bg-surface-container-low');
+          t.classList.remove('bg-surface-container-low', 'text-on-surface');
+        });
+
+        tab.classList.add('bg-secondary-container', 'text-on-secondary-container', 'font-bold');
+        tab.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-low', 'bg-surface-container-low', 'text-on-surface');
+
+        // 2. Filter Cards
+        const statusText = tab.textContent.trim();
+        cards.forEach(card => {
+          if (statusText === '全部状态') {
+            card.classList.remove('hidden');
+            return;
+          }
+
+          const badge = card.querySelector('.absolute.top-sm.right-sm');
+          if (badge && badge.textContent.trim().includes(statusText)) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // Initialize the first tab as active if it's '全部状态'
+    if (tabs[0] && tabs[0].textContent.trim() === '全部状态') {
+      tabs[0].classList.add('bg-secondary-container', 'text-on-secondary-container', 'font-bold');
+      tabs[0].classList.remove('bg-surface-container-low', 'text-on-surface');
+    }
+  })();
+</script><script class="">
+  (function() {
+    const filterButtons = document.querySelectorAll('.bg-surface.border.border-outline-variant.rounded-xl.p-sm.mb-lg .flex.gap-sm button');
+    const projectCards = document.querySelectorAll('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3.xl\\:grid-cols-4 > div');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // 1. Update Active State Styling
+        filterButtons.forEach(btn => {
+          btn.classList.remove('bg-primary', 'text-on-primary', 'font-bold');
+          btn.classList.add('text-on-surface-variant', 'hover:bg-surface-container-low');
+          btn.classList.remove('bg-surface-container-low', 'text-on-surface');
+        });
+
+        button.classList.add('bg-primary', 'text-on-primary', 'font-bold');
+        button.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-low', 'bg-surface-container-low', 'text-on-surface');
+
+        // 2. Filter Cards
+        const filterValue = button.textContent.trim();
+        projectCards.forEach(card => {
+          if (filterValue === '全部状态') {
+            card.classList.remove('hidden');
+          } else {
+            const badge = card.querySelector('.absolute.top-sm.right-sm');
+            if (badge && badge.textContent.trim().includes(filterValue)) {
+              card.classList.remove('hidden');
+            } else {
+              card.classList.add('hidden');
+            }
+          }
+        });
+      });
+    });
+
+    // Initialize '全部状态' as active
+    if (filterButtons[0]) {
+      filterButtons[0].classList.add('bg-primary', 'text-on-primary', 'font-bold');
+      filterButtons[0].classList.remove('bg-surface-container-low', 'text-on-surface');
+    }
+  })();
+</script><script>
+  (function() {
+    const tabContainer = document.querySelector('.bg-surface.border.border-outline-variant.rounded-xl.p-sm.mb-lg .flex.gap-sm');
+    if (!tabContainer) return;
+
+    const tabs = tabContainer.querySelectorAll('button');
+    const cards = document.querySelectorAll('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3.xl\\:grid-cols-4 > div');
+
+    function updateTabs(activeTab) {
+      tabs.forEach(tab => {
+        tab.classList.remove('bg-surface-container-lowest', 'shadow-sm', 'text-primary', 'font-bold', 'bg-primary', 'text-on-primary', 'bg-secondary-container', 'text-on-secondary-container', 'bg-surface-container-low', 'text-on-surface');
+        tab.classList.add('text-on-surface-variant', 'hover:bg-surface-container-low');
+      });
+
+      activeTab.classList.add('bg-surface-container-lowest', 'shadow-sm', 'text-primary', 'font-bold');
+      activeTab.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-low');
+    }
+
+    function filterCards(status) {
+      cards.forEach(card => {
+        if (status === '全部状态') {
+          card.classList.remove('hidden');
+          return;
+        }
+        const badge = card.querySelector('.absolute.top-sm.right-sm');
+        if (badge && badge.textContent.trim().includes(status)) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const status = tab.textContent.trim();
+        updateTabs(tab);
+        filterCards(status);
+      });
+    });
+
+    // Initialize first tab as active
+    if (tabs[0]) {
+      updateTabs(tabs[0]);
+    }
+  })();
+</script></body></html>

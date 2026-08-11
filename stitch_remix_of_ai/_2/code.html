@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Import Custom Template</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#9d6a00",
+                        "on-primary-container": "#fefcff",
+                        "surface-container-highest": "#e3e2e2",
+                        "on-surface-variant": "#404753",
+                        "surface": "#faf9f9",
+                        "primary-container": "#0075d5",
+                        "secondary-fixed": "#88fd54",
+                        "inverse-surface": "#2f3031",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "background": "#faf9f9",
+                        "surface-container-high": "#e9e8e8",
+                        "surface-container-low": "#f4f3f3",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#c0c7d6",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#d4e3ff",
+                        "primary": "#005daa",
+                        "surface-tint": "#005fae",
+                        "secondary-container": "#85fa51",
+                        "secondary-fixed-dim": "#6de039",
+                        "surface-bright": "#faf9f9",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#281800",
+                        "tertiary-fixed": "#ffddb0",
+                        "secondary": "#266d00",
+                        "on-primary-fixed-variant": "#004785",
+                        "on-secondary-fixed": "#062100",
+                        "on-secondary-container": "#287100",
+                        "outline": "#707785",
+                        "surface-variant": "#e3e2e2",
+                        "surface-container": "#efeded",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#a5c8ff",
+                        "primary-fixed-dim": "#a5c8ff",
+                        "on-secondary-fixed-variant": "#1a5200",
+                        "tertiary-fixed-dim": "#ffba45",
+                        "on-primary-fixed": "#001c3a",
+                        "on-tertiary-container": "#fffbff",
+                        "tertiary": "#7d5400",
+                        "on-surface": "#1b1c1c",
+                        "surface-dim": "#dbdad9",
+                        "inverse-on-surface": "#f2f0f0",
+                        "on-tertiary-fixed-variant": "#614000",
+                        "on-background": "#1b1c1c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sidebar-width": "240px",
+                        "gutter": "16px",
+                        "lg": "24px",
+                        "sm": "12px",
+                        "md": "16px",
+                        "xs": "8px",
+                        "xl": "32px",
+                        "container-margin": "24px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "title-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "title-lg": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "display-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background font-sans text-on-surface antialiased h-screen w-screen overflow-hidden flex relative">
+<!-- Background Layer (Screen 2 Context) -->
+<div class="absolute inset-0 w-full h-full filter blur-sm opacity-60 z-0">
+<img alt="Template Library Screen" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFPM5ym5f_z90ga_mejnXRSms3S5v9pTpizD8wnbVtJDbJ6EyzPyaE2wKsJ9bb9rrtzWQVxATsuuhLubnFa3mGhG8SzwqX6Qa65xzJRacaUdunbcA3-cFEmi1km0SN6Au4a7cpFMPWcBKVO5pmE5SOVkpZS_4tUMaZMO4KVgQ6plDYuGMUVq3jMpkRbmpzLxIbozDnTs8AFEY5jXFFUnK05UsCNLAW_6MQE6e_0WUgBPF1WZ_zFgMy"/>
+</div>
+<!-- Modal Overlay Backdrop -->
+<div class="absolute inset-0 bg-on-surface/40 z-10 flex items-center justify-center p-md">
+<!-- Modal Container -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_8px_24px_rgba(0,93,170,0.08)] w-full max-w-2xl flex flex-col relative z-20 overflow-hidden transform transition-all">
+<!-- Modal Header -->
+<div class="flex items-center justify-between p-lg border-b border-outline-variant">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">导入自定义模板</h2>
+<button class="text-on-surface-variant hover:text-primary transition-colors focus:outline-none p-1 rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+</div>
+<!-- Modal Body -->
+<div class="p-lg flex flex-col gap-lg overflow-y-auto max-h-[716px]">
+<!-- Upload Area -->
+<div class="border-2 border-dashed border-outline-variant rounded-xl bg-surface-container-lowest hover:border-primary hover:bg-surface-container-low transition-colors cursor-pointer group flex flex-col items-center justify-center py-xl px-lg">
+<div class="w-16 h-16 rounded-full bg-primary-fixed/20 text-primary flex items-center justify-center mb-md group-hover:bg-primary-fixed/40 transition-colors">
+<span class="material-symbols-outlined text-[32px]">cloud_upload</span>
+</div>
+<p class="font-title-lg text-title-lg text-on-surface mb-xs">点击或拖拽文件至此上传</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-center">支持 .pptx, .pdf 格式文件，最大不超过 50MB</p>
+</div>
+<!-- Form Fields Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Template Name -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface-variant" for="template-name">模板名称</label>
+<input class="h-10 px-sm border border-outline-variant rounded-lg bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-md transition-shadow" id="template-name" placeholder="请输入模板名称" type="text"/>
+</div>
+<!-- Category Select -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface-variant" for="category">选择分类</label>
+<div class="relative">
+<select class="h-10 w-full pl-sm pr-lg border border-outline-variant rounded-lg bg-surface-container-lowest appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-md transition-shadow" id="category">
+<option disabled="" selected="" value="">请选择分类</option>
+<option value="education">教育培训</option>
+<option value="business">商业汇报</option>
+<option value="marketing">产品营销</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Aspect Ratio Selection -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface-variant">画面比例</label>
+<div class="flex flex-wrap gap-md">
+<button class="flex-1 min-w-[100px] h-12 border-2 border-primary bg-primary-fixed/10 text-primary rounded-lg font-body-md flex items-center justify-center relative overflow-hidden transition-colors">
+<span class="relative z-10 font-medium">16:9 (推荐)</span>
+</button>
+<button class="flex-1 min-w-[100px] h-12 border border-outline-variant bg-surface-container-lowest text-on-surface-variant rounded-lg font-body-md hover:bg-surface-container-low transition-colors flex items-center justify-center">
+                            4:3
+                        </button>
+<button class="flex-1 min-w-[100px] h-12 border border-outline-variant bg-surface-container-lowest text-on-surface-variant rounded-lg font-body-md hover:bg-surface-container-low transition-colors flex items-center justify-center">
+                            9:16
+                        </button>
+</div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="p-lg border-t border-outline-variant bg-surface-container-lowest flex justify-end gap-md items-center">
+<button class="px-lg h-10 border border-outline-variant text-on-surface-variant rounded-lg font-label-md hover:bg-surface-container-low transition-colors">取消</button>
+<button class="px-lg h-10 bg-primary text-on-primary rounded-lg font-label-md hover:bg-primary/90 shadow-sm transition-colors flex items-center gap-xs">
+                    确认导入
+                </button>
+</div>
+</div>
+</div>
+</body></html>
