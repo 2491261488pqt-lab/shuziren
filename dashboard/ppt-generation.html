@@ -1,460 +1,1772 @@
-<!DOCTYPE html><html lang="zh-CN" style=""><head>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Micro-course AI - 自然语言生成 PPT</title>
-<link rel="stylesheet" href="../assets/css/tailwind.css">
-<link rel="stylesheet" href="../assets/css/fonts.css">
-        tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "tertiary": "#7d5400",
-                      "outline-variant": "#c0c7d6",
-                      "inverse-primary": "#a5c8ff",
-                      "on-primary-fixed-variant": "#004785",
-                      "on-background": "#1b1c1c",
-                      "tertiary-fixed-dim": "#ffba45",
-                      "inverse-surface": "#2f3031",
-                      "surface-container-highest": "#e3e2e2",
-                      "secondary-container": "#85fa51",
-                      "secondary": "#266d00",
-                      "tertiary-container": "#9d6a00",
-                      "surface-container-low": "#f4f3f3",
-                      "surface-container-high": "#e9e8e8",
-                      "background": "#faf9f9",
-                      "on-tertiary": "#ffffff",
-                      "on-secondary-fixed": "#062100",
-                      "on-secondary-fixed-variant": "#1a5200",
-                      "primary-container": "#0075d5",
-                      "error": "#ba1a1a",
-                      "on-primary-container": "#fefcff",
-                      "surface-bright": "#faf9f9",
-                      "primary": "#005daa",
-                      "surface-dim": "#dbdad9",
-                      "inverse-on-surface": "#f2f0f0",
-                      "on-tertiary-fixed-variant": "#614000",
-                      "on-surface-variant": "#404753",
-                      "on-primary-fixed": "#001c3a",
-                      "on-secondary-container": "#287100",
-                      "on-surface": "#1b1c1c",
-                      "on-primary": "#ffffff",
-                      "surface-tint": "#005fae",
-                      "primary-fixed": "#d4e3ff",
-                      "surface": "#faf9f9",
-                      "on-tertiary-container": "#fffbff",
-                      "on-error": "#ffffff",
-                      "on-error-container": "#93000a",
-                      "secondary-fixed-dim": "#6de039",
-                      "tertiary-fixed": "#ffddb0",
-                      "error-container": "#ffdad6",
-                      "primary-fixed-dim": "#a5c8ff",
-                      "surface-container-lowest": "#ffffff",
-                      "surface-container": "#efeded",
-                      "surface-variant": "#e3e2e2",
-                      "secondary-fixed": "#88fd54",
-                      "on-secondary": "#ffffff",
-                      "on-tertiary-fixed": "#281800",
-                      "outline": "#707785"
-              },
-              "borderRadius": {
-                      "DEFAULT": "0.125rem",
-                      "lg": "0.25rem",
-                      "xl": "0.5rem",
-                      "full": "0.75rem"
-              },
-              "spacing": {
-                      "xl": "32px",
-                      "md": "16px",
-                      "xs": "8px",
-                      "sidebar-width": "240px",
-                      "base": "4px",
-                      "gutter": "16px",
-                      "sm": "12px",
-                      "lg": "24px",
-                      "container-margin": "24px"
-              },
-              "fontFamily": {
-                      "body-md": [
-                              "Inter"
-                      ],
-                      "display-lg": [
-                              "Inter"
-                      ],
-                      "label-caps": [
-                              "Inter"
-                      ],
-                      "title-lg": [
-                              "Inter"
-                      ],
-                      "label-md": [
-                              "Inter"
-                      ],
-                      "headline-sm": [
-                              "Inter"
-                      ],
-                      "body-sm": [
-                              "Inter"
-                      ],
-                      "headline-md": [
-                              "Inter"
-                      ]
-              },
-              "fontSize": {
-                      "body-md": [
-                              "14px",
-                              {
-                                      "lineHeight": "22px",
-                                      "fontWeight": "400"
-                              }
-                      ],
-                      "display-lg": [
-                              "30px",
-                              {
-                                      "lineHeight": "38px",
-                                      "letterSpacing": "-0.02em",
-                                      "fontWeight": "700"
-                              }
-                      ],
-                      "label-caps": [
-                              "11px",
-                              {
-                                      "lineHeight": "16px",
-                                      "letterSpacing": "0.05em",
-                                      "fontWeight": "700"
-                              }
-                      ],
-                      "title-lg": [
-                              "16px",
-                              {
-                                      "lineHeight": "24px",
-                                      "fontWeight": "600"
-                              }
-                      ],
-                      "label-md": [
-                              "12px",
-                              {
-                                      "lineHeight": "18px",
-                                      "letterSpacing": "0.01em",
-                                      "fontWeight": "500"
-                              }
-                      ],
-                      "headline-sm": [
-                              "20px",
-                              {
-                                      "lineHeight": "28px",
-                                      "fontWeight": "600"
-                              }
-                      ],
-                      "body-sm": [
-                              "13px",
-                              {
-                                      "lineHeight": "20px",
-                                      "fontWeight": "400"
-                              }
-                      ],
-                      "headline-md": [
-                              "24px",
-                              {
-                                      "lineHeight": "32px",
-                                      "letterSpacing": "-0.01em",
-                                      "fontWeight": "600"
-                              }
-                      ]
-              }
-      },
-          },
-        }
-    </script>
+<title>PPT 智能生成 - Digital Human AI</title>
+<link href="../assets/css/tailwind.css" rel="stylesheet">
+<link href="../assets/css/fonts.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <style>
-        .sidebar-active { background-color: #d4e3ff; color: #001c3a; border-right: 4px solid #005daa; }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: #dbdad9;
-            border-radius: 10px;
-        }
-        
-        .pulse-dot {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(0, 93, 170, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 6px rgba(0, 93, 170, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(0, 93, 170, 0);
-            }
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        
-        .style-card.active {
-            border-color: #005daa;
-            background-color: #f0f7fc;
-            box-shadow: inset 0 0 0 1px #005daa;
-        }
-        
-        .style-card.active .check-icon {
-            opacity: 1;
-        }
-    </style>
+  :root {
+    --sidebar-width: 240px;
+  }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+  }
+  .sidebar-active {
+    background-color: #d4e3ff;
+    color: #001c3a;
+    border-right: 3px solid #005daa;
+    font-weight: 600;
+  }
+  .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #dbdad9; border-radius: 10px; }
+
+  .pulse-dot {
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 93, 170, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(0, 93, 170, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 93, 170, 0); }
+  }
+
+  .style-card.active {
+    border-color: #005daa;
+    background-color: #f0f7fc;
+    box-shadow: inset 0 0 0 1px #005daa;
+  }
+  .style-card.active .check-icon { opacity: 1; }
+  .style-card .check-icon { opacity: 0; }
+
+  .template-card:hover .template-actions {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .spin-slow { animation: spin 3s linear infinite; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .animate-fade-in-up { animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .animate-fade-in { animation: fadeIn 0.2s ease-out forwards; }
+
+  .step-content { display: none; }
+  .step-content.active { display: block; }
+
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
 </head>
-<body class="bg-[#f0f2f5] text-on-surface font-body-md min-h-screen flex overflow-x-hidden antialiased">
-<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50">
-<div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div>
-<nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav>
-<div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
-<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest">
-<div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="micro-lecture-agent.html" class="hover:text-primary transition-colors">微课智能体</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">PPT 智能生成</span></div></div>
-<div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
-<!-- Main Content Area -->
-<!-- TopNavBar -->
-<header class="h-16 w-full fixed top-0 right-0 left-0 z-40 bg-surface border-b border-outline-variant flex items-center justify-between px-md md:ml-sidebar-width transition-all">
-<!-- Breadcrumbs / Title -->
-<div class="flex items-center gap-xs text-on-surface-variant font-body-sm text-body-sm">
-<a class="hover:text-primary transition-colors" href="#">微课智能体</a>
-<span class="material-symbols-outlined text-[16px]">chevron_right</span>
-<span class="text-on-surface font-medium">微课智能体 (PPT生成)</span>
-<div class="relative hidden sm:block ml-md">
-<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
-<input class="pl-8 pr-3 py-1.5 bg-surface-container-low border border-outline-variant rounded-full font-body-sm text-body-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all w-64" placeholder="搜索..." type="text">
-</div></div>
-<!-- Right Actions -->
-<div class="flex items-center gap-lg"><div class="flex items-center gap-xs"><button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors group"><span class="material-symbols-outlined group-hover:text-primary transition-colors">help_outline</span></button><button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors relative group"><span class="material-symbols-outlined group-hover:text-primary transition-colors">notifications</span><span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border border-surface"></span></button><div class="h-8 w-[1px] bg-outline-variant mx-1"></div><button class="flex items-center gap-sm pl-2 pr-1 py-1 rounded-full hover:bg-surface-container transition-colors group"><div class="text-right hidden lg:block"><p class="font-label-md text-label-md text-on-surface font-semibold">演示用户</p><p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Admin</p></div><span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors text-[32px]">account_circle</span></button></div></div>
+<body class="bg-[#f0f2f5] text-[#1b1c1c] font-sans min-h-screen flex antialiased">
+
+<!-- ==================== SIDEBAR ==================== -->
+<aside class="w-[240px] h-screen fixed left-0 top-0 bg-white border-r border-[#e3e2e2] flex flex-col z-50">
+  <div class="px-6 py-8 flex flex-col items-center">
+    <img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png">
+    <h1 class="text-[20px] leading-[28px] font-semibold font-bold text-[#005daa]">Digital Human AI</h1>
+    <p class="text-[12px] leading-[18px] text-[#707785]">Hainan University</p>
+  </div>
+  <nav class="flex-1 mt-4 px-3 space-y-1">
+    <a class="text-[#404753] hover:bg-[#f4f3f3] flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html">
+      <span class="material-symbols-outlined mr-3">dashboard</span>
+      <span class="text-[12px] leading-[18px]">业务总览</span>
+    </a>
+    <a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html">
+      <span class="material-symbols-outlined mr-3">auto_videocam</span>
+      <span class="text-[12px] leading-[18px]">微课智能体</span>
+    </a>
+    <a class="text-[#404753] hover:bg-[#f4f3f3] flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html">
+      <span class="material-symbols-outlined mr-3">video_library</span>
+      <span class="text-[12px] leading-[18px]">视频管理</span>
+    </a>
+    <a class="text-[#404753] hover:bg-[#f4f3f3] flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html">
+      <span class="material-symbols-outlined mr-3">folder_open</span>
+      <span class="text-[12px] leading-[18px]">资产管理</span>
+    </a>
+    <a class="text-[#404753] hover:bg-[#f4f3f3] flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html">
+      <span class="material-symbols-outlined mr-3">settings</span>
+      <span class="text-[12px] leading-[18px]">系统设置</span>
+    </a>
+  </nav>
+  <div class="p-4 mt-auto">
+    <div class="bg-[#d4e3ff] p-4 rounded-xl flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full overflow-hidden bg-[#005daa] shadow-sm">
+        <img class="w-full h-full object-cover" src="../assets/images/user-avatar.png" alt="User avatar">
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-[12px] leading-[18px] font-bold text-[#001c3a] truncate">管理员</p>
+        <p class="text-[10px] text-[#004785] truncate">高级账户</p>
+      </div>
+      <span class="material-symbols-outlined text-[#004785] cursor-pointer">logout</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ==================== HEADER ==================== -->
+<header class="h-16 fixed top-0 right-0 left-[240px] z-40 bg-white flex items-center justify-between px-6 border-b border-[#e3e2e2]">
+  <div class="flex items-center gap-4">
+    <div class="flex items-center text-[#707785] text-[13px] leading-[20px]">
+      <span>业务总览</span>
+      <span class="material-symbols-outlined text-sm mx-2">chevron_right</span>
+      <span>微课智能体</span>
+      <span class="material-symbols-outlined text-sm mx-2">chevron_right</span>
+      <span class="text-[#005daa] font-bold">PPT 智能生成</span>
+    </div>
+  </div>
+  <div class="flex items-center gap-6">
+    <div class="relative group">
+      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <span class="material-symbols-outlined text-[#707785] text-lg">search</span>
+      </div>
+      <input class="block w-80 pl-10 pr-3 py-1.5 bg-[#efeded] border border-transparent focus:border-[#005daa] focus:ring-4 focus:ring-[#d4e3ff]/50 rounded-full text-[13px] leading-[20px] transition-all" placeholder="搜索资源或项目..." type="text">
+    </div>
+    <div class="flex items-center gap-4 text-[#404753]">
+      <a href="notifications.html" class="relative hover:text-[#005daa] transition-colors">
+        <span class="material-symbols-outlined">notifications</span>
+        <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-[#ba1a1a] ring-2 ring-white"></span>
+      </a>
+      <a href="help-center.html" class="hover:text-[#005daa] transition-colors flex items-center gap-1">
+        <span class="material-symbols-outlined">help_outline</span>
+        <span class="text-[13px] leading-[20px]">帮助</span>
+      </a>
+    </div>
+  </div>
 </header>
-<!-- Canvas -->
-<main class="flex-1 mt-16 p-lg pb-24 overflow-y-auto">
-<div class="max-w-6xl mx-auto">
-<!-- Page Header -->
-<div class="mb-lg flex items-end justify-between">
-<div>
-<div class="flex items-center gap-sm mb-xs">
-<span class="flex items-center justify-center w-8 h-8 rounded-lg bg-primary-container text-on-primary-container">
-<span class="material-symbols-outlined text-[20px]">psychology</span>
-</span>
-<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">自然语言生成 PPT</h2>
-</div>
-<p class="font-body-md text-body-md text-on-surface-variant">描述您的课程主题或上传大纲，AI 将为您自动生成完整的幻灯片结构与内容。</p>
-</div>
-<!-- Status Badge -->
-<div class="flex items-center gap-xs px-3 py-1 bg-surface border border-outline-variant rounded-full">
-<span class="w-2 h-2 rounded-full bg-primary pulse-dot"></span>
-<span class="font-label-md text-label-md text-primary font-medium">AI 引擎就绪</span>
-</div>
-</div>
-<!-- Bento Grid Layout for Main Content -->
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
-<!-- Left Column: Input & Styles (Span 8) -->
-<div class="lg:col-span-8 space-y-gutter">
-<!-- Input Section Card -->
-<div class="bg-surface rounded-xl border border-outline-variant p-lg shadow-sm relative overflow-hidden">
-<!-- Subtle decorative background element -->
-<div class="absolute top-0 right-0 w-64 h-64 bg-primary-fixed-dim rounded-full blur-3xl opacity-20 -mr-20 -mt-20 pointer-events-none"></div>
-<div class="flex items-center justify-between mb-md relative z-10">
-<h3 class="font-title-lg text-title-lg text-on-surface flex items-center gap-xs">
-<span class="material-symbols-outlined text-primary text-[20px]">edit_note</span>
-                                    输入主题或详细描述
-                                </h3>
-<button class="flex items-center gap-xs px-3 py-1.5 bg-surface-container rounded-md border border-outline-variant hover:bg-primary hover:text-white hover:border-primary transition-colors text-on-surface-variant font-label-md text-label-md group">
-<span class="material-symbols-outlined text-[16px] group-hover:animate-spin">magic_button</span>
-                                    AI 辅助写作
-                                </button>
-</div>
-<div class="relative z-10">
-<textarea class="w-full h-40 p-md bg-background border border-outline-variant rounded-lg font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary resize-none placeholder:text-outline" placeholder="例如：创建一份关于人工智能在现代医疗领域应用的 PPT..."></textarea>
-<div class="flex justify-between items-center mt-sm text-on-surface-variant font-body-sm text-body-sm">
-<div class="flex gap-sm">
-<button class="flex items-center gap-1 hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-[16px]">upload_file</span>
-                                            导入文档 (.docx, .pdf)
-                                        </button>
-<button class="flex items-center gap-1 hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-[16px]">mic</span>
-                                            语音输入
-                                        </button>
-</div>
-<span class="">0 / 2000 字</span>
-</div>
-</div>
-</div>
-<!-- Style Selection Card -->
-<div class="bg-surface rounded-xl border border-outline-variant p-lg shadow-sm">
-<div class="flex items-center justify-between mb-md">
-<h3 class="font-title-lg text-title-lg text-on-surface flex items-center gap-xs">
-<span class="material-symbols-outlined text-primary text-[20px]">palette</span>
-                                    风格选择
-                                </h3>
-<a class="font-label-md text-label-md text-primary hover:underline" href="#">查看全部模板</a>
-</div>
-<div class="grid grid-cols-2 sm:grid-cols-4 gap-sm">
-<!-- Style Card 1 (Active) -->
-<button class="style-card active relative rounded-lg border border-outline-variant p-2 hover:border-primary transition-all text-left flex flex-col group overflow-hidden bg-surface">
-<div class="w-full aspect-video rounded bg-surface-variant mb-2 relative overflow-hidden flex items-center justify-center">
-<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-80" data-alt="A clean, professional academic presentation slide template featuring a dark blue header, strict geometric layout, clear serif typography, and a minimalist scientific aesthetic in a high-quality digital render format." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDjE5G5voIZkEngWYAJJcNPT0YJ0kASH1z4adymPxtPiES1nGvVWZh9-sC-Gg0sQnx4mqvW61dPf1cmm3qQpiQ4jnxjP3rZg5xEkoaW8xGKU-_LmpPUGo45gBdSrKmpd3asbCD3Mc6ZXLCno6XlEaBLbierHCiXT0eGjmQWi6JNz6713AH_jLKmw2lCRy_JvTsWTWUtC57tItpwmZ8ZMV8T6a6ILOpa26WiSzGPQpREQ8peu7nW7L4Z')"></div>
-<span class="material-symbols-outlined absolute top-2 right-2 text-white bg-primary rounded-full text-[16px] p-0.5 check-icon">check_circle</span>
-</div>
-<span class="font-label-md text-label-md font-semibold text-on-surface px-1">学术报告 (Academic)</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant px-1 mt-0.5 text-xs truncate">严谨、深蓝基调</span>
-</button>
-<!-- Style Card 2 -->
-<button class="style-card relative rounded-lg border border-outline-variant p-2 hover:border-primary transition-all text-left flex flex-col group overflow-hidden bg-surface">
-<div class="w-full aspect-video rounded bg-surface-variant mb-2 relative overflow-hidden flex items-center justify-center">
-<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-80 group-hover:scale-105 transition-transform duration-300" data-alt="A modern corporate business presentation slide template featuring dynamic angled shapes, a professional corporate blue and white color scheme, sans-serif typography, and a clean corporate aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAL7q8NdxY--EAO3ZV3dYvRHMZ6SuvbXwMG7HQXvmIJK_VubJQ979OBsXm-kUhrnSdj3mLbY9dY_8JXOCsJvDVJyzfyQuP_ZzgbEBpEzWnPxN75dgX5G6bkLdvj3Hocospk_RbQ5vJIzTY5DBEvaEmID8qZFwetvdpFf3fVoFtaAvP-GZ21sKUVj3w0FGK7AhpkcWZ1FTYI2O44bSpCd8HoAY_i38OL5V5N-S-2f47F9QxfRG2cTKv5')"></div>
-<span class="material-symbols-outlined absolute top-2 right-2 text-white bg-primary rounded-full text-[16px] p-0.5 check-icon opacity-0">check_circle</span>
-</div>
-<span class="font-label-md text-label-md font-semibold text-on-surface px-1">商务汇报 (Business)</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant px-1 mt-0.5 text-xs truncate">专业、数据可视化</span>
-</button>
-<!-- Style Card 3 -->
-<button class="style-card relative rounded-lg border border-outline-variant p-2 hover:border-primary transition-all text-left flex flex-col group overflow-hidden bg-surface">
-<div class="w-full aspect-video rounded bg-surface-variant mb-2 relative overflow-hidden flex items-center justify-center">
-<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-80 group-hover:scale-105 transition-transform duration-300" data-alt="A futuristic technology presentation slide template featuring dark mode aesthetics, glowing cyan neon accents, subtle grid patterns, futuristic sans-serif typography, and a cyber-tech aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDUsbmG1zxej4e0Ba3-_UPyQSNCsdIoSW-Ggf3FtLmSZy2QTfTWxbVxZIDcAAHNbJMlJRWEYbXdcHF2wSr4eeiw2e6XAaKW0tcAmL6MfBMsRQwKnkosUqmjC1k-3FFbhjgTXBigGwemIPFUVbZ5Ozo2YfHOyCG2XtGI96kT5HPCnwwpw4ErcFeRcseM_Mobl2pSb9OL2ye9hfi4XGD-Q7p-3UUDHVIxWzs1Jr7Y3NagdTM0hV922wkk')"></div>
-<span class="material-symbols-outlined absolute top-2 right-2 text-white bg-primary rounded-full text-[16px] p-0.5 check-icon opacity-0">check_circle</span>
-</div>
-<span class="font-label-md text-label-md font-semibold text-on-surface px-1">科技前沿 (Tech)</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant px-1 mt-0.5 text-xs truncate">暗黑、霓虹点缀</span>
-</button>
-<!-- Style Card 4 -->
-<button class="style-card relative rounded-lg border border-outline-variant p-2 hover:border-primary transition-all text-left flex flex-col group overflow-hidden bg-surface">
-<div class="w-full aspect-video rounded bg-surface-variant mb-2 relative overflow-hidden flex items-center justify-center">
-<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-80 group-hover:scale-105 transition-transform duration-300" data-alt="An ultra-minimalist presentation slide template featuring vast amounts of white space, a single delicate typography element in center, pastel beige background, and a soft, airy, zen-like aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCAU89Ns-t1dUCafk0EEZA45N_-Nt-cgTRD1LIhszYNsj05E5tag8Zu5-33XvfC5Eb_1hWReoz9_gckjtnWR6Cnn3VnzHGWjK84eUPNroRmGoqu89RnxxaPS_A3QECkX5_u7JQdVDr3ejNHzKerbTA5dZz8UhqxF4I4SAYqaYgB_NNiW_f2nbec7yF-RXihwGZYTJWYvqpdh7etavdrz5VMuwwVzXmRFFiTlDQ7MXiwOG8-YJqhz_Lx')"></div>
-<span class="material-symbols-outlined absolute top-2 right-2 text-white bg-primary rounded-full text-[16px] p-0.5 check-icon opacity-0">check_circle</span>
-</div>
-<span class="font-label-md text-label-md font-semibold text-on-surface px-1">极简清新 (Minimalist)</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant px-1 mt-0.5 text-xs truncate">留白、清新高级</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Right Column: Quick Settings Sidebar (Span 4) -->
-<div class="lg:col-span-4">
-<div class="bg-surface rounded-xl border border-outline-variant shadow-sm sticky top-[88px]">
-<div class="p-md border-b border-outline-variant flex items-center gap-xs">
-<span class="material-symbols-outlined text-on-surface-variant text-[20px]">tune</span>
-<h3 class="font-title-lg text-title-lg text-on-surface">快速设置 (Quick Settings)</h3>
-</div>
-<div class="p-md space-y-lg">
-<!-- Aspect Ratio -->
-<div>
-<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">幻灯片比例 (Aspect Ratio)</label>
-<div class="grid grid-cols-2 gap-sm">
-<label class="relative flex items-center justify-center p-3 border border-primary bg-primary-fixed-dim bg-opacity-20 rounded-lg cursor-pointer">
-<input checked="" class="sr-only" name="aspect" type="radio" value="16:9">
-<div class="flex flex-col items-center gap-1">
-<div class="w-8 h-4.5 border-2 border-primary rounded-sm"></div>
-<span class="font-label-md text-label-md text-primary font-bold">16:9</span>
-</div>
-</label>
-<label class="relative flex items-center justify-center p-3 border border-outline-variant hover:border-primary hover:bg-surface-container rounded-lg cursor-pointer transition-colors">
-<input class="sr-only" name="aspect" type="radio" value="4:3">
-<div class="flex flex-col items-center gap-1">
-<div class="w-6 h-4.5 border-2 border-outline-variant rounded-sm group-hover:border-primary"></div>
-<span class="font-label-md text-label-md text-on-surface-variant">4:3</span>
-</div>
-</label>
-</div>
-</div>
-<!-- Language -->
-<div>
-<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">生成语言 (Language)</label>
-<div class="relative">
-<select class="w-full p-2 bg-background border border-outline-variant rounded-lg font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer">
-<option value="zh">简体中文 (Chinese)</option>
-<option value="en">English (US)</option>
-<option value="bilingual">双语 (Bilingual)</option>
-</select>
-<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-outline-variant pointer-events-none text-[20px]">expand_more</span>
-</div>
-</div>
-<!-- Outline Detail Level -->
-<div>
-<label class="block font-label-md text-label-md text-on-surface-variant mb-xs flex justify-between">
-                                        大纲详细程度 (Outline Detail)
-                                        <span class="text-primary font-medium">适中 (Medium)</span>
-</label>
-<input class="w-full h-1.5 bg-surface-variant rounded-lg appearance-none cursor-pointer accent-primary" max="3" min="1" type="range" value="2">
-<div class="flex justify-between mt-1 font-body-sm text-body-sm text-outline-variant text-[11px]">
-<span class="">极简 (简明扼要)</span>
-<span class="">适中 (标准汇报)</span>
-<span class="">详尽 (深度剖析)</span>
-</div>
-</div>
-<!-- Toggle options -->
-<div class="space-y-sm pt-sm border-t border-outline-variant">
-<label class="flex items-center justify-between cursor-pointer">
-<span class="font-body-sm text-body-sm text-on-surface">自动配图 (Auto Images)</span>
-<div class="relative">
-<input checked="" class="sr-only peer" type="checkbox">
-<div class="w-9 h-5 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
-</div>
-</label>
-<label class="flex items-center justify-between cursor-pointer">
-<span class="font-body-sm text-body-sm text-on-surface">生成演讲稿 (Speaker Notes)</span>
-<div class="relative">
-<input checked="" class="sr-only peer" type="checkbox">
-<div class="w-9 h-5 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
-</div>
-</label>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+
+<!-- ==================== MAIN CONTENT ==================== -->
+<main class="flex-1 ml-[240px] mt-16 p-6 pb-24 min-h-[calc(100vh-64px)]">
+
+  <!-- Stepper -->
+  <div class="bg-white border border-[#e3e2e2] rounded-xl py-4 px-8 mb-6 flex justify-center shadow-sm">
+    <div class="flex items-center max-w-5xl w-full justify-between" id="stepper">
+      <div class="flex flex-col items-center gap-1 step-active" data-step="1">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm step-circle text-white font-bold text-sm" style="background-color:#005daa;">1</div>
+        <span class="text-[12px] leading-[18px] text-[#005daa] font-medium">输入主题</span>
+      </div>
+      <div class="flex-1 h-[2px] mx-2 bg-[#005daa]" data-line="1"></div>
+      <div class="flex flex-col items-center gap-1 step-pending" data-step="2">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center step-circle" style="background-color:#faf9f9;color:#707785;border:2px solid #e3e2e2;">2</div>
+        <span class="text-[12px] leading-[18px] text-[#707785]">选择模板</span>
+      </div>
+      <div class="flex-1 h-[2px] mx-2 bg-[#e3e2e2]" data-line="2"></div>
+      <div class="flex flex-col items-center gap-1 step-pending" data-step="3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center step-circle" style="background-color:#faf9f9;color:#707785;border:2px solid #e3e2e2;">3</div>
+        <span class="text-[12px] leading-[18px] text-[#707785]">AI生成</span>
+      </div>
+      <div class="flex-1 h-[2px] mx-2 bg-[#e3e2e2]" data-line="3"></div>
+      <div class="flex flex-col items-center gap-1 step-pending" data-step="4">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center step-circle" style="background-color:#faf9f9;color:#707785;border:2px solid #e3e2e2;">4</div>
+        <span class="text-[12px] leading-[18px] text-[#707785]">大纲编辑</span>
+      </div>
+      <div class="flex-1 h-[2px] mx-2 bg-[#e3e2e2]" data-line="4"></div>
+      <div class="flex flex-col items-center gap-1 step-pending" data-step="5">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center step-circle" style="background-color:#faf9f9;color:#707785;border:2px solid #e3e2e2;">5</div>
+        <span class="text-[12px] leading-[18px] text-[#707785]">预览导出</span>
+      </div>
+      <div class="flex-1 h-[2px] mx-2 bg-[#e3e2e2]" data-line="5"></div>
+      <div class="flex flex-col items-center gap-1 step-pending" data-step="6">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center step-circle" style="background-color:#faf9f9;color:#707785;border:2px solid #e3e2e2;">6</div>
+        <span class="text-[12px] leading-[18px] text-[#707785]">导出配置</span>
+      </div>
+      <div class="flex-1 h-[2px] mx-2 bg-[#e3e2e2]" data-line="6"></div>
+      <div class="flex flex-col items-center gap-1 step-pending" data-step="7">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center step-circle" style="background-color:#faf9f9;color:#707785;border:2px solid #e3e2e2;">7</div>
+        <span class="text-[12px] leading-[18px] text-[#707785]">完成</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 1: 输入主题 ===== -->
+  <div class="step-content active" id="step-1">
+    <div class="max-w-6xl mx-auto">
+      <div class="mb-6 flex items-end justify-between">
+        <div>
+          <div class="flex items-center gap-3 mb-1">
+            <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-[#0075d5] text-white">
+              <span class="material-symbols-outlined text-[20px]">psychology</span>
+            </span>
+            <h2 class="text-[24px] leading-[32px] font-semibold text-[#1b1c1c]">自然语言生成 PPT</h2>
+          </div>
+          <p class="text-[14px] leading-[22px] text-[#404753]">描述您的课程主题或上传大纲，AI 将为您自动生成完整的幻灯片结构与内容。</p>
+        </div>
+        <div class="flex items-center gap-1 px-3 py-1 bg-white border border-[#e3e2e2] rounded-full">
+          <span class="w-2 h-2 rounded-full bg-[#005daa] pulse-dot"></span>
+          <span class="text-[12px] leading-[18px] text-[#005daa] font-medium">AI 引擎就绪</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-8 space-y-4">
+          <div class="bg-white rounded-xl border border-[#e3e2e2] p-6 shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-[#a5c8ff] rounded-full blur-3xl opacity-20 -mr-20 -mt-20 pointer-events-none"></div>
+            <div class="flex items-center justify-between mb-4 relative z-10">
+              <h3 class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c] flex items-center gap-2">
+                <span class="material-symbols-outlined text-[#005daa] text-[20px]">edit_note</span>
+                输入主题或详细描述
+              </h3>
+              <button class="flex items-center gap-1 px-3 py-1.5 bg-[#efeded] rounded border border-[#e3e2e2] hover:bg-[#005daa] hover:text-white hover:border-[#005daa] transition-colors text-[#404753] text-[12px] leading-[18px] group">
+                <span class="material-symbols-outlined text-[16px]">magic_button</span>
+                AI 辅助写作
+              </button>
+            </div>
+            <div class="relative z-10">
+              <textarea class="w-full h-40 p-4 bg-[#faf9f9] border border-[#e3e2e2] rounded-lg text-[14px] leading-[22px] focus:outline-none focus:border-[#005daa] focus:ring-1 focus:ring-[#005daa] resize-none text-[#1b1c1c]" placeholder="例如：创建一份关于人工智能在现代医疗领域应用的 PPT..." id="topic-input"></textarea>
+              <div class="flex justify-between items-center mt-3 text-[#404753] text-[13px] leading-[20px]">
+                <div class="flex gap-3">
+                  <button class="flex items-center gap-1 hover:text-[#005daa] transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">upload_file</span>
+                    导入文档 (.docx, .pdf)
+                  </button>
+                  <button class="flex items-center gap-1 hover:text-[#005daa] transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">mic</span>
+                    语音输入
+                  </button>
+                </div>
+                <span id="char-count">0 / 2000 字</span>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl border border-[#e3e2e2] p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c] flex items-center gap-2">
+                <span class="material-symbols-outlined text-[#005daa] text-[20px]">palette</span>
+                风格选择
+              </h3>
+              <a class="text-[12px] leading-[18px] text-[#005daa] hover:underline cursor-pointer">查看全部模板</a>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="style-cards">
+              <button class="style-card active relative rounded-lg border border-[#e3e2e2] p-2 hover:border-[#005daa] transition-all text-left flex flex-col group overflow-hidden bg-white" data-style="academic">
+                <div class="w-full aspect-video rounded bg-[#1a3a5c] mb-2 relative overflow-hidden flex items-center justify-center">
+                  <span class="text-white text-[10px] font-bold">Academic</span>
+                  <span class="material-symbols-outlined absolute top-2 right-2 text-[#005daa] bg-white rounded-full text-[16px] p-0.5 check-icon">check_circle</span>
+                </div>
+                <span class="text-[12px] leading-[18px] font-semibold text-[#1b1c1c] px-1">学术报告 (Academic)</span>
+                <span class="text-[13px] leading-[20px] text-[#404753] px-1 mt-0.5 text-xs truncate">严谨、深蓝基调</span>
+              </button>
+              <button class="style-card relative rounded-lg border border-[#e3e2e2] p-2 hover:border-[#005daa] transition-all text-left flex flex-col group overflow-hidden bg-white" data-style="business">
+                <div class="w-full aspect-video rounded bg-[#1e3a5f] mb-2 relative overflow-hidden flex items-center justify-center">
+                  <span class="text-white text-[10px] font-bold">Business</span>
+                  <span class="material-symbols-outlined absolute top-2 right-2 text-[#005daa] bg-white rounded-full text-[16px] p-0.5 check-icon">check_circle</span>
+                </div>
+                <span class="text-[12px] leading-[18px] font-semibold text-[#1b1c1c] px-1">商务汇报 (Business)</span>
+                <span class="text-[13px] leading-[20px] text-[#404753] px-1 mt-0.5 text-xs truncate">专业、数据可视化</span>
+              </button>
+              <button class="style-card relative rounded-lg border border-[#e3e2e2] p-2 hover:border-[#005daa] transition-all text-left flex flex-col group overflow-hidden bg-white" data-style="tech">
+                <div class="w-full aspect-video rounded bg-[#0a1628] mb-2 relative overflow-hidden flex items-center justify-center">
+                  <span class="text-[#00d4ff] text-[10px] font-bold">Tech</span>
+                  <span class="material-symbols-outlined absolute top-2 right-2 text-[#005daa] bg-white rounded-full text-[16px] p-0.5 check-icon">check_circle</span>
+                </div>
+                <span class="text-[12px] leading-[18px] font-semibold text-[#1b1c1c] px-1">科技前沿 (Tech)</span>
+                <span class="text-[13px] leading-[20px] text-[#404753] px-1 mt-0.5 text-xs truncate">暗黑、霓虹点缀</span>
+              </button>
+              <button class="style-card relative rounded-lg border border-[#e3e2e2] p-2 hover:border-[#005daa] transition-all text-left flex flex-col group overflow-hidden bg-white" data-style="minimalist">
+                <div class="w-full aspect-video rounded bg-[#f5f0e8] mb-2 relative overflow-hidden flex items-center justify-center">
+                  <span class="text-[#8b7355] text-[10px] font-bold">Minimal</span>
+                  <span class="material-symbols-outlined absolute top-2 right-2 text-[#005daa] bg-white rounded-full text-[16px] p-0.5 check-icon">check_circle</span>
+                </div>
+                <span class="text-[12px] leading-[18px] font-semibold text-[#1b1c1c] px-1">极简清新 (Minimalist)</span>
+                <span class="text-[13px] leading-[20px] text-[#404753] px-1 mt-0.5 text-xs truncate">留白、清新高级</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-4">
+          <div class="bg-white rounded-xl border border-[#e3e2e2] shadow-sm sticky top-[88px]">
+            <div class="p-4 border-b border-[#e3e2e2] flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#404753] text-[20px]">tune</span>
+              <h3 class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c]">快速设置</h3>
+            </div>
+            <div class="p-4 space-y-6">
+              <div>
+                <label class="block text-[12px] leading-[18px] text-[#404753] mb-2">幻灯片比例</label>
+                <div class="grid grid-cols-2 gap-3">
+                  <label class="relative flex items-center justify-center p-3 border border-[#005daa] bg-[#d4e3ff]/20 rounded-lg cursor-pointer">
+                    <input checked class="sr-only" name="aspect" type="radio" value="16:9">
+                    <div class="flex flex-col items-center gap-1">
+                      <div class="w-8 h-[18px] border-2 border-[#005daa] rounded-sm"></div>
+                      <span class="text-[12px] leading-[18px] text-[#005daa] font-bold">16:9</span>
+                    </div>
+                  </label>
+                  <label class="relative flex items-center justify-center p-3 border border-[#e3e2e2] hover:border-[#005daa] hover:bg-[#f4f3f3] rounded-lg cursor-pointer transition-colors">
+                    <input class="sr-only" name="aspect" type="radio" value="4:3">
+                    <div class="flex flex-col items-center gap-1">
+                      <div class="w-6 h-[18px] border-2 border-[#e3e2e2] rounded-sm"></div>
+                      <span class="text-[12px] leading-[18px] text-[#404753]">4:3</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              <div>
+                <label class="block text-[12px] leading-[18px] text-[#404753] mb-2">生成语言</label>
+                <div class="relative">
+                  <select class="w-full p-2 bg-[#faf9f9] border border-[#e3e2e2] rounded-lg text-[14px] leading-[22px] focus:outline-none focus:border-[#005daa] focus:ring-1 focus:ring-[#005daa] appearance-none cursor-pointer">
+                    <option value="zh">简体中文 (Chinese)</option>
+                    <option value="en">English (US)</option>
+                    <option value="bilingual">双语 (Bilingual)</option>
+                  </select>
+                  <span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-[#c0c7d6] pointer-events-none text-[20px]">expand_more</span>
+                </div>
+              </div>
+              <div>
+                <label class="block text-[12px] leading-[18px] text-[#404753] mb-2 flex justify-between">
+                  大纲详细程度
+                  <span class="text-[#005daa] font-medium">适中</span>
+                </label>
+                <input class="w-full h-1.5 bg-[#e3e2e2] rounded-lg appearance-none cursor-pointer accent-[#005daa]" max="3" min="1" type="range" value="2">
+                <div class="flex justify-between mt-1 text-[11px] text-[#c0c7d6]">
+                  <span>极简</span><span>适中</span><span>详尽</span>
+                </div>
+              </div>
+              <div class="space-y-3 pt-3 border-t border-[#e3e2e2]">
+                <label class="flex items-center justify-between cursor-pointer">
+                  <span class="text-[13px] leading-[20px] text-[#1b1c1c]">自动配图</span>
+                  <div class="relative">
+                    <input checked class="sr-only peer" type="checkbox">
+                    <div class="w-9 h-5 bg-[#e3e2e2] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#005daa]"></div>
+                  </div>
+                </label>
+                <label class="flex items-center justify-between cursor-pointer">
+                  <span class="text-[13px] leading-[20px] text-[#1b1c1c]">生成演讲稿</span>
+                  <div class="relative">
+                    <input checked class="sr-only peer" type="checkbox">
+                    <div class="w-9 h-5 bg-[#e3e2e2] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#005daa]"></div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 2: 选择模板 ===== -->
+  <div class="step-content" id="step-2">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-[24px] leading-[32px] font-semibold text-[#1b1c1c]">
+        选择模板 <span class="text-[13px] leading-[20px] text-[#404753] font-normal ml-3">(更多模板库)</span>
+      </h1>
+      <div class="flex gap-3">
+        <button class="px-4 py-3 bg-white border border-[#e3e2e2] rounded-lg text-[#1b1c1c] text-[16px] leading-[24px] font-semibold hover:bg-[#f4f3f3] transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">filter_list</span> 筛选
+        </button>
+        <button class="px-4 py-3 bg-[#005daa] text-white rounded-lg text-[16px] leading-[24px] font-semibold hover:bg-[#005daa]/90 transition-colors shadow-sm flex items-center gap-2" onclick="openTemplateImportModal()">
+          <span class="material-symbols-outlined text-[18px]">upload_file</span> 导入自定义模板
+        </button>
+      </div>
+    </div>
+    <div class="flex flex-col lg:flex-row gap-6">
+      <div class="w-full lg:w-[220px] shrink-0 space-y-4">
+        <div class="bg-white rounded-xl border border-[#e3e2e2] p-4">
+          <h3 class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c] mb-3 pb-3 border-b border-[#e3e2e2]">模板分类</h3>
+          <ul class="space-y-1" id="category-tabs">
+            <li><button class="category-tab w-full text-left px-3 py-1.5 rounded text-[16px] leading-[24px] font-semibold flex items-center justify-between group cursor-pointer transition-colors bg-[#d4e3ff] text-[#001c3a]"><span class="flex items-center gap-3"><span class="material-symbols-outlined text-[18px]">apps</span> 全部</span> <span class="badge text-xs px-1.5 rounded bg-white/50 text-[#004785]">142</span></button></li>
+            <li><button class="category-tab w-full text-left px-3 py-1.5 rounded text-[16px] leading-[24px] font-semibold flex items-center justify-between group transition-colors cursor-pointer text-[#404753] hover:bg-[#f4f3f3]"><span class="flex items-center gap-3"><span class="material-symbols-outlined text-[18px]">school</span> 学术教育</span> <span class="badge text-xs px-1.5 rounded bg-[#e9e8e8] text-[#404753]">38</span></button></li>
+            <li><button class="category-tab w-full text-left px-3 py-1.5 rounded text-[16px] leading-[24px] font-semibold flex items-center justify-between group transition-colors cursor-pointer text-[#404753] hover:bg-[#f4f3f3]"><span class="flex items-center gap-3"><span class="material-symbols-outlined text-[18px]">business_center</span> 商务汇报</span> <span class="badge text-xs px-1.5 rounded bg-[#e9e8e8] text-[#404753]">45</span></button></li>
+            <li><button class="category-tab w-full text-left px-3 py-1.5 rounded text-[16px] leading-[24px] font-semibold flex items-center justify-between group transition-colors cursor-pointer text-[#404753] hover:bg-[#f4f3f3]"><span class="flex items-center gap-3"><span class="material-symbols-outlined text-[18px]">memory</span> 科技前沿</span> <span class="badge text-xs px-1.5 rounded bg-[#e9e8e8] text-[#404753]">29</span></button></li>
+            <li><button class="category-tab w-full text-left px-3 py-1.5 rounded text-[16px] leading-[24px] font-semibold flex items-center justify-between group transition-colors cursor-pointer text-[#404753] hover:bg-[#f4f3f3]"><span class="flex items-center gap-3"><span class="material-symbols-outlined text-[18px]">format_paint</span> 简约大气</span> <span class="badge text-xs px-1.5 rounded bg-[#e9e8e8] text-[#404753]">18</span></button></li>
+            <li><button class="category-tab w-full text-left px-3 py-1.5 rounded text-[16px] leading-[24px] font-semibold flex items-center justify-between group transition-colors cursor-pointer text-[#404753] hover:bg-[#f4f3f3]"><span class="flex items-center gap-3"><span class="material-symbols-outlined text-[18px]">palette</span> 创意无限</span> <span class="badge text-xs px-1.5 rounded bg-[#e9e8e8] text-[#404753]">12</span></button></li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-xl border border-[#e3e2e2] p-4">
+          <h3 class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c] mb-3 pb-3 border-b border-[#e3e2e2]">屏幕比例</h3>
+          <div class="flex flex-col gap-2">
+            <label class="flex items-center gap-3 cursor-pointer group">
+              <input checked class="text-[#005daa] focus:ring-[#005daa] border-[#c0c7d6] bg-[#e3e2e2] cursor-pointer" name="ratio" type="radio">
+              <span class="text-[13px] leading-[20px] text-[#1b1c1c] group-hover:text-[#005daa] transition-colors">16:9 (Widescreen)</span>
+            </label>
+            <label class="flex items-center gap-3 cursor-pointer group">
+              <input class="text-[#005daa] focus:ring-[#005daa] border-[#c0c7d6] bg-[#e3e2e2] cursor-pointer" name="ratio" type="radio">
+              <span class="text-[13px] leading-[20px] text-[#1b1c1c] group-hover:text-[#005daa] transition-colors">4:3 (Standard)</span>
+            </label>
+            <label class="flex items-center gap-3 cursor-pointer group">
+              <input class="text-[#005daa] focus:ring-[#005daa] border-[#c0c7d6] bg-[#e3e2e2] cursor-pointer" name="ratio" type="radio">
+              <span class="text-[13px] leading-[20px] text-[#1b1c1c] group-hover:text-[#005daa] transition-colors">9:16 (Vertical)</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" id="template-grid">
+        <div class="bg-white rounded-xl overflow-hidden group template-card flex flex-col relative shadow-sm hover:shadow-md transition-shadow cursor-pointer border-2 border-[#005daa] ring-4 ring-[#d4e3ff]/30" data-template="1">
+          <div class="aspect-video relative overflow-hidden bg-[#e9e8e8]">
+            <div class="w-full h-full bg-[#1a3a5c] flex items-center justify-center"><span class="text-white/60 text-[28px] font-bold">Medical</span></div>
+            <div class="absolute inset-0 bg-black/40 opacity-0 template-actions transition-all duration-300 flex items-center justify-center gap-3 backdrop-blur-[2px] translate-y-2">
+              <button class="px-4 py-3 bg-white text-[#1b1c1c] text-[16px] leading-[24px] font-semibold rounded-lg hover:bg-[#f4f3f3] transition-colors shadow-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">visibility</span> Preview
+              </button>
+              <button class="px-4 py-3 bg-[#005daa] text-white text-[16px] leading-[24px] font-semibold rounded-lg hover:bg-[#005daa]/90 transition-colors shadow-sm flex items-center gap-2 select-btn">
+                <span class="material-symbols-outlined text-[18px]">check_circle</span> Selected
+              </button>
+            </div>
+            <div class="absolute top-3 left-3 px-2 py-1 bg-white/90 backdrop-blur-sm rounded border border-[#e3e2e2] shadow-sm flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#005daa]"></span>
+              <span class="text-[11px] leading-[16px] text-[#1b1c1c] uppercase tracking-wider font-bold">Premium</span>
+            </div>
+            <div class="absolute top-0 right-0 px-2 py-1 bg-[#005daa] text-white rounded-bl-lg text-[11px] leading-[16px] font-bold shadow-sm flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]">star</span> 当前选择
+            </div>
+          </div>
+          <div class="p-4 flex flex-col flex-1">
+            <h4 class="text-[20px] leading-[28px] font-semibold text-[#1b1c1c] mb-2 truncate">医学学术课件</h4>
+            <p class="text-[13px] leading-[20px] text-[#404753] line-clamp-2 mb-3 flex-1">专为医学研究、临床试验和医疗报告优化的清晰权威设计。</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2 py-1 bg-[#e9e8e8] text-[#404753] text-[11px] leading-[16px] font-bold rounded">学术</span>
+              <span class="px-2 py-1 bg-[#e9e8e8] text-[#404753] text-[11px] leading-[16px] font-bold rounded">医疗</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border border-[#e3e2e2] overflow-hidden group template-card flex flex-col relative shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-template="2">
+          <div class="aspect-video relative overflow-hidden bg-[#e9e8e8]">
+            <div class="w-full h-full bg-[#1e3a5f] flex items-center justify-center"><span class="text-white/60 text-[28px] font-bold">Business</span></div>
+            <div class="absolute inset-0 bg-black/40 opacity-0 template-actions transition-all duration-300 flex items-center justify-center gap-3 backdrop-blur-[2px] translate-y-2">
+              <button class="px-4 py-3 bg-white text-[#1b1c1c] text-[16px] leading-[24px] font-semibold rounded-lg hover:bg-[#f4f3f3] transition-colors shadow-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">visibility</span> Preview
+              </button>
+              <button class="px-4 py-3 bg-[#005daa] text-white text-[16px] leading-[24px] font-semibold rounded-lg hover:bg-[#005daa]/90 transition-colors shadow-sm flex items-center gap-2 select-btn">
+                <span class="material-symbols-outlined text-[18px]">check_circle</span> Select
+              </button>
+            </div>
+          </div>
+          <div class="p-4 flex flex-col flex-1">
+            <h4 class="text-[20px] leading-[28px] font-semibold text-[#1b1c1c] mb-2 truncate">专业商务报告</h4>
+            <p class="text-[13px] leading-[20px] text-[#404753] line-clamp-2 mb-3 flex-1">数据驱动布局，完美适用于季度业务回顾、年度报告和高管摘要。</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2 py-1 bg-[#e9e8e8] text-[#404753] text-[11px] leading-[16px] font-bold rounded">商务</span>
+              <span class="px-2 py-1 bg-[#e9e8e8] text-[#404753] text-[11px] leading-[16px] font-bold rounded">数据</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl overflow-hidden group template-card flex flex-col relative shadow-md transition-shadow cursor-pointer border border-[#e3e2e2]" data-template="3">
+          <div class="aspect-video relative overflow-hidden bg-[#e9e8e8]">
+            <div class="w-full h-full bg-[#0a1628] flex items-center justify-center"><span class="text-[#00d4ff]/60 text-[28px] font-bold">Tech</span></div>
+            <div class="absolute inset-0 bg-black/40 opacity-0 template-actions transition-all duration-300 flex items-center justify-center gap-3 backdrop-blur-[2px] translate-y-2">
+              <button class="px-4 py-3 bg-white text-[#1b1c1c] text-[16px] leading-[24px] font-semibold rounded-lg hover:bg-[#f4f3f3] transition-colors shadow-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">visibility</span> Preview
+              </button>
+              <button class="px-4 py-3 bg-[#005daa] text-white text-[16px] leading-[24px] font-semibold rounded-lg hover:bg-[#005daa]/90 transition-colors shadow-sm flex items-center gap-2 select-btn">
+                <span class="material-symbols-outlined text-[18px]">check_circle</span> Select
+              </button>
+            </div>
+          </div>
+          <div class="p-4 flex flex-col flex-1 bg-[#d4e3ff]/10">
+            <h4 class="text-[20px] leading-[28px] font-semibold text-[#1b1c1c] mb-2 truncate">未来科技暗黑</h4>
+            <p class="text-[13px] leading-[20px] text-[#404753] line-clamp-2 mb-3 flex-1">沉浸式暗黑模式科技模板，非常适合产品发布和AI深度探讨。</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2 py-1 bg-[#e9e8e8] text-[#404753] text-[11px] leading-[16px] font-bold rounded">科技</span>
+              <span class="px-2 py-1 bg-[#e9e8e8] text-[#404753] text-[11px] leading-[16px] font-bold rounded">暗黑模式</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border border-[#e3e2e2] overflow-hidden group template-card flex flex-col relative shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-template="4">
+          <div class="aspect-video relative overflow-hidden bg-[#e9e8e8]">
+            <div class="w-full h-full bg-[#f5f0e8] flex items-center justify-center"><span class="text-[#8b7355]/60 text-[28px] font-bold">Minimal</span></div>
+            <div class="absolute inset-0 bg-black/40 opacity-0 template-actions transition-all duration-300 flex items-center justify-center gap-3 backdrop-blur-[2px] translate-y-2">
+              <button class="px-4 py-3 bg-white text-[#1b1c1c] text-[16px] leading-[24px] font-semibold rounded-lg hover:bg-[#f4f3f3] transition-colors shadow-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">visibility</span> Preview
+              </button>
+              <button class="px-4 py-3 bg-[#005daa] text-white text-[16px] leading-[24px] font-semibold rounded-lg hover:bg-[#005daa]/90 transition-colors shadow-sm flex items-center gap-2 select-btn">
+                <span class="material-symbols-outlined text-[18px]">check_circle</span> Select
+              </button>
+            </div>
+          </div>
+          <div class="p-4 flex flex-col flex-1">
+            <h4 class="text-[20px] leading-[28px] font-semibold text-[#1b1c1c] mb-2 truncate">简约蓝调</h4>
+            <p class="text-[13px] leading-[20px] text-[#404753] line-clamp-2 mb-3 flex-1">高对比度、无干扰的布局，完全专注于核心信息传递。</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2 py-1 bg-[#e9e8e8] text-[#404753] text-[11px] leading-[16px] font-bold rounded">简约</span>
+              <span class="px-2 py-1 bg-[#e9e8e8] text-[#404753] text-[11px] leading-[16px] font-bold rounded">经典</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl overflow-hidden group template-card flex flex-col relative shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-[#e3e2e2]" data-template="5">
+          <div class="aspect-video relative overflow-hidden bg-[#e9e8e8]">
+            <div class="w-full h-full bg-[#e3e2e2] flex items-center justify-center group-hover:bg-[#dbdad9] transition-colors">
+              <span class="material-symbols-outlined text-[48px] text-[#c0c7d6]">image_not_supported</span>
+            </div>
+            <div class="absolute inset-0 bg-black/40 opacity-0 template-actions transition-all duration-300 flex items-center justify-center gap-3 backdrop-blur-[2px] translate-y-2">
+              <button class="px-4 py-3 bg-white text-[#1b1c1c] text-[16px] leading-[24px] font-semibold rounded-lg hover:bg-[#f4f3f3] transition-colors shadow-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">visibility</span> Preview
+              </button>
+              <button class="px-4 py-3 bg-[#005daa] text-white text-[16px] leading-[24px] font-semibold rounded-lg hover:bg-[#005daa]/90 transition-colors shadow-sm flex items-center gap-2 select-btn">
+                <span class="material-symbols-outlined text-[18px]">check_circle</span> Select
+              </button>
+            </div>
+          </div>
+          <div class="p-4 flex flex-col flex-1">
+            <h4 class="text-[20px] leading-[28px] font-semibold text-[#1b1c1c] mb-2 truncate">教育核心</h4>
+            <p class="text-[13px] leading-[20px] text-[#404753] line-clamp-2 mb-3 flex-1">为中小学和高等教育课程大纲展示设计。</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2 py-1 bg-[#e9e8e8] text-[#404753] text-[11px] leading-[16px] font-bold rounded">学术</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl overflow-hidden group template-card flex flex-col relative shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-[#e3e2e2]" data-template="6">
+          <div class="aspect-video relative overflow-hidden bg-[#e9e8e8]">
+            <div class="w-full h-full bg-gradient-to-br from-purple-500 to-orange-400 flex items-center justify-center"><span class="text-white/70 text-[28px] font-bold">Creative</span></div>
+            <div class="absolute inset-0 bg-black/40 opacity-0 template-actions transition-all duration-300 flex items-center justify-center gap-3 backdrop-blur-[2px] translate-y-2">
+              <button class="px-4 py-3 bg-white text-[#1b1c1c] text-[16px] leading-[24px] font-semibold rounded-lg hover:bg-[#f4f3f3] transition-colors shadow-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">visibility</span> Preview
+              </button>
+              <button class="px-4 py-3 bg-[#005daa] text-white text-[16px] leading-[24px] font-semibold rounded-lg hover:bg-[#005daa]/90 transition-colors shadow-sm flex items-center gap-2 select-btn">
+                <span class="material-symbols-outlined text-[18px]">check_circle</span> Select
+              </button>
+            </div>
+          </div>
+          <div class="p-4 flex flex-col flex-1">
+            <h4 class="text-[20px] leading-[28px] font-semibold text-[#1b1c1c] mb-2 truncate">创意提案</h4>
+            <p class="text-[13px] leading-[20px] text-[#404753] line-clamp-2 mb-3 flex-1">充满活力、多媒体丰富的布局，吸引观众并获得认同。</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2 py-1 bg-[#e9e8e8] text-[#404753] text-[11px] leading-[16px] font-bold rounded">创意</span>
+              <span class="px-2 py-1 bg-[#e9e8e8] text-[#404753] text-[11px] leading-[16px] font-bold rounded">商务</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-8 flex items-center justify-center gap-3">
+      <button class="w-10 h-10 rounded-lg bg-white border border-[#e3e2e2] text-[#404753] flex items-center justify-center hover:bg-[#f4f3f3] transition-colors disabled:opacity-50 cursor-not-allowed" disabled>
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button class="w-10 h-10 rounded-lg bg-[#005daa] text-white text-[16px] leading-[24px] font-semibold flex items-center justify-center shadow-sm cursor-pointer hover:bg-[#005daa]/90 transition-colors">1</button>
+      <button class="w-10 h-10 rounded-lg bg-white border border-[#e3e2e2] text-[#1b1c1c] hover:bg-[#f4f3f3] transition-colors text-[16px] leading-[24px] font-semibold flex items-center justify-center cursor-pointer">2</button>
+      <button class="w-10 h-10 rounded-lg bg-white border border-[#e3e2e2] text-[#1b1c1c] hover:bg-[#f4f3f3] transition-colors text-[16px] leading-[24px] font-semibold flex items-center justify-center cursor-pointer">3</button>
+      <span class="text-[#404753] mx-1">...</span>
+      <button class="w-10 h-10 rounded-lg bg-white border border-[#e3e2e2] text-[#1b1c1c] hover:bg-[#f4f3f3] transition-colors text-[16px] leading-[24px] font-semibold flex items-center justify-center cursor-pointer">12</button>
+      <button class="w-10 h-10 rounded-lg bg-white border border-[#e3e2e2] text-[#1b1c1c] flex items-center justify-center hover:bg-[#f4f3f3] transition-colors cursor-pointer">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== STEP 3: AI智能生成 ===== -->
+  <div class="step-content" id="step-3">
+    <div class="max-w-6xl mx-auto flex gap-4">
+      <div class="flex-1 bg-white border border-[#e3e2e2] rounded-xl p-8 flex flex-col items-center min-h-[600px] shadow-sm">
+        <div class="relative w-56 h-56 mt-6 mb-8">
+          <svg class="w-full h-full transform -rotate-90 spin-slow" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" fill="none" r="45" stroke="#f2f0f0" stroke-width="10"></circle>
+            <circle id="progress-circle" class="transition-all duration-1000 ease-in-out" cx="50" cy="50" fill="none" r="45" stroke="#005daa" stroke-dasharray="283" stroke-dashoffset="283" stroke-linecap="round" stroke-width="10"></circle>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-[#005daa]">
+            <span class="text-[30px] leading-[38px] font-bold text-[#005daa]" id="progress-pct">0%</span>
+          </div>
+        </div>
+        <h3 class="text-[24px] leading-[32px] font-semibold text-[#1b1c1c] mb-3">PPT 正在智能生成中...</h3>
+        <p class="text-[14px] leading-[22px] text-[#404753] mb-8">预计还需要 1-2 分钟，请稍后</p>
+        <div class="w-full max-w-lg border border-[#e3e2e2] rounded-lg p-6 flex flex-col gap-4">
+          <div class="flex items-center gap-4" id="task-1">
+            <span class="material-symbols-outlined text-[#266d00] text-[24px]">check_circle</span>
+            <span class="text-[14px] leading-[22px] text-[#1b1c1c]">分析课程主题</span>
+          </div>
+          <div class="flex items-center gap-4" id="task-2">
+            <span class="material-symbols-outlined text-[#266d00] text-[24px]">check_circle</span>
+            <span class="text-[14px] leading-[22px] text-[#1b1c1c]">构建教学大纲</span>
+          </div>
+          <div class="flex items-center gap-4 bg-[#d4e3ff] p-3 -mx-3 rounded border-l-4 border-[#005daa]" id="task-3">
+            <span class="material-symbols-outlined text-[#005daa] text-[24px] spin-slow">progress_activity</span>
+            <span class="text-[14px] leading-[22px] text-[#005daa] font-medium">智能生成幻灯片内容</span>
+          </div>
+          <div class="flex items-center gap-4 opacity-50" id="task-4">
+            <span class="material-symbols-outlined text-[#707785] text-[24px]">schedule</span>
+            <span class="text-[14px] leading-[22px] text-[#404753]">匹配模板视觉样式</span>
+          </div>
+          <div class="flex items-center gap-4 opacity-50" id="task-5">
+            <span class="material-symbols-outlined text-[#707785] text-[24px]">schedule</span>
+            <span class="text-[14px] leading-[22px] text-[#404753]">优化排版与配图</span>
+          </div>
+        </div>
+      </div>
+      <div class="w-80 flex flex-col gap-4">
+        <div class="bg-white border border-[#e3e2e2] rounded-xl p-6 h-full flex flex-col shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="material-symbols-outlined text-[#005daa] text-[24px]">lightbulb</span>
+            <h4 class="text-[16px] leading-[24px] font-semibold text-[#005daa]">知识库小贴士</h4>
+          </div>
+          <p class="text-[13px] leading-[20px] text-[#404753] leading-relaxed mb-8 flex-1">
+            清晰的教学大纲能显著提升 AI 生成 PPT 的质量。在上一页中提供的细节越丰富，生成的排版和配图就会越精准。
+          </p>
+          <div class="mt-auto">
+            <div class="relative w-full h-32 rounded-lg overflow-hidden bg-[#f4f3f3] border border-[#e3e2e2] flex items-center justify-center">
+              <div class="absolute inset-0 bg-[#d4e3ff] opacity-30"></div>
+              <span class="material-symbols-outlined text-5xl text-[#005daa] opacity-40">auto_awesome_mosaic</span>
+              <div class="absolute bottom-3 text-center w-full">
+                <span class="text-[11px] leading-[16px] font-bold text-[#005daa]">AI 引擎正在深度解析您的需求</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 4: 大纲编辑 ===== -->
+  <div class="step-content" id="step-4">
+    <div class="flex gap-4 h-[calc(100vh-340px)] min-h-[500px]">
+      <div class="flex-1 flex flex-col min-w-0 bg-white border border-[#e3e2e2] rounded-xl overflow-hidden shadow-sm">
+        <div class="h-12 border-b border-[#e3e2e2] flex items-center justify-between px-4 bg-white">
+          <span class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c]">幻灯片预览</span>
+          <div class="flex gap-3">
+            <button class="px-3 py-1.5 rounded text-[#005daa] hover:bg-[#005daa]/10 transition-colors flex items-center text-[12px] leading-[18px] border border-transparent hover:border-[#005daa]/20" onclick="openExportConfigModal()">
+              <span class="material-symbols-outlined text-[18px] mr-1">download</span> 导出
+            </button>
+            <button class="p-1.5 rounded text-[#404753] hover:bg-[#f4f3f3] transition-colors flex items-center justify-center">
+              <span class="material-symbols-outlined">fullscreen</span>
+            </button>
+          </div>
+        </div>
+        <div class="flex-1 bg-[#e3e2e2] relative overflow-hidden flex items-center justify-center p-4">
+          <div class="w-full max-w-[800px] aspect-video bg-white shadow-md rounded border border-[#e3e2e2] flex flex-col">
+            <div class="flex-1 p-8 flex flex-col justify-center">
+              <h1 class="text-[30px] leading-[38px] font-bold text-[#005daa] mb-6 text-center border-b-2 border-[#005daa]/20 pb-4 inline-block mx-auto" id="slide-title">人工智能简介</h1>
+              <ul class="space-y-4 text-[24px] leading-[32px] font-semibold text-[#1b1c1c] w-3/4 mx-auto list-disc pl-8" id="slide-list">
+                <li>什么是人工智能 (AI)？</li>
+                <li>AI 的发展历史与核心里程碑。</li>
+                <li>机器学习与深度学习的区别。</li>
+                <li>在现代教育与工业中的应用案例。</li>
+              </ul>
+            </div>
+            <div class="h-8 border-t border-[#e3e2e2]/50 flex items-center justify-between px-4 text-[#707785] text-[11px] leading-[16px] font-bold">
+              <span>数字人微课平台 | <span id="slide-chapter">第一章</span></span>
+              <span id="slide-number">02</span>
+            </div>
+          </div>
+        </div>
+        <div class="h-32 border-t border-[#e3e2e2] bg-white flex items-center px-3 gap-3 overflow-x-auto custom-scrollbar flex-nowrap" id="thumbnail-strip">
+          <div class="thumbnail-item w-40 aspect-video bg-white border border-[#e3e2e2] rounded flex-shrink-0 relative group cursor-pointer hover:border-[#005daa]/50 transition-colors" data-id="p1">
+            <div class="absolute inset-0 p-2 flex flex-col justify-center items-center">
+              <div class="w-8 h-8 rounded bg-[#005daa]/10 mb-1 flex items-center justify-center"><span class="material-symbols-outlined text-[#005daa] text-sm">home</span></div>
+              <div class="h-1 w-1/2 bg-[#e3e2e2]/50 rounded mt-1"></div>
+            </div>
+            <div class="absolute bottom-1 left-2 bg-white/80 px-1 rounded text-[10px] text-[#404753]">P1</div>
+          </div>
+          <div class="thumbnail-item w-40 aspect-video bg-white border-2 border-[#005daa] rounded flex-shrink-0 relative cursor-pointer shadow-sm active" data-id="p2">
+            <div class="absolute inset-0 p-2 flex flex-col justify-center items-center opacity-80">
+              <div class="text-[12px] leading-[18px] text-[#005daa] font-bold mb-1">人工智能简介</div>
+              <div class="h-0.5 w-3/4 bg-[#005daa]/30 rounded mt-1"></div>
+              <div class="h-0.5 w-1/2 bg-[#005daa]/30 rounded mt-1"></div>
+            </div>
+            <div class="absolute bottom-1 left-2 bg-[#005daa] text-white px-1 rounded text-[10px]">P2</div>
+          </div>
+          <div class="thumbnail-item w-40 aspect-video bg-white border border-[#e3e2e2] rounded flex-shrink-0 relative group cursor-pointer hover:border-[#005daa]/50 transition-colors" data-id="p3">
+            <div class="absolute inset-0 p-2 flex flex-col justify-center items-center opacity-60">
+              <div class="text-[12px] leading-[18px] text-[#1b1c1c] font-bold mb-1">发展历史</div>
+              <div class="h-0.5 w-3/4 bg-[#e3e2e2]/50 rounded mt-1"></div>
+              <div class="h-0.5 w-full bg-[#e3e2e2]/50 rounded mt-1"></div>
+              <div class="h-0.5 w-2/3 bg-[#e3e2e2]/50 rounded mt-1"></div>
+            </div>
+            <div class="absolute bottom-1 left-2 bg-white/80 px-1 rounded text-[10px] text-[#404753]">P3</div>
+          </div>
+          <div class="w-20 aspect-video border border-dashed border-[#e3e2e2] rounded flex-shrink-0 flex items-center justify-center cursor-pointer hover:bg-[#005daa]/5 hover:border-[#005daa]/50 transition-colors text-[#707785]" id="add-page-btn-strip">
+            <span class="material-symbols-outlined text-xl">add</span>
+          </div>
+        </div>
+      </div>
+      <div class="w-[360px] bg-white border border-[#e3e2e2] rounded-xl flex flex-col shadow-sm h-full overflow-hidden">
+        <div class="h-12 border-b border-[#e3e2e2] flex items-center px-4 bg-white shrink-0">
+          <span class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c] flex-1">大纲调整</span>
+          <span class="material-symbols-outlined text-[#404753] text-lg">format_list_bulleted</span>
+        </div>
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-4 min-h-0 max-h-full" id="outline-list">
+          <div class="outline-item border border-[#e3e2e2] rounded-lg p-3 bg-white" data-id="p1">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[12px] leading-[18px] text-[#404753] font-bold">P1 - 封面页</span>
+            </div>
+            <div class="text-[13px] leading-[20px] text-[#1b1c1c] pl-2 border-l-2 border-[#e3e2e2]/30">
+              &#8226; 课程标题展示<br>
+              &#8226; 讲师信息介绍
+            </div>
+          </div>
+          <div class="outline-item border-2 border-[#005daa] rounded-lg p-3 bg-white shadow-sm relative active" data-id="p2">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#005daa] mr-2 animate-pulse"></span>
+                <span class="text-[12px] leading-[18px] text-[#005daa] font-bold">P2 - 概念引入</span>
+              </div>
+              <div class="flex gap-1">
+                <button class="p-1 text-[#404753] hover:text-[#005daa] rounded transition-colors edit-btn"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+                <button class="p-1 text-[#404753] hover:text-[#ba1a1a] rounded transition-colors delete-btn"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+              </div>
+            </div>
+            <div class="space-y-2 pl-3 border-l-2 border-[#005daa]/30">
+              <div class="flex items-start group">
+                <span class="text-[#005daa] mr-1 mt-0.5">&#8226;</span>
+                <div class="flex-1 bg-[#005daa]/5 border border-[#005daa]/20 rounded px-2 py-1 text-[13px] leading-[20px] text-[#1b1c1c] focus-within:border-[#005daa] focus-within:bg-white transition-colors">
+                  <input class="w-full bg-transparent border-none p-0 focus:ring-0 text-[13px] leading-[20px] h-5 outline-none" type="text" value="什么是人工智能 (AI)？">
+                </div>
+              </div>
+              <div class="flex items-start group">
+                <span class="text-[#005daa] mr-1 mt-0.5">&#8226;</span>
+                <div class="flex-1 bg-[#005daa]/5 border border-[#005daa]/20 rounded px-2 py-1 text-[13px] leading-[20px] text-[#1b1c1c] focus-within:border-[#005daa] focus-within:bg-white transition-colors">
+                  <input class="w-full bg-transparent border-none p-0 focus:ring-0 text-[13px] leading-[20px] h-5 outline-none" type="text" value="AI 的发展历史与核心里程碑。">
+                </div>
+              </div>
+              <div class="flex items-start group">
+                <span class="text-[#005daa] mr-1 mt-0.5">&#8226;</span>
+                <div class="flex-1 border border-transparent rounded px-2 py-1 text-[13px] leading-[20px] text-[#1b1c1c] hover:border-[#c0c7d6] transition-colors cursor-text">机器学习与深度学习的区别。</div>
+              </div>
+              <div class="flex items-start group">
+                <span class="text-[#005daa] mr-1 mt-0.5">&#8226;</span>
+                <div class="flex-1 border border-transparent rounded px-2 py-1 text-[13px] leading-[20px] text-[#1b1c1c] hover:border-[#c0c7d6] transition-colors cursor-text">在现代教育与工业中的应用案例。</div>
+              </div>
+              <button class="mt-2 text-[#005daa] text-[12px] leading-[18px] flex items-center hover:bg-[#005daa]/10 px-2 py-1 rounded transition-colors -ml-1">
+                <span class="material-symbols-outlined text-[16px] mr-1">add_circle</span> 添加知识点
+              </button>
+            </div>
+          </div>
+          <div class="outline-item border border-[#e3e2e2] rounded-lg p-3 bg-white hover:border-[#707785] transition-colors cursor-pointer" data-id="p3">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[12px] leading-[18px] text-[#404753] font-bold">P3 - 历史沿革</span>
+            </div>
+            <div class="text-[13px] leading-[20px] text-[#1b1c1c] pl-2 border-l-2 border-[#e3e2e2]/30 text-[#404753]">
+              &#8226; 早期探索阶段 (1950s-1970s)<br>
+              &#8226; 专家系统时期 (1980s)<br>
+              &#8226; 深度学习爆发 (2010s至今)
+            </div>
+          </div>
+          <button class="w-full py-2 border border-dashed border-[#e3e2e2] rounded-lg text-[#404753] hover:text-[#005daa] hover:border-[#005daa] hover:bg-[#005daa]/5 transition-colors flex items-center justify-center text-[12px] leading-[18px] mt-6" id="add-page-btn-outline">
+            <span class="material-symbols-outlined mr-1 text-[18px]">post_add</span> 添加新页面
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 5: 预览导出 ===== -->
+  <div class="step-content" id="step-5">
+    <div class="flex gap-4 h-[calc(100vh-340px)] min-h-[500px]">
+      <div class="flex-1 flex flex-col min-w-0 bg-white border border-[#e3e2e2] rounded-xl overflow-hidden shadow-sm">
+        <div class="h-12 border-b border-[#e3e2e2] flex items-center justify-between px-4 bg-white">
+          <span class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c]">幻灯片预览</span>
+          <div class="flex gap-3">
+            <button class="px-3 py-1.5 rounded text-[#005daa] hover:bg-[#005daa]/10 transition-colors flex items-center text-[12px] leading-[18px] border border-transparent hover:border-[#005daa]/20" onclick="openExportConfigModal()">
+              <span class="material-symbols-outlined text-[18px] mr-1">download</span> 导出
+            </button>
+            <button class="p-1.5 rounded text-[#404753] hover:bg-[#f4f3f3] transition-colors flex items-center justify-center">
+              <span class="material-symbols-outlined">fullscreen</span>
+            </button>
+          </div>
+        </div>
+        <div class="flex-1 bg-[#e3e2e2] relative overflow-hidden flex items-center justify-center p-4">
+          <div class="w-full max-w-[800px] aspect-video bg-white shadow-md rounded border border-[#e3e2e2] flex flex-col">
+            <div class="flex-1 p-8 flex flex-col justify-center">
+              <h1 class="text-[30px] leading-[38px] font-bold text-[#005daa] mb-6 text-center border-b-2 border-[#005daa]/20 pb-4 inline-block mx-auto">人工智能简介</h1>
+              <ul class="space-y-4 text-[24px] leading-[32px] font-semibold text-[#1b1c1c] w-3/4 mx-auto list-disc pl-8">
+                <li>什么是人工智能 (AI)？</li>
+                <li>AI 的发展历史与核心里程碑。</li>
+                <li>机器学习与深度学习的区别。</li>
+                <li>在现代教育与工业中的应用案例。</li>
+              </ul>
+            </div>
+            <div class="h-8 border-t border-[#e3e2e2]/50 flex items-center justify-between px-4 text-[#707785] text-[11px] leading-[16px] font-bold">
+              <span>数字人微课平台 | 第一章</span>
+              <span>02</span>
+            </div>
+          </div>
+        </div>
+        <div class="h-32 border-t border-[#e3e2e2] bg-white flex items-center px-3 gap-3 overflow-x-auto custom-scrollbar">
+          <div class="w-40 aspect-video bg-white border border-[#e3e2e2] rounded flex-shrink-0 relative group cursor-pointer hover:border-[#005daa]/50 transition-colors">
+            <div class="absolute inset-0 p-2 flex flex-col justify-center items-center">
+              <div class="w-8 h-8 rounded bg-[#005daa]/10 mb-1 flex items-center justify-center"><span class="material-symbols-outlined text-[#005daa] text-sm">home</span></div>
+              <div class="h-1 w-1/2 bg-[#e3e2e2]/50 rounded mt-1"></div>
+            </div>
+            <div class="absolute bottom-1 left-2 bg-white/80 px-1 rounded text-[10px] text-[#404753]">P1</div>
+          </div>
+          <div class="w-40 aspect-video bg-white border-2 border-[#005daa] rounded flex-shrink-0 relative cursor-pointer shadow-sm">
+            <div class="absolute inset-0 p-2 flex flex-col justify-center items-center opacity-80">
+              <div class="text-[12px] leading-[18px] text-[#005daa] font-bold mb-1">人工智能简介</div>
+              <div class="h-0.5 w-3/4 bg-[#005daa]/30 rounded mt-1"></div>
+              <div class="h-0.5 w-1/2 bg-[#005daa]/30 rounded mt-1"></div>
+            </div>
+            <div class="absolute bottom-1 left-2 bg-[#005daa] text-white px-1 rounded text-[10px]">P2</div>
+          </div>
+          <div class="w-40 aspect-video bg-white border border-[#e3e2e2] rounded flex-shrink-0 relative group cursor-pointer hover:border-[#005daa]/50 transition-colors">
+            <div class="absolute inset-0 p-2 flex flex-col justify-center items-center opacity-60">
+              <div class="text-[12px] leading-[18px] text-[#1b1c1c] font-bold mb-1">发展历史</div>
+              <div class="h-0.5 w-3/4 bg-[#e3e2e2]/50 rounded mt-1"></div>
+              <div class="h-0.5 w-full bg-[#e3e2e2]/50 rounded mt-1"></div>
+              <div class="h-0.5 w-2/3 bg-[#e3e2e2]/50 rounded mt-1"></div>
+            </div>
+            <div class="absolute bottom-1 left-2 bg-white/80 px-1 rounded text-[10px] text-[#404753]">P3</div>
+          </div>
+        </div>
+      </div>
+      <div class="w-[360px] bg-white border border-[#e3e2e2] rounded-xl flex flex-col shadow-sm">
+        <div class="h-12 border-b border-[#e3e2e2] flex items-center px-4 bg-white shrink-0">
+          <span class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c] flex-1">大纲总览</span>
+          <span class="material-symbols-outlined text-[#404753] text-lg">format_list_bulleted</span>
+        </div>
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-4">
+          <div class="border border-[#e3e2e2] rounded-lg p-3 bg-white">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[12px] leading-[18px] text-[#404753] font-bold">P1 - 封面页</span>
+            </div>
+            <div class="text-[13px] leading-[20px] text-[#1b1c1c] pl-2 border-l-2 border-[#e3e2e2]/30">
+              &#8226; 课程标题展示<br>
+              &#8226; 讲师信息介绍
+            </div>
+          </div>
+          <div class="border border-[#e3e2e2] rounded-lg p-3 bg-white hover:border-[#707785] transition-colors cursor-pointer">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[12px] leading-[18px] text-[#404753] font-bold">P2 - 概念引入</span>
+            </div>
+            <div class="text-[13px] leading-[20px] text-[#1b1c1c] pl-2 border-l-2 border-[#e3e2e2]/30">
+              &#8226; 什么是人工智能 (AI)？<br>
+              &#8226; AI 的发展历史<br>
+              &#8226; 机器学习与深度学习的区别<br>
+              &#8226; 应用案例
+            </div>
+          </div>
+          <div class="border border-[#e3e2e2] rounded-lg p-3 bg-white hover:border-[#707785] transition-colors cursor-pointer">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[12px] leading-[18px] text-[#404753] font-bold">P3 - 历史沿革</span>
+            </div>
+            <div class="text-[13px] leading-[20px] text-[#1b1c1c] pl-2 border-l-2 border-[#e3e2e2]/30 text-[#404753]">
+              &#8226; 早期探索阶段<br>
+              &#8226; 专家系统时期<br>
+              &#8226; 深度学习爆发
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 6: 导出参数配置 ===== -->
+  <div class="step-content" id="step-6">
+    <div class="max-w-2xl mx-auto">
+      <div class="bg-white rounded-xl border border-[#e3e2e2] shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-[#e3e2e2] bg-white">
+          <h2 class="text-[20px] leading-[28px] font-semibold text-[#1b1c1c]">PPT 导出参数配置</h2>
+        </div>
+        <div class="p-6 space-y-8">
+          <div class="space-y-3">
+            <label class="block text-[12px] leading-[18px] text-[#404753] uppercase tracking-wider font-medium">导出格式</label>
+            <div class="grid grid-cols-2 gap-4">
+              <label class="relative flex items-center justify-center p-4 border-2 border-[#005daa] bg-[#d4e3ff]/20 rounded-lg cursor-pointer transition-colors group" id="format-pptx-label">
+                <input checked class="sr-only" name="format" type="radio" value="pptx" onchange="updateFormatSelection()">
+                <span class="material-symbols-outlined text-[#005daa] mr-2">slideshow</span>
+                <span class="text-[14px] leading-[22px] font-semibold text-[#005daa]">PPTX (源文件)</span>
+                <div class="absolute top-2 right-2 w-4 h-4 rounded-full border-2 border-[#005daa] flex items-center justify-center bg-[#005daa]">
+                  <span class="material-symbols-outlined text-[10px] text-white font-bold">check</span>
+                </div>
+              </label>
+              <label class="relative flex items-center justify-center p-4 border border-[#e3e2e2] bg-white rounded-lg cursor-pointer hover:border-[#005daa]/50 hover:bg-[#f4f3f3] transition-colors group" id="format-pdf-label">
+                <input class="sr-only" name="format" type="radio" value="pdf" onchange="updateFormatSelection()">
+                <span class="material-symbols-outlined text-[#404753] mr-2 group-hover:text-[#005daa] transition-colors">picture_as_pdf</span>
+                <span class="text-[14px] leading-[22px] text-[#1b1c1c] group-hover:text-[#005daa] transition-colors">PDF (便携文档)</span>
+              </label>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <label class="block text-[12px] leading-[18px] text-[#404753] uppercase tracking-wider font-medium">页面范围</label>
+            <div class="flex flex-wrap gap-3">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input checked class="text-[#005daa] focus:ring-[#005daa] focus:ring-offset-0 bg-white h-4 w-4 border-[#c0c7d6]" name="range" type="radio" value="all">
+                <span class="text-[14px] leading-[22px] text-[#1b1c1c]">全部页面</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer ml-4">
+                <input class="text-[#005daa] focus:ring-[#005daa] focus:ring-offset-0 bg-white h-4 w-4 border-[#c0c7d6]" name="range" type="radio" value="current">
+                <span class="text-[14px] leading-[22px] text-[#1b1c1c]">当前页</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer ml-4">
+                <input class="text-[#005daa] focus:ring-[#005daa] focus:ring-offset-0 bg-white h-4 w-4 border-[#c0c7d6]" name="range" type="radio" value="custom" id="custom-range-radio">
+                <span class="text-[14px] leading-[22px] text-[#1b1c1c]">自定义</span>
+              </label>
+            </div>
+            <div class="mt-2 hidden" id="custom-range-input-wrap">
+              <input class="w-full border border-[#e3e2e2] rounded-lg p-2 text-[13px] leading-[20px] focus:border-[#005daa] focus:ring-1 focus:ring-[#005daa] bg-white outline-none" placeholder="例如: 1-5, 8, 11-13" type="text">
+            </div>
+          </div>
+          <div class="space-y-3">
+            <label class="block text-[12px] leading-[18px] text-[#404753] uppercase tracking-wider font-medium">导出质量</label>
+            <div class="flex bg-[#f4f3f3] p-1 rounded-lg border border-[#e3e2e2]">
+              <button class="flex-1 py-2 text-center rounded bg-white shadow-sm border border-[#e3e2e2] text-[13px] leading-[20px] font-semibold text-[#005daa] quality-btn active" data-quality="standard">标准 (推荐)</button>
+              <button class="flex-1 py-2 text-center rounded text-[13px] leading-[20px] text-[#404753] hover:text-[#1b1c1c] transition-colors quality-btn" data-quality="hd">高清 (1080p)</button>
+            </div>
+            <p class="text-[12px] leading-[18px] text-[#404753] mt-1">标准质量体积更小，适合快速分享与预览。</p>
+          </div>
+          <div class="space-y-3 pt-4 border-t border-[#e3e2e2]">
+            <label class="flex items-center justify-between cursor-pointer">
+              <div>
+                <span class="block text-[14px] leading-[22px] font-semibold text-[#1b1c1c]">添加企业水印</span>
+                <span class="block text-[12px] leading-[18px] text-[#404753] mt-0.5">导出文件中将包含预设的品牌水印</span>
+              </div>
+              <div class="relative">
+                <input class="sr-only peer" type="checkbox">
+                <div class="w-11 h-6 bg-[#e3e2e2] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#005daa]"></div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 7: 完成 ===== -->
+  <div class="step-content" id="step-7">
+    <div class="max-w-md mx-auto mt-12">
+      <div class="bg-white rounded-xl shadow-xl border border-[#e3e2e2] p-8 flex flex-col items-center text-center animate-fade-in-up">
+        <div class="w-20 h-20 rounded-full bg-[#85fa51]/30 flex items-center justify-center mb-6">
+          <div class="w-14 h-14 rounded-full bg-[#266d00] text-white flex items-center justify-center">
+            <span class="material-symbols-outlined text-[36px]">check</span>
+          </div>
+        </div>
+        <h2 class="text-[24px] leading-[32px] font-semibold text-[#1b1c1c] mb-3">文件导出成功</h2>
+        <p class="text-[14px] leading-[22px] text-[#404753] mb-8 px-4">
+          您的课程资料已准备就绪，点击下方按钮即可开始下载。
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 w-full">
+          <button class="flex-1 py-2.5 px-4 rounded-lg bg-white border-2 border-[#005daa] text-[#005daa] text-[16px] leading-[24px] font-semibold hover:bg-[#d4e3ff]/10 transition-colors" onclick="window.location.href='processing-tasks.html'">
+            返回工作台
+          </button>
+          <button class="flex-1 py-2.5 px-4 rounded-lg bg-[#005daa] text-white text-[16px] leading-[24px] font-semibold hover:bg-[#005daa]/90 transition-colors shadow-sm">
+            立即下载
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DRAFT HISTORY TAB ===== -->
+  <div class="step-content" id="step-drafts">
+    <div class="flex justify-between items-end mb-6">
+      <div>
+        <h2 class="text-[24px] leading-[32px] font-semibold text-[#1b1c1c]">历史记录</h2>
+      </div>
+      <button class="bg-[#005daa] text-white text-[12px] leading-[18px] px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-[#0075d5] transition-colors shadow-sm" onclick="goToStep(1);">
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        新建 PPT
+      </button>
+    </div>
+    <div class="bg-white border border-[#e3e2e2] rounded-xl p-3 mb-6 flex items-center justify-between">
+      <div class="flex gap-3" id="draft-filter-tabs">
+        <button class="px-4 py-2 rounded bg-white shadow-sm text-[#005daa] text-[12px] leading-[18px] font-bold draft-filter-btn active">全部状态</button>
+        <button class="px-4 py-2 rounded text-[#404753] text-[12px] leading-[18px] hover:bg-[#f4f3f3] transition-colors draft-filter-btn">已完成</button>
+        <button class="px-4 py-2 rounded text-[#404753] text-[12px] leading-[18px] hover:bg-[#f4f3f3] transition-colors draft-filter-btn">草稿</button>
+        <button class="px-4 py-2 rounded text-[#404753] text-[12px] leading-[18px] hover:bg-[#f4f3f3] transition-colors draft-filter-btn">失败</button>
+      </div>
+      <div class="relative w-64">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#404753] text-[18px]">search</span>
+        <input class="w-full pl-[32px] pr-3 py-1.5 border border-[#e3e2e2] rounded bg-white text-[13px] leading-[20px] focus:border-[#005daa] focus:ring-1 focus:ring-[#005daa] outline-none transition-all" placeholder="搜索课程标题..." type="text">
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" id="draft-grid">
+      <div class="bg-white border border-[#e3e2e2] rounded-xl overflow-hidden flex flex-col hover:shadow-md transition-shadow draft-card" data-status="已完成">
+        <div class="h-32 bg-[#f4f3f3] relative border-b border-[#e3e2e2]">
+          <div class="w-full h-full bg-[#1a3a5c] flex items-center justify-center"><span class="text-white/40 text-lg font-bold">AI Med</span></div>
+          <div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-2 py-0.5 rounded text-[10px] font-bold text-[#287100] flex items-center gap-1 border border-[#85fa51]">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#266d00]"></span> 已完成
+          </div>
+        </div>
+        <div class="p-4 flex-1 flex flex-col">
+          <h3 class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c] mb-2 line-clamp-2">人工智能在现代医疗中的应用</h3>
+          <p class="text-[13px] leading-[20px] text-[#404753] mb-4 flex-1">包含3个主要章节：诊断、药物研发、患者管理。模板：学术严谨 (16:9)</p>
+          <div class="flex items-center justify-between mt-auto pt-3 border-t border-[#e3e2e2]">
+            <span class="text-[11px] leading-[16px] font-bold text-[#404753]">2023-10-24 14:30</span>
+            <div class="flex gap-2">
+              <button class="p-1 text-[#404753] hover:text-[#005daa] transition-colors" title="预览"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+              <button class="p-1 text-[#404753] hover:text-[#005daa] transition-colors" title="编辑"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+              <button class="p-1 text-[#404753] hover:text-[#005daa] transition-colors" title="下载"><span class="material-symbols-outlined text-[18px]">download</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white border-2 border-[#005daa] rounded-xl overflow-hidden flex flex-col relative shadow-sm draft-card" data-status="处理中">
+        <div class="absolute inset-0 bg-[#005daa]/5 pointer-events-none"></div>
+        <div class="h-32 bg-[#f4f3f3] relative border-b border-[#e3e2e2] flex items-center justify-center">
+          <div class="w-full h-full bg-[#0a1628] flex items-center justify-center opacity-40"><span class="text-white/40 text-lg font-bold">Tech</span></div>
+          <div class="absolute inset-0 flex flex-col items-center justify-center z-10">
+            <div class="w-10 h-10 border-4 border-[#005daa]/30 border-t-[#005daa] rounded-full animate-spin mb-2"></div>
+            <span class="text-[12px] leading-[18px] text-[#005daa] font-bold">生成中 64%</span>
+          </div>
+          <div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-2 py-0.5 rounded text-[10px] font-bold text-[#005daa] flex items-center gap-1 border border-[#0075d5]">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#005daa] animate-pulse"></span> 处理中
+          </div>
+        </div>
+        <div class="p-4 flex-1 flex flex-col">
+          <h3 class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c] mb-2 line-clamp-2">全球经济趋势分析与数字化转型策略</h3>
+          <p class="text-[13px] leading-[20px] text-[#404753] mb-4 flex-1">基于最新经济数据报告生成的分析简报。模板：商务汇报 (16:9)</p>
+          <div class="flex items-center justify-between mt-auto pt-3 border-t border-[#e3e2e2]">
+            <span class="text-[11px] leading-[16px] font-bold text-[#404753]">2023-10-25 09:15</span>
+            <div class="flex gap-2">
+              <button class="p-1 text-[#404753] hover:text-[#ba1a1a] transition-colors" title="取消"><span class="material-symbols-outlined text-[18px]">close</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white border border-[#e3e2e2] rounded-xl overflow-hidden flex flex-col hover:shadow-md transition-shadow draft-card" data-status="草稿">
+        <div class="h-32 bg-[#e3e2e2] relative border-b border-[#e3e2e2] flex items-center justify-center">
+          <span class="material-symbols-outlined text-[#707785] text-[40px]">edit_document</span>
+          <div class="absolute top-3 right-3 bg-white px-2 py-0.5 rounded text-[10px] font-bold text-[#404753] flex items-center gap-1 border border-[#e3e2e2]">草稿</div>
+        </div>
+        <div class="p-4 flex-1 flex flex-col">
+          <h3 class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c] mb-2 line-clamp-2 italic text-[#404753]">未命名课程主题...</h3>
+          <p class="text-[13px] leading-[20px] text-[#404753] mb-4 flex-1">包含初步的大纲结构，尚未选择视觉模板。</p>
+          <div class="flex items-center justify-between mt-auto pt-3 border-t border-[#e3e2e2]">
+            <span class="text-[11px] leading-[16px] font-bold text-[#404753]">2023-10-23 16:45</span>
+            <div class="flex gap-2">
+              <button class="px-3 py-1 border border-[#005daa] text-[#005daa] rounded text-[12px] leading-[18px] hover:bg-[#d4e3ff]/10 transition-colors" onclick="goToStep(1);">继续编辑</button>
+              <button class="p-1 text-[#404753] hover:text-[#ba1a1a] transition-colors ml-3" title="删除"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white border border-[#e3e2e2] rounded-xl overflow-hidden flex flex-col hover:shadow-md transition-shadow draft-card" data-status="失败">
+        <div class="h-32 bg-[#ffdad6]/20 relative border-b border-[#e3e2e2] flex items-center justify-center">
+          <span class="material-symbols-outlined text-[#ba1a1a] text-[40px]">error</span>
+          <div class="absolute top-3 right-3 bg-white px-2 py-0.5 rounded text-[10px] font-bold text-[#ba1a1a] flex items-center gap-1 border border-[#ffdad6]">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#ba1a1a]"></span> 失败
+          </div>
+        </div>
+        <div class="p-4 flex-1 flex flex-col">
+          <h3 class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c] mb-2 line-clamp-2">探索前端架构演进</h3>
+          <p class="text-[13px] leading-[20px] text-[#404753] mb-2 flex-1">从单页应用到微前端的演变过程。</p>
+          <p class="text-[12px] leading-[18px] text-[#ba1a1a] mb-4 bg-[#ffdad6]/50 p-1 rounded">错误：大纲生成超时，请重试。</p>
+          <div class="flex items-center justify-between mt-auto pt-3 border-t border-[#e3e2e2]">
+            <span class="text-[11px] leading-[16px] font-bold text-[#404753]">2023-10-22 11:20</span>
+            <div class="flex gap-2">
+              <button class="p-1 text-[#404753] hover:text-[#005daa] transition-colors" title="重试"><span class="material-symbols-outlined text-[18px]">refresh</span></button>
+              <button class="p-1 text-[#404753] hover:text-[#ba1a1a] transition-colors" title="删除"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white border border-[#e3e2e2] rounded-xl overflow-hidden flex flex-col hover:shadow-md transition-shadow draft-card" data-status="已完成">
+        <div class="h-32 bg-[#f4f3f3] relative border-b border-[#e3e2e2]">
+          <div class="w-full h-full bg-[#f5f0e8] flex items-center justify-center"><span class="text-[#8b7355]/40 text-lg font-bold">Training</span></div>
+          <div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-2 py-0.5 rounded text-[10px] font-bold text-[#287100] flex items-center gap-1 border border-[#85fa51]">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#266d00]"></span> 已完成
+          </div>
+        </div>
+        <div class="p-4 flex-1 flex flex-col">
+          <h3 class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c] mb-2 line-clamp-2">新员工入职培训 2023</h3>
+          <p class="text-[13px] leading-[20px] text-[#404753] mb-4 flex-1">公司文化、制度介绍及IT系统操作指南。模板：极简清新 (4:3)</p>
+          <div class="flex items-center justify-between mt-auto pt-3 border-t border-[#e3e2e2]">
+            <span class="text-[11px] leading-[16px] font-bold text-[#404753]">2023-10-20 09:00</span>
+            <div class="flex gap-2">
+              <button class="p-1 text-[#404753] hover:text-[#005daa] transition-colors" title="预览"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+              <button class="p-1 text-[#404753] hover:text-[#005daa] transition-colors" title="编辑"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+              <button class="p-1 text-[#404753] hover:text-[#005daa] transition-colors" title="下载"><span class="material-symbols-outlined text-[18px]">download</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
-<!-- Bottom Action Bar (Fixed) -->
-<div class="fixed bottom-0 right-0 left-0 md:ml-sidebar-width h-16 bg-surface border-t border-outline-variant z-40 px-lg flex items-center justify-end shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
-<div class="flex items-center gap-md">
-<span class="font-body-sm text-body-sm text-on-surface-variant hidden sm:inline-block mr-4">预计耗时: 1-2 分钟</span>
-<button class="px-6 py-2 bg-surface text-primary border border-primary rounded-lg font-title-lg text-title-lg hover:bg-primary-fixed-dim hover:bg-opacity-20 transition-colors">
-                    保存草稿 (Save Draft)
-                </button>
-<button class="px-6 py-2 bg-primary text-on-primary rounded-lg font-title-lg text-title-lg hover:bg-surface-tint shadow-sm transition-colors flex items-center gap-xs">
-<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
-                    开始生成 PPT (Start Generating PPT)
-                </button>
+
+<!-- ==================== FOOTER NAVIGATION ==================== -->
+<div class="fixed bottom-0 right-0 left-[240px] h-16 bg-white border-t border-[#e3e2e2] z-40 px-6 flex items-center justify-between shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+  <div class="flex items-center gap-4">
+    <button class="text-[#404753] hover:text-[#005daa] transition-colors text-[14px] leading-[22px] flex items-center gap-1" id="btn-drafts-toggle" onclick="toggleDrafts()">
+      <span class="material-symbols-outlined text-[18px]">history</span>
+      <span id="drafts-toggle-label">历史与草稿</span>
+    </button>
+    <span class="text-[#404753] text-[13px] leading-[20px]" id="step-info">步骤 1 / 7</span>
+  </div>
+  <div class="flex items-center gap-4">
+    <span class="text-[13px] leading-[20px] text-[#404753] hidden sm:inline-block mr-4">预计耗时: 1-2 分钟</span>
+    <button class="px-6 py-2 bg-white text-[#005daa] border border-[#005daa] rounded-lg text-[16px] leading-[24px] font-semibold hover:bg-[#d4e3ff]/20 transition-colors" id="btn-save-draft" onclick="showSaveDraftToast()">
+      保存草稿
+    </button>
+    <button class="px-6 py-2 bg-[#efeded] text-[#404753] border border-[#e3e2e2] rounded-lg text-[16px] leading-[24px] font-semibold hover:bg-[#e9e8e8] transition-colors hidden" id="btn-prev" onclick="prevStep()">
+      <span class="material-symbols-outlined text-[18px] mr-1">arrow_back</span>
+      上一步
+    </button>
+    <button class="px-6 py-2 bg-[#005daa] text-white rounded-lg text-[16px] leading-[24px] font-semibold hover:bg-[#005fae] shadow-sm transition-colors flex items-center gap-2" id="btn-next" onclick="nextStep()">
+      <span id="btn-next-text">下一步</span>
+      <span class="material-symbols-outlined text-[20px]" id="btn-next-icon">arrow_forward</span>
+    </button>
+  </div>
 </div>
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- Template Import Modal (_2/code.html) -->
+<div class="fixed inset-0 bg-[#1b1c1c]/40 z-[100] items-center justify-center p-4 hidden" id="template-import-modal" onclick="if(event.target===this)closeTemplateImportModal()">
+  <div class="bg-white rounded-xl shadow-lg w-full max-w-2xl flex flex-col overflow-hidden animate-fade-in">
+    <div class="flex items-center justify-between p-6 border-b border-[#e3e2e2]">
+      <h2 class="text-[20px] leading-[28px] font-semibold text-[#1b1c1c]">导入自定义模板</h2>
+      <button class="text-[#404753] hover:text-[#005daa] transition-colors p-1 rounded-full hover:bg-[#f4f3f3]" onclick="closeTemplateImportModal()">
+        <span class="material-symbols-outlined text-[24px]">close</span>
+      </button>
+    </div>
+    <div class="p-6 flex flex-col gap-6 overflow-y-auto max-h-[70vh]">
+      <div class="border-2 border-dashed border-[#e3e2e2] rounded-xl bg-white hover:border-[#005daa] hover:bg-[#f4f3f3] transition-colors cursor-pointer group flex flex-col items-center justify-center py-8 px-6">
+        <div class="w-16 h-16 rounded-full bg-[#d4e3ff]/20 text-[#005daa] flex items-center justify-center mb-4 group-hover:bg-[#d4e3ff]/40 transition-colors">
+          <span class="material-symbols-outlined text-[32px]">cloud_upload</span>
+        </div>
+        <p class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c] mb-2">点击或拖拽文件至此上传</p>
+        <p class="text-[14px] leading-[22px] text-[#404753] text-center">支持 .pptx, .pdf 格式文件，最大不超过 50MB</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-2">
+          <label class="text-[12px] leading-[18px] text-[#404753]" for="template-name-input">模板名称</label>
+          <input class="h-10 px-3 border border-[#e3e2e2] rounded-lg bg-white focus:outline-none focus:border-[#005daa] focus:ring-1 focus:ring-[#005daa] text-[14px] leading-[22px] transition-shadow" id="template-name-input" placeholder="请输入模板名称" type="text">
+        </div>
+        <div class="flex flex-col gap-2">
+          <label class="text-[12px] leading-[18px] text-[#404753]" for="category-select">选择分类</label>
+          <div class="relative">
+            <select class="h-10 w-full pl-3 pr-8 border border-[#e3e2e2] rounded-lg bg-white appearance-none focus:outline-none focus:border-[#005daa] focus:ring-1 focus:ring-[#005daa] text-[14px] leading-[22px] transition-shadow" id="category-select">
+              <option disabled selected value="">请选择分类</option>
+              <option value="education">教育培训</option>
+              <option value="business">商业汇报</option>
+              <option value="marketing">产品营销</option>
+            </select>
+            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[#404753] pointer-events-none">expand_more</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label class="text-[12px] leading-[18px] text-[#404753]">画面比例</label>
+        <div class="flex flex-wrap gap-4">
+          <button class="flex-1 min-w-[100px] h-12 border-2 border-[#005daa] bg-[#d4e3ff]/10 text-[#005daa] rounded-lg text-[14px] leading-[22px] flex items-center justify-center aspect-ratio-btn active" data-ar="16:9">
+            <span>16:9 (推荐)</span>
+          </button>
+          <button class="flex-1 min-w-[100px] h-12 border border-[#e3e2e2] bg-white text-[#404753] rounded-lg text-[14px] leading-[22px] hover:bg-[#f4f3f3] transition-colors flex items-center justify-center aspect-ratio-btn" data-ar="4:3">4:3</button>
+          <button class="flex-1 min-w-[100px] h-12 border border-[#e3e2e2] bg-white text-[#404753] rounded-lg text-[14px] leading-[22px] hover:bg-[#f4f3f3] transition-colors flex items-center justify-center aspect-ratio-btn" data-ar="9:16">9:16</button>
+        </div>
+      </div>
+    </div>
+    <div class="p-6 border-t border-[#e3e2e2] bg-white flex justify-end gap-4 items-center">
+      <button class="px-6 h-10 border border-[#e3e2e2] text-[#404753] rounded-lg text-[12px] leading-[18px] hover:bg-[#f4f3f3] transition-colors" onclick="closeTemplateImportModal()">取消</button>
+      <button class="px-6 h-10 bg-[#005daa] text-white rounded-lg text-[12px] leading-[18px] hover:bg-[#005daa]/90 shadow-sm transition-colors flex items-center gap-2">确认导入</button>
+    </div>
+  </div>
 </div>
+
+<!-- Export Config Modal (_3/code.html) -->
+<div class="fixed inset-0 bg-[#1b1c1c]/40 z-[100] items-center justify-center p-4 hidden" id="export-config-modal" onclick="if(event.target===this)closeExportConfigModal()">
+  <div class="bg-white rounded-xl shadow-lg w-full max-w-[560px] overflow-hidden flex flex-col border border-[#e3e2e2] animate-fade-in">
+    <div class="px-6 py-4 border-b border-[#e3e2e2] flex justify-between items-center bg-white">
+      <h2 class="text-[16px] leading-[24px] font-semibold text-[#1b1c1c]">导出课程资料</h2>
+      <button class="text-[#404753] hover:text-[#1b1c1c] transition-colors p-1 rounded-full hover:bg-[#efeded]" onclick="closeExportConfigModal()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="p-6 flex flex-col gap-6">
+      <div>
+        <label class="block text-[12px] leading-[18px] text-[#404753] mb-3 uppercase tracking-wider font-medium">格式</label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="relative cursor-pointer group">
+            <input checked class="peer sr-only" name="modal-format" type="radio" value="pptx">
+            <div class="border border-[#e3e2e2] rounded-lg p-3 flex items-center gap-3 transition-all hover:border-[#a5c8ff] peer-checked:border-[#005daa] peer-checked:bg-[#d4e3ff]/20">
+              <span class="material-symbols-outlined text-[#d32f2f]">slideshow</span>
+              <div>
+                <div class="text-[14px] leading-[22px] text-[#1b1c1c] font-medium">PowerPoint (.pptx)</div>
+                <div class="text-[13px] leading-[20px] text-[#404753]">可编辑格式</div>
+              </div>
+            </div>
+          </label>
+          <label class="relative cursor-pointer group">
+            <input class="peer sr-only" name="modal-format" type="radio" value="pdf">
+            <div class="border border-[#e3e2e2] rounded-lg p-3 flex items-center gap-3 transition-all hover:border-[#a5c8ff] peer-checked:border-[#005daa] peer-checked:bg-[#d4e3ff]/20">
+              <span class="material-symbols-outlined text-[#f40f02]">picture_as_pdf</span>
+              <div>
+                <div class="text-[14px] leading-[22px] text-[#1b1c1c] font-medium">PDF文档 (.pdf)</div>
+                <div class="text-[13px] leading-[20px] text-[#404753]">仅供查看与打印</div>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <div>
+        <label class="block text-[12px] leading-[18px] text-[#404753] mb-3 uppercase tracking-wider font-medium">页面范围</label>
+        <div class="flex flex-col gap-3">
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input checked class="text-[#005daa] focus:ring-[#005daa] h-4 w-4 border-[#c0c7d6] bg-white" name="modal-pages" type="radio" value="all">
+            <span class="text-[14px] leading-[22px] text-[#1b1c1c]">全部页面 (42页)</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input class="text-[#005daa] focus:ring-[#005daa] h-4 w-4 border-[#c0c7d6] bg-white" name="modal-pages" type="radio" value="current">
+            <span class="text-[14px] leading-[22px] text-[#1b1c1c]">当前页面 (第 5 页)</span>
+          </label>
+          <div class="flex items-center gap-3">
+            <label class="flex items-center gap-3 cursor-pointer flex-shrink-0">
+              <input class="text-[#005daa] focus:ring-[#005daa] h-4 w-4 border-[#c0c7d6] bg-white" id="modal-custom-pages-radio" name="modal-pages" type="radio" value="custom">
+              <span class="text-[14px] leading-[22px] text-[#1b1c1c]">自定义范围</span>
+            </label>
+            <input class="flex-grow ml-1 border-[#c0c7d6] rounded focus:border-[#005daa] focus:ring-[#005daa] text-[13px] leading-[20px] px-3 py-1 disabled:bg-[#f4f3f3] disabled:text-[#707785] outline-none" disabled id="modal-custom-pages-input" placeholder="例如: 1-5, 8, 11-13" type="text">
+          </div>
+        </div>
+      </div>
+      <div>
+        <label class="block text-[12px] leading-[18px] text-[#404753] mb-3 uppercase tracking-wider font-medium">导出质量</label>
+        <select class="w-full border-[#c0c7d6] rounded-lg text-[14px] leading-[22px] text-[#1b1c1c] focus:border-[#005daa] focus:ring-[#005daa] py-2 px-3 bg-white outline-none">
+          <option value="standard">标准 (适合网页浏览)</option>
+          <option value="high">高 (打印质量)</option>
+          <option value="maximum">最高 (未压缩资源)</option>
+        </select>
+      </div>
+    </div>
+    <div class="px-6 py-4 border-t border-[#e3e2e2] bg-white flex justify-end items-center gap-4">
+      <button class="text-[14px] leading-[22px] text-[#404753] hover:text-[#1b1c1c] font-medium px-4 py-2 rounded transition-colors" onclick="closeExportConfigModal()">取消</button>
+      <button class="bg-[#005daa] text-white text-[14px] leading-[22px] font-medium px-6 py-2 rounded-lg hover:bg-[#004785] transition-colors flex items-center gap-2 shadow-sm">
+        <span class="material-symbols-outlined text-[20px]">download</span>
+        确认导出
+      </button>
+    </div>
+  </div>
 </div>
+
+<!-- Save Draft Toast (_4/code.html) -->
+<div class="fixed inset-0 z-[100] items-center justify-center hidden" id="draft-toast">
+  <div class="absolute inset-0 bg-[#1b1c1c]/40 backdrop-blur-sm" onclick="closeSaveDraftToast()"></div>
+  <div class="relative z-10 bg-white w-[400px] max-w-[90vw] rounded-xl shadow-xl border border-[#e3e2e2] p-6 flex flex-col items-center text-center animate-fade-in-up">
+    <div class="relative w-16 h-16 mb-6">
+      <div class="absolute inset-0 rounded-full bg-[#85fa51] opacity-20 animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]"></div>
+      <div class="absolute inset-0 rounded-full bg-[#266d00] flex items-center justify-center shadow-sm">
+        <span class="material-symbols-outlined text-white" style="font-size: 32px;">check_circle</span>
+      </div>
+    </div>
+    <h2 class="text-[20px] leading-[28px] font-semibold text-[#1b1c1c] mb-2">草稿保存成功</h2>
+    <p class="text-[14px] leading-[22px] text-[#404753] mb-8 px-4">您的进度已同步至云端。您可以随时从草稿库继续编辑。</p>
+    <div class="flex flex-col w-full gap-3 sm:flex-row sm:justify-center">
+      <button class="flex-1 sm:flex-none inline-flex justify-center items-center px-6 py-2.5 rounded text-[#005daa] border border-[#005daa] bg-white hover:bg-[#f4f3f3] transition-colors text-[12px] leading-[18px] shadow-sm" onclick="closeSaveDraftToast()">关闭</button>
+      <button class="flex-1 sm:flex-none inline-flex justify-center items-center px-6 py-2.5 rounded text-white bg-[#005daa] hover:bg-[#004785] transition-colors text-[12px] leading-[18px] shadow-sm" onclick="closeSaveDraftToast();toggleDrafts();">查看草稿</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== JAVASCRIPT ==================== -->
 <script>
-        // Simple script for style card selection interaction
-        document.addEventListener('DOMContentLoaded', () => {
-            const styleCards = document.querySelectorAll('.style-card');
-            
-            styleCards.forEach(card => {
-                card.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    // Remove active class and hide check from all
-                    styleCards.forEach(c => {
-                        c.classList.remove('active');
-                        c.querySelector('.check-icon').style.opacity = '0';
-                    });
-                    
-                    // Add active class to clicked
-                    card.classList.add('active');
-                    card.querySelector('.check-icon').style.opacity = '1';
-                });
-            });
-        });
-    </script>
+(function() {
+  var currentStep = 1;
+  var totalSteps = 7;
+  var viewingDrafts = false;
 
+  function showStep(step) {
+    var allContent = document.querySelectorAll('.step-content');
+    for (var i = 0; i < allContent.length; i++) {
+      allContent[i].classList.remove('active');
+    }
+    var target = document.getElementById('step-' + step);
+    if (target) target.classList.add('active');
+    document.getElementById('step-drafts').classList.remove('active');
+    viewingDrafts = false;
+    updateDraftsToggleLabel();
+  }
 
+  function updateStepper(step) {
+    var stepper = document.getElementById('stepper');
+    var stepEls = stepper.querySelectorAll('[data-step]');
+    var lineEls = stepper.querySelectorAll('[data-line]');
 
+    for (var i = 0; i < stepEls.length; i++) {
+      var el = stepEls[i];
+      var s = parseInt(el.getAttribute('data-step'));
+      var circle = el.querySelector('.step-circle');
+      var label = el.querySelector('span:last-child');
 
+      if (s < step) {
+        circle.innerHTML = '<span class="material-symbols-outlined text-white text-[18px]">check</span>';
+        circle.style.backgroundColor = '#005daa';
+        circle.style.color = '#ffffff';
+        circle.style.border = 'none';
+        circle.style.boxShadow = 'none';
+        if (label) { label.style.color = '#005daa'; label.style.fontWeight = '500'; }
+      } else if (s === step) {
+        circle.innerHTML = s;
+        circle.style.backgroundColor = '#005daa';
+        circle.style.color = '#ffffff';
+        circle.style.border = 'none';
+        circle.style.boxShadow = '0 0 0 4px rgba(0,93,170,0.1)';
+        if (label) { label.style.color = '#005daa'; label.style.fontWeight = '700'; }
+      } else {
+        circle.innerHTML = s;
+        circle.style.backgroundColor = '#faf9f9';
+        circle.style.color = '#707785';
+        circle.style.border = '2px solid #e3e2e2';
+        circle.style.boxShadow = 'none';
+        if (label) { label.style.color = '#707785'; label.style.fontWeight = '400'; }
+      }
+    }
 
+    for (var j = 0; j < lineEls.length; j++) {
+      var lineEl = lineEls[j];
+      var lineNum = parseInt(lineEl.getAttribute('data-line'));
+      lineEl.style.backgroundColor = lineNum < step ? '#005daa' : '#e3e2e2';
+    }
+  }
 
-</body></html>
+  function updateButtons(step) {
+    var btnPrev = document.getElementById('btn-prev');
+    var btnNext = document.getElementById('btn-next');
+    var btnNextText = document.getElementById('btn-next-text');
+    var btnNextIcon = document.getElementById('btn-next-icon');
+    var btnSaveDraft = document.getElementById('btn-save-draft');
+    var stepInfo = document.getElementById('step-info');
+
+    stepInfo.textContent = '步骤 ' + step + ' / ' + totalSteps;
+
+    if (step === 1) {
+      btnPrev.classList.add('hidden');
+    } else {
+      btnPrev.classList.remove('hidden');
+    }
+
+    if (step === totalSteps) {
+      btnNextText.textContent = '完成';
+      btnNextIcon.textContent = 'check';
+      btnNext.setAttribute('data-final', 'true');
+    } else {
+      btnNextText.textContent = '下一步';
+      btnNextIcon.textContent = 'arrow_forward';
+      btnNext.removeAttribute('data-final');
+    }
+
+    if (step === totalSteps) {
+      btnSaveDraft.classList.add('hidden');
+    } else {
+      btnSaveDraft.classList.remove('hidden');
+    }
+  }
+
+  window.goToStep = function(step) {
+    if (step < 1 || step > totalSteps) return;
+    currentStep = step;
+    showStep(step);
+    updateStepper(step);
+    updateButtons(step);
+    document.getElementById('drafts-toggle-label').textContent = '历史与草稿';
+    window.scrollTo(0, 0);
+  };
+
+  window.nextStep = function() {
+    var btnNext = document.getElementById('btn-next');
+    if (btnNext.hasAttribute('data-final')) {
+      window.location.href = 'processing-tasks.html';
+      return;
+    }
+    if (currentStep < totalSteps) {
+      currentStep++;
+      window.goToStep(currentStep);
+      if (currentStep === 3) {
+        simulateProgress();
+      }
+    }
+  };
+
+  window.prevStep = function() {
+    if (currentStep > 1) {
+      currentStep--;
+      window.goToStep(currentStep);
+    }
+  };
+
+  window.toggleDrafts = function() {
+    if (viewingDrafts) {
+      viewingDrafts = false;
+      showStep(currentStep);
+    } else {
+      viewingDrafts = true;
+      var allContent = document.querySelectorAll('.step-content');
+      for (var i = 0; i < allContent.length; i++) {
+        allContent[i].classList.remove('active');
+      }
+      document.getElementById('step-drafts').classList.add('active');
+    }
+    updateDraftsToggleLabel();
+  };
+
+  function updateDraftsToggleLabel() {
+    var label = document.getElementById('drafts-toggle-label');
+    if (label) {
+      label.textContent = viewingDrafts ? '返回向导' : '历史与草稿';
+    }
+  }
+
+  function simulateProgress() {
+    var circle = document.getElementById('progress-circle');
+    var pct = document.getElementById('progress-pct');
+    if (!circle || !pct) return;
+
+    var progress = 0;
+    var totalDash = 283;
+
+    var interval = setInterval(function() {
+      progress += Math.random() * 5 + 2;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+
+        // Mark remaining tasks as complete
+        var task4 = document.getElementById('task-4');
+        var task5 = document.getElementById('task-5');
+        if (task4) {
+          task4.classList.remove('opacity-50');
+          task4.querySelector('.material-symbols-outlined').textContent = 'check_circle';
+          task4.querySelector('.material-symbols-outlined').style.color = '#266d00';
+          task4.querySelector('.material-symbols-outlined').classList.remove('spin-slow');
+        }
+        if (task5) {
+          task5.classList.remove('opacity-50');
+          task5.querySelector('.material-symbols-outlined').textContent = 'check_circle';
+          task5.querySelector('.material-symbols-outlined').style.color = '#266d00';
+          task5.querySelector('.material-symbols-outlined').classList.remove('spin-slow');
+        }
+
+        setTimeout(function() {
+          if (currentStep === 3) {
+            window.nextStep();
+          }
+        }, 1500);
+      }
+
+      var offset = totalDash - (totalDash * progress / 100);
+      circle.setAttribute('stroke-dashoffset', offset);
+      pct.textContent = Math.floor(progress) + '%';
+    }, 400);
+  }
+
+  // ---- Style Card Selection ----
+  var styleCards = document.querySelectorAll('#style-cards .style-card');
+  for (var i = 0; i < styleCards.length; i++) {
+    (function(card) {
+      card.addEventListener('click', function(e) {
+        e.preventDefault();
+        for (var j = 0; j < styleCards.length; j++) {
+          styleCards[j].classList.remove('active');
+          styleCards[j].querySelector('.check-icon').style.opacity = '0';
+        }
+        card.classList.add('active');
+        card.querySelector('.check-icon').style.opacity = '1';
+      });
+    })(styleCards[i]);
+  }
+
+  // ---- Template Card Selection ----
+  var templateCards = document.querySelectorAll('#template-grid .template-card');
+  for (var k = 0; k < templateCards.length; k++) {
+    (function(card) {
+      card.addEventListener('click', function(e) {
+        if (e.target.closest('button')) return;
+        for (var m = 0; m < templateCards.length; m++) {
+          templateCards[m].classList.remove('border-2', 'border-[#005daa]', 'ring-4');
+          templateCards[m].classList.add('border', 'border-[#e3e2e2]');
+          var badge = templateCards[m].querySelector('.select-badge-inner');
+          if (!badge) {
+            badge = templateCards[m].querySelector('.absolute.top-0.right-0');
+          }
+          if (badge && badge.querySelector('.material-symbols-outlined')) {
+            badge.style.display = 'none';
+          }
+          var btn = templateCards[m].querySelector('.select-btn');
+          if (btn) btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check_circle</span> Select';
+        }
+        card.classList.remove('border', 'border-[#e3e2e2]');
+        card.classList.add('border-2', 'border-[#005daa]', 'ring-4');
+        card.style.setProperty('--tw-ring-color', 'rgba(0,93,170,0.1)');
+        var badge2 = card.querySelector('.absolute.top-0.right-0');
+        if (badge2 && badge2.querySelector('.material-symbols-outlined')) {
+          badge2.style.display = 'flex';
+        }
+        var btn2 = card.querySelector('.select-btn');
+        if (btn2) btn2.innerHTML = '<span class="material-symbols-outlined text-[18px]">check_circle</span> Selected';
+      });
+    })(templateCards[k]);
+  }
+
+  // ---- Category Tabs ----
+  var catTabs = document.querySelectorAll('#category-tabs .category-tab');
+  for (var n = 0; n < catTabs.length; n++) {
+    (function(tab) {
+      tab.addEventListener('click', function(e) {
+        for (var p = 0; p < catTabs.length; p++) {
+          catTabs[p].classList.remove('bg-[#d4e3ff]', 'text-[#001c3a]');
+          catTabs[p].classList.add('text-[#404753]');
+          var b = catTabs[p].querySelector('.badge');
+          if (b) {
+            b.classList.remove('bg-white/50', 'text-[#004785]');
+            b.classList.add('bg-[#e9e8e8]', 'text-[#404753]');
+          }
+        }
+        tab.classList.remove('text-[#404753]');
+        tab.classList.add('bg-[#d4e3ff]', 'text-[#001c3a]');
+        var b2 = tab.querySelector('.badge');
+        if (b2) {
+          b2.classList.remove('bg-[#e9e8e8]', 'text-[#404753]');
+          b2.classList.add('bg-white/50', 'text-[#004785]');
+        }
+      });
+    })(catTabs[n]);
+  }
+
+  // ---- Outline & Thumbnail Interaction ----
+  function setOutlineActive(id) {
+    var outlineItems = document.querySelectorAll('#outline-list .outline-item');
+    for (var i = 0; i < outlineItems.length; i++) {
+      var item = outlineItems[i];
+      if (item.dataset.id === id) {
+        item.classList.add('border-2', 'border-[#005daa]', 'shadow-sm');
+        item.classList.remove('border', 'border-[#e3e2e2]', 'hover:border-[#707785]');
+        var titleEl = item.querySelector('.font-bold');
+        if (titleEl) { titleEl.style.color = '#005daa'; }
+      } else {
+        item.classList.remove('border-2', 'border-[#005daa]', 'shadow-sm');
+        item.classList.add('border', 'border-[#e3e2e2]', 'hover:border-[#707785]');
+        var titleEl2 = item.querySelector('.font-bold');
+        if (titleEl2) { titleEl2.style.color = '#404753'; }
+      }
+    }
+
+    var thumbItems = document.querySelectorAll('#thumbnail-strip .thumbnail-item');
+    for (var j = 0; j < thumbItems.length; j++) {
+      var thumb = thumbItems[j];
+      if (thumb.dataset.id === id) {
+        thumb.classList.add('border-2', 'border-[#005daa]');
+        thumb.classList.remove('border', 'border-[#e3e2e2]');
+        var lbl = thumb.querySelector('.absolute.bottom-1');
+        if (lbl) { lbl.classList.add('bg-[#005daa]', 'text-white'); lbl.classList.remove('bg-white/80', 'text-[#404753]'); }
+      } else {
+        thumb.classList.remove('border-2', 'border-[#005daa]');
+        thumb.classList.add('border', 'border-[#e3e2e2]');
+        var lbl2 = thumb.querySelector('.absolute.bottom-1');
+        if (lbl2) { lbl2.classList.remove('bg-[#005daa]', 'text-white'); lbl2.classList.add('bg-white/80', 'text-[#404753]'); }
+      }
+    }
+  }
+
+  var outlineItems = document.querySelectorAll('#outline-list .outline-item');
+  for (var oi = 0; oi < outlineItems.length; oi++) {
+    (function(item) {
+      item.addEventListener('click', function() { setOutlineActive(item.dataset.id); });
+    })(outlineItems[oi]);
+  }
+
+  var thumbItems2 = document.querySelectorAll('#thumbnail-strip .thumbnail-item');
+  for (var ti = 0; ti < thumbItems2.length; ti++) {
+    (function(item) {
+      item.addEventListener('click', function() { setOutlineActive(item.dataset.id); });
+    })(thumbItems2[ti]);
+  }
+
+  // Add page buttons
+  var addOutline = document.getElementById('add-page-btn-outline');
+  var addStrip = document.getElementById('add-page-btn-strip');
+  var pageCount = 3;
+
+  function createNewPage() {
+    pageCount++;
+    var newId = 'p' + pageCount;
+    var newTitle = 'P' + pageCount + ' - 新页面';
+
+    var outlineList = document.getElementById('outline-list');
+    var outlineHtml = '<div class="outline-item border border-[#e3e2e2] rounded-lg p-3 bg-white hover:border-[#707785] transition-colors cursor-pointer" data-id="' + newId + '">' +
+      '<div class="flex items-center justify-between mb-3">' +
+      '<span class="text-[12px] leading-[18px] text-[#404753] font-bold">' + newTitle + '</span>' +
+      '</div>' +
+      '<div class="text-[13px] leading-[20px] text-[#1b1c1c] pl-2 border-l-2 border-[#e3e2e2]/30">&#8226; 新增知识点 1<br>&#8226; 新增知识点 2</div>' +
+      '</div>';
+    var temp = document.createElement('div');
+    temp.innerHTML = outlineHtml;
+    var newOutlineItem = temp.firstElementChild;
+    outlineList.insertBefore(newOutlineItem, addOutline);
+    newOutlineItem.addEventListener('click', function() { setOutlineActive(newId); });
+
+    var thumbStrip = document.getElementById('thumbnail-strip');
+    var thumbHtml = '<div class="thumbnail-item w-40 aspect-video bg-white border border-[#e3e2e2] rounded flex-shrink-0 relative group cursor-pointer hover:border-[#005daa]/50 transition-colors" data-id="' + newId + '">' +
+      '<div class="absolute inset-0 p-2 flex flex-col justify-center items-center opacity-60">' +
+      '<div class="text-[12px] leading-[18px] text-[#1b1c1c] font-bold mb-1">新页面</div>' +
+      '<div class="h-0.5 w-3/4 bg-[#e3e2e2]/50 rounded mt-1"></div>' +
+      '<div class="h-0.5 w-full bg-[#e3e2e2]/50 rounded mt-1"></div>' +
+      '</div>' +
+      '<div class="absolute bottom-1 left-2 bg-white/80 px-1 rounded text-[10px] text-[#404753]">P' + pageCount + '</div>' +
+      '</div>';
+    var temp2 = document.createElement('div');
+    temp2.innerHTML = thumbHtml;
+    var newThumb = temp2.firstElementChild;
+    thumbStrip.insertBefore(newThumb, addStrip);
+    newThumb.addEventListener('click', function() { setOutlineActive(newId); });
+
+    setOutlineActive(newId);
+    thumbStrip.scrollLeft = thumbStrip.scrollWidth;
+  }
+
+  if (addOutline) addOutline.addEventListener('click', createNewPage);
+  if (addStrip) addStrip.addEventListener('click', createNewPage);
+
+  // ---- Modal Controls ----
+  window.openTemplateImportModal = function() {
+    var modal = document.getElementById('template-import-modal');
+    modal.classList.remove('hidden');
+    modal.style.display = 'flex';
+  };
+  window.closeTemplateImportModal = function() {
+    var modal = document.getElementById('template-import-modal');
+    modal.classList.add('hidden');
+    modal.style.display = 'none';
+  };
+
+  window.openExportConfigModal = function() {
+    var modal = document.getElementById('export-config-modal');
+    modal.classList.remove('hidden');
+    modal.style.display = 'flex';
+  };
+  window.closeExportConfigModal = function() {
+    var modal = document.getElementById('export-config-modal');
+    modal.classList.add('hidden');
+    modal.style.display = 'none';
+  };
+
+  var draftToastTimer = null;
+  window.showSaveDraftToast = function() {
+    var toast = document.getElementById('draft-toast');
+    toast.classList.remove('hidden');
+    toast.style.display = 'flex';
+    if (draftToastTimer) clearTimeout(draftToastTimer);
+    draftToastTimer = setTimeout(function() {
+      window.closeSaveDraftToast();
+    }, 4000);
+  };
+  window.closeSaveDraftToast = function() {
+    var toast = document.getElementById('draft-toast');
+    toast.classList.add('hidden');
+    toast.style.display = 'none';
+    if (draftToastTimer) clearTimeout(draftToastTimer);
+  };
+
+  // ---- Export Config Modal: custom pages toggle ----
+  var modalCustomRadio = document.getElementById('modal-custom-pages-radio');
+  var modalCustomInput = document.getElementById('modal-custom-pages-input');
+  if (modalCustomRadio && modalCustomInput) {
+    var modalPageRadios = document.querySelectorAll('input[name="modal-pages"]');
+    for (var ri = 0; ri < modalPageRadios.length; ri++) {
+      modalPageRadios[ri].addEventListener('change', function(e) {
+        if (e.target.value === 'custom') {
+          modalCustomInput.disabled = false;
+          modalCustomInput.focus();
+        } else {
+          modalCustomInput.disabled = true;
+          modalCustomInput.value = '';
+        }
+      });
+    }
+  }
+
+  // ---- Step 6: custom range toggle ----
+  var customRangeRadio = document.getElementById('custom-range-radio');
+  var customRangeWrap = document.getElementById('custom-range-input-wrap');
+  if (customRangeRadio && customRangeWrap) {
+    var rangeRadios = document.querySelectorAll('input[name="range"]');
+    for (var rri = 0; rri < rangeRadios.length; rri++) {
+      rangeRadios[rri].addEventListener('change', function(e) {
+        if (e.target.value === 'custom') {
+          customRangeWrap.classList.remove('hidden');
+        } else {
+          customRangeWrap.classList.add('hidden');
+        }
+      });
+    }
+  }
+
+  // ---- Step 6: quality buttons ----
+  var qualityBtns = document.querySelectorAll('.quality-btn');
+  for (var qi = 0; qi < qualityBtns.length; qi++) {
+    qualityBtns[qi].addEventListener('click', function() {
+      for (var qj = 0; qj < qualityBtns.length; qj++) {
+        qualityBtns[qj].classList.remove('bg-white', 'shadow-sm', 'border', 'border-[#e3e2e2]', 'text-[#005daa]', 'font-semibold');
+        qualityBtns[qj].classList.add('text-[#404753]');
+      }
+      this.classList.add('bg-white', 'shadow-sm', 'border', 'border-[#e3e2e2]', 'text-[#005daa]', 'font-semibold');
+      this.classList.remove('text-[#404753]');
+    });
+  }
+
+  // ---- Step 2: aspect ratio buttons in import modal ----
+  var arBtns = document.querySelectorAll('#template-import-modal .aspect-ratio-btn');
+  for (var ai = 0; ai < arBtns.length; ai++) {
+    arBtns[ai].addEventListener('click', function() {
+      for (var aj = 0; aj < arBtns.length; aj++) {
+        arBtns[aj].classList.remove('border-2', 'border-[#005daa]', 'bg-[#d4e3ff]/10', 'text-[#005daa]');
+        arBtns[aj].classList.add('border', 'border-[#e3e2e2]', 'bg-white', 'text-[#404753]');
+      }
+      this.classList.add('border-2', 'border-[#005daa]', 'bg-[#d4e3ff]/10', 'text-[#005daa]');
+      this.classList.remove('border', 'border-[#e3e2e2]', 'bg-white', 'text-[#404753]');
+    });
+  }
+
+  // ---- Step 6: format selection ----
+  window.updateFormatSelection = function() {
+    var pptxLabel = document.getElementById('format-pptx-label');
+    var pdfLabel = document.getElementById('format-pdf-label');
+    var pptxChecked = document.querySelector('input[name="format"][value="pptx"]');
+    if (pptxChecked && pptxChecked.checked) {
+      pptxLabel.classList.add('border-2', 'border-[#005daa]', 'bg-[#d4e3ff]/20');
+      pptxLabel.classList.remove('border', 'border-[#e3e2e2]', 'bg-white');
+      pdfLabel.classList.remove('border-2', 'border-[#005daa]', 'bg-[#d4e3ff]/20');
+      pdfLabel.classList.add('border', 'border-[#e3e2e2]', 'bg-white');
+    } else {
+      pdfLabel.classList.add('border-2', 'border-[#005daa]', 'bg-[#d4e3ff]/20');
+      pdfLabel.classList.remove('border', 'border-[#e3e2e2]', 'bg-white');
+      pptxLabel.classList.remove('border-2', 'border-[#005daa]', 'bg-[#d4e3ff]/20');
+      pptxLabel.classList.add('border', 'border-[#e3e2e2]', 'bg-white');
+    }
+  };
+
+  // ---- Draft Filter Tabs ----
+  var draftFilterBtns = document.querySelectorAll('#draft-filter-tabs .draft-filter-btn');
+  var draftCards = document.querySelectorAll('#draft-grid .draft-card');
+  for (var df = 0; df < draftFilterBtns.length; df++) {
+    (function(btn) {
+      btn.addEventListener('click', function() {
+        for (var dg = 0; dg < draftFilterBtns.length; dg++) {
+          draftFilterBtns[dg].classList.remove('bg-white', 'shadow-sm', 'text-[#005daa]', 'font-bold');
+          draftFilterBtns[dg].classList.add('text-[#404753]');
+        }
+        btn.classList.add('bg-white', 'shadow-sm', 'text-[#005daa]', 'font-bold');
+        btn.classList.remove('text-[#404753]');
+
+        var status = btn.textContent.trim();
+        for (var dh = 0; dh < draftCards.length; dh++) {
+          if (status === '全部状态') {
+            draftCards[dh].classList.remove('hidden');
+          } else {
+            var cardStatus = draftCards[dh].getAttribute('data-status');
+            if (cardStatus === status) {
+              draftCards[dh].classList.remove('hidden');
+            } else {
+              draftCards[dh].classList.add('hidden');
+            }
+          }
+        }
+      });
+    })(draftFilterBtns[df]);
+  }
+
+  // ---- Topic Input Character Counter ----
+  var topicInput = document.getElementById('topic-input');
+  var charCount = document.getElementById('char-count');
+  if (topicInput && charCount) {
+    topicInput.addEventListener('input', function() {
+      charCount.textContent = topicInput.value.length + ' / 2000 字';
+    });
+  }
+
+  // ---- Keyboard Navigation ----
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      window.closeTemplateImportModal();
+      window.closeExportConfigModal();
+      window.closeSaveDraftToast();
+    }
+  });
+
+  // ---- Initialize ----
+  window.goToStep(1);
+})();
+</script>
+
+</body>
+</html>
