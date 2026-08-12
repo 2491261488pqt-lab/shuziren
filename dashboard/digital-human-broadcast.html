@@ -1,0 +1,231 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>数字人视频生成 - 数字人微课平台</title>
+<link rel="stylesheet" href="../assets/css/tailwind.css">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<style>
+.sidebar-active{background-color:#d4e3ff;color:#001c3a;border-right:4px solid #005daa}
+        body { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex overflow-x-hidden">
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50"><div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div><nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav><div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest"><div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="micro-lecture-agent.html" class="hover:text-primary transition-colors">微课智能体</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">数字人口播生成</span></div></div><div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width mt-16 flex-1 flex flex-col items-center bg-surface-container-low px-lg py-xl overflow-y-auto h-[calc(100vh-64px)]">
+<div class="w-full max-w-[1400px] flex flex-col gap-lg">
+<!-- Stepper -->
+<div class="w-full bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-md flex items-center justify-between mb-2">
+<div class="flex items-center gap-3 flex-1 relative z-10">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-title-lg text-title-lg shadow-md ring-4 ring-primary-container/30 scale-110 transition-transform animate-pulse cursor-pointer active:scale-95 transition-all duration-200">1</div>
+<span class="font-title-lg text-title-lg text-primary">文案编辑</span>
+</div>
+<div class="h-[2px] bg-outline-variant flex-1 mx-4 relative z-0">
+<div class="absolute left-0 top-0 h-full bg-primary w-0 transition-all duration-500"></div>
+</div>
+<div class="flex items-center gap-3 flex-1 justify-center relative z-10">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-title-lg text-title-lg border border-outline-variant cursor-pointer hover:bg-primary/10 active:scale-95 transition-all duration-200">2</div>
+<span class="font-body-md text-body-md text-on-surface-variant">视觉配置</span>
+</div>
+<div class="h-[2px] bg-outline-variant flex-1 mx-4 relative z-0"></div>
+<div class="flex items-center gap-3 flex-1 justify-end relative z-10">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-title-lg text-title-lg border border-outline-variant cursor-pointer hover:bg-primary/10 active:scale-95 transition-all duration-200">3</div>
+<span class="font-body-md text-body-md text-on-surface-variant">预览与生成</span>
+</div>
+</div>
+<!-- Content Grid (Wizard Pattern: 2/3 and 1/3) -->
+<div class="flex flex-col lg:flex-row gap-lg">
+<!-- Left Column: Core Content (Script Editor & AI) -->
+<div class="flex-1 flex flex-col gap-md">
+<!-- Script Editor Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant flex flex-col overflow-hidden h-[500px]">
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface">
+<h2 class="font-title-lg text-title-lg text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="edit_document">edit_document</span>
+                                演讲文案
+                            </h2>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="upload_file">upload_file</span>
+                                    导入文档
+                                </button>
+<button class="px-3 py-1.5 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="delete">delete</span>
+                                    清空
+                                </button>
+</div>
+</div>
+<div class="flex-1 relative p-0"><div class="flex items-center gap-2 px-md py-2 bg-surface-container-low border-b border-outline-variant/50">
+<button class="p-1 hover:bg-surface-container-high rounded transition-colors active:bg-primary/20 active:text-primary" title="加粗"><span class="material-symbols-outlined text-[20px]">format_bold</span></button>
+<button class="p-1 hover:bg-surface-container-high rounded transition-colors active:bg-primary/20 active:text-primary" title="下划线"><span class="material-symbols-outlined text-[20px]">format_underlined</span></button>
+<div class="w-[1px] h-4 bg-outline-variant mx-1"></div>
+<button class="flex items-center gap-1 px-2 py-1 hover:bg-surface-container-high rounded transition-colors text-label-md font-label-md text-primary" title="插入停顿">
+<span class="material-symbols-outlined text-[18px]">timer</span> [Pause]
+  </button>
+<button class="flex items-center gap-1 px-2 py-1 hover:bg-surface-container-high rounded transition-colors text-label-md font-label-md text-primary" title="插入重音">
+<span class="material-symbols-outlined text-[18px]">priority_high</span> [Emphasis]
+  </button>
+</div>
+<textarea class="w-full h-full p-md bg-transparent border-none resize-none focus:ring-0 font-body-md text-body-md text-on-surface leading-relaxed placeholder:text-outline focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200" placeholder="在此输入数字人需要播报的文案内容..."></textarea>
+<div class="absolute bottom-md right-md font-label-md text-label-md text-on-surface-variant bg-surface/80 px-2 py-1 rounded backdrop-blur-sm"><span class="flex items-center gap-1 mr-3 text-primary/70 italic animate-pulse">
+<span class="material-symbols-outlined text-[14px]">verified_user</span>
+  合规性检测中...
+</span>
+                                0 / 2000
+                            </div>
+</div>
+</div>
+<!-- AI Assistant Panel -->
+<div class="bg-surface-container-low rounded-xl border border-primary-fixed p-md shadow-sm relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent pointer-events-none"></div>
+<div class="relative z-10 flex gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="flex-1">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-1">AI 文案润色</h3><button class="absolute top-0 right-0 flex items-center gap-1 text-label-md text-primary hover:underline">
+<span class="material-symbols-outlined text-[16px]">history</span> 历史版本
+</button>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-3">需要灵感吗？让 AI 帮你优化表达、调整语气或扩写内容。</p>
+<div class="flex flex-wrap gap-2"><button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-primary/30 bg-surface-container-lowest text-primary font-label-md hover:bg-primary hover:text-on-primary transition-all shadow-sm active:scale-95 duration-200">
+<span class="material-symbols-outlined text-[18px]">workspace_premium</span>更专业
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-primary/30 bg-surface-container-lowest text-primary font-label-md hover:bg-primary hover:text-on-primary transition-all shadow-sm active:scale-95 duration-200">
+<span class="material-symbols-outlined text-[18px]">sentiment_satisfied</span>更亲切
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-primary/30 bg-surface-container-lowest text-primary font-label-md hover:bg-primary hover:text-on-primary transition-all shadow-sm active:scale-95 duration-200">
+<span class="material-symbols-outlined text-[18px]">summarize</span>提炼重点
+</button>
+<div class="relative group/select">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-primary/30 bg-surface-container-lowest text-primary font-label-md hover:bg-primary hover:text-on-primary transition-all shadow-sm active:scale-95 duration-200">
+<span class="material-symbols-outlined text-[18px]">theater_comedy</span>场景选择
+    <span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Contextual Parameters -->
+<div class="w-full lg:w-[420px] flex flex-col gap-md">
+<!-- Project Settings Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant overflow-hidden">
+<div class="p-md border-b border-outline-variant bg-surface">
+<h2 class="font-title-lg text-title-lg text-on-surface">声音与语言配置</h2>
+</div>
+<div class="p-md flex flex-col gap-4">
+<!-- Language Select -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface font-semibold">播报语言</label>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-low border border-outline-variant rounded-lg py-2.5 pl-3 pr-10 font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+<option value="zh-CN">中文 (普通话)</option>
+<option value="en-US">English (US)</option>
+<option value="zh-HK">中文 (粤语)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<hr class="border-outline-variant/50">
+<!-- Voice Actor Select -->
+<div class="flex flex-col gap-2 mb-2">
+<label class="font-label-md text-label-md text-on-surface font-semibold">情感表现</label>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1 rounded-full bg-primary text-on-primary text-label-md active:scale-95 duration-200">自然</button>
+<button class="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant text-label-md hover:bg-primary/10 transition-colors active:scale-95 duration-200 active:bg-primary active:text-on-primary">严谨</button>
+<button class="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant text-label-md hover:bg-primary/10 transition-colors active:scale-95 duration-200 active:bg-primary active:text-on-primary">欢快</button>
+<button class="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant text-label-md hover:bg-primary/10 transition-colors active:scale-95 duration-200 active:bg-primary active:text-on-primary">亲切</button>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3 border border-outline-variant/30 mb-2">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="text-label-md text-on-surface-variant">语速 (1.0x)</span>
+<input class="w-32 h-1 bg-outline-variant rounded-lg appearance-none cursor-pointer accent-primary hover:opacity-80 active:scale-105 transition-all duration-200" type="range">
+</div>
+<div class="flex items-center justify-between">
+<span class="text-label-md text-on-surface-variant">语调 (0)</span>
+<input class="w-32 h-1 bg-outline-variant rounded-lg appearance-none cursor-pointer accent-primary hover:opacity-80 active:scale-105 transition-all duration-200" type="range">
+</div>
+</div>
+</div><div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface font-semibold flex justify-between items-center">
+                                    声音模型
+                                    <a class="text-primary hover:underline font-normal" href="#">声音库</a>
+</label>
+<!-- Active Voice Card -->
+<div class="border-2 border-primary rounded-lg p-3 bg-surface-container flex items-center gap-3 cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-variant shrink-0">
+<img alt="Voice Avatar" class="w-full h-full object-cover" data-alt="A small, stylized portrait of a female voice actor, professional and friendly, suitable for an educational AI avatar voice selection interface. Clean, bright background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAack8x4A4mrJvOmdE57XO4pLuZnKkeK0tRpPXimA7P9K1icn_LtA0j78AVOM35hNDfYAyBNLZANY5b5mIjk98WjnvReS8eXhKq2U1x24WfoTpQEE7yXFUe4arr9x01afEDvtitEkhHjyq6TNT3PVZduowxjB4F87YYjllmEuBLgHlxHYL2_IdBoHvMtXKc8WmwBok9tJdludaybA6eju7WZVCA1Xvacfkb-0oAXYMGuzCLoWCc_4jX">
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<span class="font-title-lg text-title-lg text-on-surface truncate">晓睿 (XiaoRui)</span>
+<span class="material-symbols-outlined text-primary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant truncate">知性女声 · 适合教育讲解</p>
+</div>
+</div>
+<div class="flex gap-2 mt-2">
+<button class="flex-1 py-2 rounded-lg bg-surface border border-outline-variant flex items-center justify-center gap-1 font-label-md text-label-md text-on-surface-variant hover:bg-primary/10 hover:text-primary transition-all group relative overflow-hidden" onclick="const btn = this; const icon = btn.querySelector('.material-symbols-outlined'); const text = btn.querySelector('span:not(.material-symbols-outlined)'); const wave = btn.querySelector('.wave-anim'); btn.classList.add('ring-2', 'ring-primary/30'); icon.textContent = 'pause'; text.textContent = '正在播放...'; wave.classList.remove('hidden'); setTimeout(() =&gt; { btn.classList.remove('ring-2', 'ring-primary/30'); icon.textContent = 'play_arrow'; text.textContent = '试听声音'; wave.classList.add('hidden'); }, 3000);">
+<span class="material-symbols-outlined text-[16px] transition-transform group-active:scale-90">play_arrow</span>
+<span class="">试听声音</span>
+<div class="wave-anim absolute bottom-0 left-0 w-full h-1 bg-primary/20 flex items-end gap-0.5 px-1 hidden">
+<div class="flex-1 bg-primary h-1/2 animate-pulse"></div>
+<div class="flex-1 bg-primary h-full animate-pulse" style="animation-delay: 0.1s"></div>
+<div class="flex-1 bg-primary h-2/3 animate-pulse" style="animation-delay: 0.2s"></div>
+<div class="flex-1 bg-primary h-full animate-pulse" style="animation-delay: 0.3s"></div>
+</div>
+</button>
+<div class="flex-1 relative">
+<button class="w-full py-2 rounded-lg bg-surface border border-outline-variant flex items-center justify-center gap-1 font-label-md text-label-md text-on-surface-variant hover:bg-primary/10 hover:text-primary transition-all" onclick="const panel = this.nextElementSibling; panel.classList.toggle('hidden'); panel.classList.toggle('flex');">
+<span class="material-symbols-outlined text-[16px]">tune</span>
+    参数调整
+  </button>
+<div class="absolute bottom-full right-0 mb-2 w-64 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-md p-3 flex-col gap-3 z-50 animate-in fade-in slide-in-from-bottom-2 duration-200 hidden">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-md text-on-surface font-semibold">精细调节</span>
+<button class="text-primary text-[11px] hover:underline" onclick="this.closest('.z-50').classList.add('hidden')">关闭</button>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="text-label-md text-on-surface-variant">语调 (Pitch)</span>
+<span class="text-label-md text-primary font-bold">+2</span>
+</div>
+<input class="w-full h-1 bg-outline-variant rounded-lg appearance-none cursor-pointer accent-primary hover:opacity-80 active:scale-105 transition-all duration-200" type="range" value="60">
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="text-label-md text-on-surface-variant">语速 (Speed)</span>
+<span class="text-label-md text-primary font-bold">1.15x</span>
+</div>
+<input class="w-full h-1 bg-outline-variant rounded-lg appearance-none cursor-pointer accent-primary hover:opacity-80 active:scale-105 transition-all duration-200" type="range" value="55">
+</div>
+<div class="flex gap-2 mt-1">
+<button class="flex-1 py-1.5 rounded bg-surface-container-high text-on-surface-variant text-label-md hover:bg-outline-variant/30 transition-colors">重置</button>
+<button class="flex-1 py-1.5 rounded bg-primary text-on-primary text-label-md hover:bg-primary-container transition-colors" onclick="this.closest('.z-50').classList.add('hidden')">保存</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Action Bar -->
+<div class="w-full flex justify-end items-center gap-3 pt-md mt-auto">
+<button class="px-6 py-2.5 rounded-lg border-2 border-outline-variant text-on-surface-variant font-title-lg text-title-lg hover:bg-surface-container-low transition-colors active:scale-95 duration-200">
+                    保存草稿
+                </button>
+<button class="px-6 py-2.5 rounded-lg bg-primary text-on-primary font-title-lg text-title-lg hover:bg-primary-container hover:-translate-y-0.5 transition-all shadow-sm flex items-center gap-2 active:scale-95 duration-200">
+                    下一步：视觉配置
+                    <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+
+
+</body></html>
