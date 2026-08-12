@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../assets/css/tailwind.css">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<style>
+.sidebar-active{background-color:#d4e3ff;color:#001c3a;border-right:4px solid #005daa}
+        .waveform-bar {
+            animation: pulse 1s ease-in-out infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: scaleY(0.2); }
+            100% { transform: scaleY(1); }
+        }
+        .progress-stripe {
+            background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+            background-size: 1rem 1rem;
+            animation: progress-move 1s linear infinite;
+        }
+        @keyframes progress-move {
+            0% { background-position: 1rem 0; }
+            100% { background-position: 0 0; }
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background h-screen overflow-x-hidden flex">
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50"><div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div><nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav><div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest"><div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="micro-lecture-agent.html" class="hover:text-primary transition-colors">微课智能体</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="voice-synthesis.html" class="hover:text-primary transition-colors">配音合成</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">音频合成中</span></div></div><div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- TopAppBar -->
+<header class="docked full-width top-0 sticky z-50 backdrop-blur-md border-b border-outline-variant shadow-sm bg-surface/90 flex justify-between items-center h-16 px-container-margin w-full">
+<div class="flex items-center gap-sm">
+<!-- Breadcrumb -->
+<nav class="flex text-on-surface-variant font-label-md text-label-md">
+<a class="hover:text-primary transition-colors" href="#">微课智能体</a>
+<span class="mx-xs material-symbols-outlined text-[16px]">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">模块 3: 神经网络架构</a>
+<span class="mx-xs material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-on-surface font-semibold">音频合成</span>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex gap-md font-title-lg text-title-lg">
+<a class="text-on-surface-variant hover:text-primary transition-all" href="#">项目管理</a>
+<a class="text-on-surface-variant hover:text-primary transition-all" href="#">资产库</a>
+<a class="text-on-surface-variant hover:text-primary transition-all" href="#">数据分析</a>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<button class="p-xs hover:bg-surface-container-high rounded-full transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-xs hover:bg-surface-container-high rounded-full transition-colors"><span class="material-symbols-outlined">help_outline</span></button>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full ml-sm border border-outline-variant object-cover" data-alt="A professional headshot of a corporate user, smiling slightly, well-lit, isolated on a clean white background, modern corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFuQ-PstZjUcC-WOLEfEddxuWdYiH6VyW6UtKBbw28tg8VaSaMqw08uNThtJo7TRWaMzludPy3BgP2q8tWZwGFe6eXA6OMURyrzaVAaDTXF6Z4GPipZW84kgnnGrRREwaIOOnXAeNYBlO6PXzXv6Vc2MiYhc9O7qiJRYcJJT4ChAW7luJNI3uh2EtOWUYn55VsJtOqH2I1PWdSk6EGVXU-ofA07o5eXGhgoe33x9BWdwcTdHBghO0U"/>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<div class="flex-1 overflow-y-auto p-xl flex flex-col items-center justify-center relative">
+<!-- Core Synthesis UI -->
+<div class="max-w-3xl w-full bg-surface-container-lowest rounded-xl shadow-md border border-outline-variant p-xl flex flex-col items-center text-center relative overflow-hidden">
+<!-- Background decorative glow -->
+<div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none"></div>
+<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-container text-on-primary-container mb-lg">
+<span class="material-symbols-outlined text-display-lg" style="font-variation-settings: 'FILL' 1;">graphic_eq</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-xs">音频合成中...</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-xl max-w-lg">
+                    正在对《模块 3：神经网络架构》讲稿应用 AI 语音模型。优化语调并消除杂音。
+                </p>
+<!-- Waveform Animation Container -->
+<div class="w-full h-32 flex items-center justify-center gap-[2px] mb-xl px-lg">
+<script>
+                        for(let i=0; i<60; i++) {
+                            const delay = Math.random() * -2 + 's';
+                            const duration = Math.random() * 0.5 + 0.5 + 's';
+                            const height = Math.random() * 80 + 20 + '%';
+                            document.write(`<div class="w-2 bg-primary rounded-full waveform-bar" style="height: ${height}; animation-delay: ${delay}; animation-duration: ${duration};"></div>`);
+                        }
+                    </script>
+</div>
+<!-- Progress Bar -->
+<div class="w-full max-w-xl mb-lg">
+<div class="flex justify-between items-end mb-xs">
+<span class="font-label-md text-label-md text-on-surface-variant">当前进度</span>
+<span class="font-title-lg text-title-lg text-primary font-bold">75%</span>
+</div>
+<div class="w-full h-3 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full progress-stripe transition-all duration-300" style="width: 75%;"></div>
+</div>
+<div class="flex justify-between items-start mt-xs">
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">timer</span>
+                            预计剩余时间：45秒
+                        </span>
+<span class="font-label-md text-label-md text-on-surface-variant">正在处理第 3/4 分段</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-md mt-lg">
+<button class="px-lg py-sm rounded-lg border-2 border-outline-variant font-title-lg text-title-lg text-on-surface-variant hover:border-primary hover:text-primary transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">stop_circle</span>
+                        取消合成
+                    </button>
+<button class="px-lg py-sm rounded-lg bg-surface-container-high font-title-lg text-title-lg text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">minimize</span>
+                        后台运行
+                    </button>
+</div>
+<!-- Success Placeholder (Hidden by default, shown via JS) -->
+<div class="hidden absolute inset-0 bg-surface-container-lowest flex-col items-center justify-center p-xl" id="success-state">
+<div class="w-20 h-20 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mb-lg scale-0 transition-transform duration-500 ease-out" id="success-icon">
+<span class="material-symbols-outlined text-display-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Synthesis Complete</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-xl">Your high-fidelity audio is ready.</p>
+<button class="px-xl py-md rounded-full bg-primary text-on-primary font-title-lg text-title-lg shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all flex items-center gap-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                        Listen Now
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Simulate progress and success state for demonstration
+        setTimeout(() => {
+            const progressBar = document.querySelector('.progress-stripe');
+            const percentageText = document.querySelector('.text-primary.font-bold');
+            if(progressBar) progressBar.style.width = '100%';
+            if(percentageText) percentageText.textContent = '100%';
+            
+            setTimeout(() => {
+                document.getElementById('success-state').classList.remove('hidden');
+                document.getElementById('success-state').classList.add('flex');
+                setTimeout(() => {
+                    document.getElementById('success-icon').classList.remove('scale-0');
+                    document.getElementById('success-icon').classList.add('scale-100');
+                }, 50);
+            }, 800);
+        }, 3000);
+    </script>
+</body></html>
