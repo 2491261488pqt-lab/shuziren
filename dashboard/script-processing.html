@@ -1,0 +1,178 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>讲稿处理与生成 - EduSynth AI</title>
+<link rel="stylesheet" href="../assets/css/tailwind.css">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex overflow-x-hidden antialiased">
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50"><div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div><nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav><div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest"><div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="micro-lecture-agent.html" class="hover:text-primary transition-colors">微课智能体</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">讲稿处理/生成</span></div></div><div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
+<!-- Main Content -->
+<main class="ml-sidebar-width mt-16 p-xl" style="width:calc(100% - 240px); min-height:calc(100vh - 64px)">
+<!-- Header Actions -->
+<div class="px-xl py-md flex justify-between items-center bg-surface shrink-0 border-b border-surface-variant">
+<h1 class="font-headline-md text-headline-md text-on-background">讲稿处理与生成</h1>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md text-label-md hover:-translate-y-0.5 active:scale-95 transition-all shadow-sm hover:shadow-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                新建脚本
+            </button>
+</div>
+<!-- Workspace (Wizard Pattern 2/3 - 1/3 split) -->
+<div class="flex-1 flex overflow-hidden bg-surface-container-low">
+<!-- Left Column: Main Editor (Canvas) -->
+<div class="flex-1 flex flex-col overflow-y-auto p-xl scrollbar-hide relative max-w-[900px] mx-auto w-full">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-lg flex flex-col min-h-full">
+<!-- Script Title -->
+<input class="w-full font-headline-sm text-headline-sm text-on-surface bg-transparent border-0 border-b border-surface-variant focus:ring-0 focus:border-primary pb-sm mb-lg placeholder:text-outline" placeholder="输入微课讲稿标题..." type="text" value="人工智能基础 - 导论篇">
+<!-- Floating Toolbar -->
+<div class="sticky top-0 bg-surface-container-lowest/95 backdrop-blur z-10 border border-outline-variant rounded-lg p-xs mb-md shadow-sm flex items-center gap-xs text-on-surface-variant">
+<button class="p-1.5 hover:bg-surface-container-high rounded" title="Bold"><span class="material-symbols-outlined text-[20px]">format_bold</span></button>
+<button class="p-1.5 hover:bg-surface-container-high rounded" title="Italic"><span class="material-symbols-outlined text-[20px]">format_italic</span></button>
+<button class="p-1.5 hover:bg-surface-container-high rounded" title="Underline"><span class="material-symbols-outlined text-[20px]">format_underlined</span></button>
+<div class="w-[1px] h-4 bg-outline-variant mx-1"></div>
+<button class="p-1.5 hover:bg-surface-container-high rounded" title="Align Left"><span class="material-symbols-outlined text-[20px]">format_align_left</span></button>
+<button class="p-1.5 hover:bg-surface-container-high rounded" title="Align Center"><span class="material-symbols-outlined text-[20px]">format_align_center</span></button>
+<div class="w-[1px] h-4 bg-outline-variant mx-1"></div>
+<button class="p-1.5 hover:bg-surface-container-high rounded flex items-center gap-xs font-label-md text-label-md">
+<span class="material-symbols-outlined text-[20px]">timelapse</span> 预计时长: 3分15秒
+                        </button>
+</div>
+<!-- Script Segments (Scene-based) -->
+<div class="space-y-lg flex-1">
+<!-- Scene 1 -->
+<div class="group relative bg-surface border border-surface-variant rounded-lg p-md transition-all hover:border-primary/50 hover:shadow-sm cursor-text">
+<div class="flex justify-between items-center mb-sm text-on-surface-variant font-label-md text-label-md">
+<span class="bg-surface-container-high px-2 py-1 rounded">Scene 1: 开场引入</span>
+<span class="">120 字</span>
+</div>
+<textarea class="w-full bg-transparent border-0 focus:ring-0 p-0 text-on-surface resize-none min-h-[100px]" placeholder="在此输入 Scene 1 的讲稿内容...">各位同学大家好，欢迎来到《人工智能基础》的课堂。在科幻电影中，我们常常看到无所不能的智能机器人，但在现实中，人工智能到底是什么？今天，我们将拨开AI的神秘面纱，一起探索它的前世今生。</textarea>
+<!-- Scene Actions (Hidden until hover) -->
+<div class="absolute -right-3 -top-3 hidden group-hover:flex bg-surface-container-lowest border border-outline-variant rounded shadow-sm overflow-hidden">
+<button class="p-1 hover:bg-surface-container-high text-on-surface-variant"><span class="material-symbols-outlined text-[16px]">add</span></button>
+<button class="p-1 hover:bg-surface-container-high text-on-surface-variant border-l border-outline-variant"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+</div>
+<!-- Scene 2 -->
+<div class="group relative bg-surface border border-surface-variant rounded-lg p-md transition-all hover:border-primary/50 hover:shadow-sm cursor-text">
+<div class="flex justify-between items-center mb-sm text-on-surface-variant font-label-md text-label-md">
+<span class="bg-surface-container-high px-2 py-1 rounded">Scene 2: 概念解析</span>
+<span class="">254 字</span>
+</div>
+<textarea class="w-full bg-transparent border-0 focus:ring-0 p-0 text-on-surface resize-none min-h-[150px]" placeholder="在此输入 Scene 2 的讲稿内容...">首先，让我们来明确一下人工智能的定义。简单来说，人工智能（Artificial Intelligence，简称AI）是计算机科学的一个分支，它企图了解智能的实质，并生产出一种新的能以人类智能相似的方式做出反应的智能机器。这就好比我们教小朋友认苹果，我们会给他看很多苹果的图片，告诉他这是苹果，慢慢地，小朋友就能自己认出没见过的苹果了。现在的AI也是通过这种“机器学习”的方式，吸收大量数据，从而获得“智能”。</textarea>
+</div>
+<!-- Add Scene Button -->
+<button class="w-full border-2 border-dashed border-outline-variant rounded-lg p-md text-on-surface-variant hover:text-primary hover:border-primary hover:bg-primary/5 active:scale-[0.98] transition-all flex flex-col items-center justify-center gap-xs min-h-[100px]">
+<span class="material-symbols-outlined text-[24px]">add_circle</span>
+<span class="font-label-md text-label-md">添加新场景 (Scene)</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Column: AI Assistant (420px fixed width) -->
+<div class="w-[420px] bg-surface-container-lowest border-l border-outline-variant flex flex-col shrink-0 relative">
+<!-- Loading Overlay (Hidden by default) -->
+<div class="absolute inset-0 bg-surface-container-lowest/80 backdrop-blur-sm z-20 hidden items-center justify-center flex-col gap-sm" id="ai-loading">
+<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+<span class="text-on-surface-variant font-label-md">AI正在处理中...</span>
+</div>
+<div class="p-md border-b border-surface-variant flex items-center gap-sm bg-surface">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+<h2 class="font-title-lg text-title-lg text-on-surface font-semibold">AI 讲稿助手</h2>
+</div>
+<div class="flex-1 overflow-y-auto p-md space-y-md flex flex-col">
+<!-- Preset Actions -->
+<div class="grid grid-cols-2 gap-sm relative">
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface-variant py-2 px-3 rounded-lg border border-outline-variant/50 flex items-center justify-center gap-xs font-label-md text-label-md transition-colors active:scale-95" onclick="const modal = document.getElementById('ai-action-modal'); document.getElementById('modal-title').innerText = '智能润色'; document.getElementById('modal-body').innerHTML = '&lt;div class=&quot;space-y-sm&quot;&gt;&lt;label class=&quot;flex items-center gap-sm p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-primary/5 transition-colors&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;polish&quot; class=&quot;text-primary focus:ring-primary&quot;&gt; &lt;div&gt;&lt;div class=&quot;font-semibold&quot;&gt;学术专业&lt;/div&gt;&lt;div class=&quot;text-body-sm text-outline&quot;&gt;使用更严谨的学术词汇和表达方式&lt;/div&gt;&lt;/div&gt;&lt;/label&gt;&lt;label class=&quot;flex items-center gap-sm p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-primary/5 transition-colors&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;polish&quot; class=&quot;text-primary focus:ring-primary&quot; checked&gt; &lt;div&gt;&lt;div class=&quot;font-semibold&quot;&gt;幽默风趣&lt;/div&gt;&lt;div class=&quot;text-body-sm text-outline&quot;&gt;加入生动的比喻和轻松的互动语言&lt;/div&gt;&lt;/div&gt;&lt;/label&gt;&lt;label class=&quot;flex items-center gap-sm p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-primary/5 transition-colors&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;polish&quot; class=&quot;text-primary focus:ring-primary&quot;&gt; &lt;div&gt;&lt;div class=&quot;font-semibold&quot;&gt;通俗易懂&lt;/div&gt;&lt;div class=&quot;text-body-sm text-outline&quot;&gt;去除冗余，突出核心知识点，简单明了&lt;/div&gt;&lt;/div&gt;&lt;/label&gt;&lt;/div&gt;'; modal.classList.remove('hidden'); modal.classList.add('flex');">
+<span class="material-symbols-outlined text-[18px]">brush</span> 智能润色
+                        </button>
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface-variant py-2 px-3 rounded-lg border border-outline-variant/50 flex items-center justify-center gap-xs font-label-md text-label-md transition-colors active:scale-95" onclick="const modal = document.getElementById('ai-action-modal'); document.getElementById('modal-title').innerText = '口播优化'; document.getElementById('modal-body').innerHTML = '&lt;div class=&quot;space-y-md&quot;&gt;&lt;div&gt;&lt;label class=&quot;font-label-md mb-xs block&quot;&gt;语速调节&lt;/label&gt;&lt;select class=&quot;w-full rounded-lg border-outline-variant text-body-sm focus:border-primary focus:ring-primary&quot;&gt;&lt;option&gt;正常 (1.0x)&lt;/option&gt;&lt;option&gt;稍快 (1.2x)&lt;/option&gt;&lt;option&gt;稍慢 (0.8x)&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div class=&quot;flex items-center justify-between p-md border border-outline-variant rounded-lg hover:border-primary/50 transition-colors&quot;&gt;&lt;span class=&quot;font-semibold&quot;&gt;重音标注&lt;/span&gt;&lt;input type=&quot;checkbox&quot; class=&quot;rounded text-primary focus:ring-primary&quot;&gt;&lt;/div&gt;&lt;div class=&quot;flex items-center justify-between p-md border border-outline-variant rounded-lg hover:border-primary/50 transition-colors&quot;&gt;&lt;span class=&quot;font-semibold&quot;&gt;停顿建议&lt;/span&gt;&lt;input type=&quot;checkbox&quot; class=&quot;rounded text-primary focus:ring-primary&quot;&gt;&lt;/div&gt;&lt;/div&gt;'; modal.classList.remove('hidden'); modal.classList.add('flex');">
+<span class="material-symbols-outlined text-[18px]">record_voice_over</span> 口播优化
+                        </button>
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface-variant py-2 px-3 rounded-lg border border-outline-variant/50 flex items-center justify-center gap-xs font-label-md text-label-md transition-colors active:scale-95" onclick="const modal = document.getElementById('ai-action-modal'); document.getElementById('modal-title').innerText = '内容扩充'; document.getElementById('modal-body').innerHTML = '&lt;div class=&quot;space-y-sm&quot;&gt;&lt;div class=&quot;grid grid-cols-2 gap-sm mb-sm&quot;&gt;&lt;button class=&quot;p-sm border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-colors text-left&quot;&gt;&lt;div class=&quot;font-semibold mb-1&quot;&gt;增加案例&lt;/div&gt;&lt;div class=&quot;text-[10px] text-outline&quot;&gt;补充实际应用场景&lt;/div&gt;&lt;/button&gt;&lt;button class=&quot;p-sm border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-colors text-left&quot;&gt;&lt;div class=&quot;font-semibold mb-1&quot;&gt;细化定义&lt;/div&gt;&lt;div class=&quot;text-[10px] text-outline&quot;&gt;深入解释专业名词&lt;/div&gt;&lt;/button&gt;&lt;button class=&quot;p-sm border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-colors text-left col-span-2&quot;&gt;&lt;div class=&quot;font-semibold mb-1&quot;&gt;背景延展&lt;/div&gt;&lt;div class=&quot;text-[10px] text-outline&quot;&gt;补充相关历史背景或发展趋势&lt;/div&gt;&lt;/button&gt;&lt;/div&gt;&lt;label class=&quot;font-label-md block mb-1&quot;&gt;自定义扩充方向&lt;/label&gt;&lt;textarea class=&quot;w-full rounded-lg border-outline-variant text-body-sm h-24 focus:border-primary focus:ring-primary&quot; placeholder=&quot;例如：增加关于人工智能在医疗领域应用的具体案例...&quot;&gt;&lt;/textarea&gt;&lt;/div&gt;'; modal.classList.remove('hidden'); modal.classList.add('flex');">
+<span class="material-symbols-outlined text-[18px]">format_size</span> 内容扩充
+                        </button>
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface-variant py-2 px-3 rounded-lg border border-outline-variant/50 flex items-center justify-center gap-xs font-label-md text-label-md transition-colors active:scale-95" onclick="const modal = document.getElementById('ai-action-modal'); document.getElementById('modal-title').innerText = '翻译处理'; document.getElementById('modal-body').innerHTML = '&lt;div class=&quot;grid grid-cols-2 gap-sm&quot;&gt;&lt;button class=&quot;p-md border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-colors hover:bg-primary/5&quot;&gt;English (英语)&lt;/button&gt;&lt;button class=&quot;p-md border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-colors hover:bg-primary/5&quot;&gt;日本語 (日语)&lt;/button&gt;&lt;button class=&quot;p-md border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-colors hover:bg-primary/5&quot;&gt;Français (法语)&lt;/button&gt;&lt;button class=&quot;p-md border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-colors hover:bg-primary/5&quot;&gt;Deutsch (德语)&lt;/button&gt;&lt;/div&gt;'; modal.classList.remove('hidden'); modal.classList.add('flex');">
+<span class="material-symbols-outlined text-[18px]">translate</span> 翻译处理
+                        </button>
+</div>
+<!-- Output Area (Chat-like UI) -->
+<div class="flex-1 flex flex-col gap-md pt-md border-t border-surface-variant mt-sm">
+<!-- AI Suggestion Card -->
+<div class="bg-surface-container rounded-xl p-sm border border-outline-variant/30 shadow-sm relative group"><div class="flex items-center justify-between mb-sm">
+<div class="flex items-center gap-xs text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span> AI 优化建议
+  </div>
+<span class="text-label-caps bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full">已润色</span>
+</div>
+<div class="space-y-sm mb-md">
+<div class="p-2 bg-surface-container-low rounded border-l-4 border-outline-variant">
+<div class="text-label-caps text-outline mb-1">原内容</div>
+<p class="text-body-sm text-on-surface-variant line-through opacity-60">各位同学大家好，欢迎来到《人工智能基础》的课堂...</p>
+</div>
+<div class="p-2 bg-primary/5 rounded border-l-4 border-primary">
+<div class="text-label-caps text-primary mb-1">优化后 (幽默风趣)</div>
+<p class="text-body-sm text-on-surface">同学们好！欢迎进入《人工智能基础》的奇妙世界。电影里那些上天入地的智能机器人总是令人向往，那在现实中，人工智能究竟是何方神圣？今天，我们就来揭开AI的神秘面纱，一探究竟。</p>
+</div>
+</div>
+<div class="flex gap-xs">
+<button class="flex-1 bg-primary text-on-primary py-1.5 rounded font-label-md text-label-md hover:bg-primary/90 transition-colors active:scale-95">应用修改</button>
+<button class="flex-1 bg-surface-container-highest text-on-surface-variant border border-outline-variant py-1.5 rounded font-label-md text-label-md hover:bg-surface-variant transition-colors active:scale-95">对比详情</button>
+</div></div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-md border-t border-surface-variant bg-surface">
+<div class="relative">
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-sm pr-10 resize-none font-body-sm text-body-sm text-on-surface placeholder:text-outline h-[80px]" placeholder="AI 助手为您编写、润色教学讲稿... (例如：帮我把第二段改得更幽默一些)"></textarea>
+<button class="absolute right-2 bottom-2 p-1.5 bg-primary text-on-primary rounded-md hover:bg-primary/90 transition-colors flex items-center justify-center active:scale-95">
+<span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Bar -->
+<div class="h-16 shrink-0 bg-surface border-t border-outline-variant flex justify-between items-center px-xl relative">
+<span class="text-outline font-label-md text-label-md">自动保存于 10:42 AM</span>
+<div class="flex items-center gap-md">
+<!-- Toast Notification -->
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 bg-inverse-surface text-on-error px-md py-sm rounded-lg shadow-lg flex items-center gap-sm transition-opacity duration-300 opacity-0 pointer-events-none" id="save-toast">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+<span class="font-label-md">草稿保存成功</span>
+</div>
+<button class="px-lg py-sm rounded-lg font-label-md text-label-md text-on-surface-variant border-2 border-outline-variant hover:bg-surface-container-highest hover:text-on-surface transition-all active:scale-95" onclick="const toast = document.getElementById('save-toast'); toast.classList.remove('opacity-0'); setTimeout(() =&gt; toast.classList.add('opacity-0'), 2000);">
+                    保存草稿
+                </button>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md text-label-md shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all flex items-center gap-xs animate-pulse" onclick="window.location.href='{{DATA:SCREEN:SCREEN_114}}'">
+                    下一步：开始生成视频
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+<div class="fixed inset-0 z-[100] items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity flex hidden" id="ai-action-modal">
+<div class="bg-surface-container-lowest w-full max-w-md rounded-xl shadow-xl border border-outline-variant overflow-hidden">
+<div class="px-lg py-md border-b border-outline-variant flex justify-between items-center bg-surface">
+<h3 class="font-title-lg text-title-lg text-on-surface font-semibold" id="modal-title">翻译处理</h3>
+<button class="text-on-surface-variant hover:text-primary p-1 rounded-full transition-colors" onclick="document.getElementById('ai-action-modal').classList.add('hidden')">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-lg space-y-md" id="modal-body"><div class="grid grid-cols-2 gap-sm"><button class="p-md border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-colors hover:bg-primary/5">English (英语)</button><button class="p-md border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-colors hover:bg-primary/5">日本語 (日语)</button><button class="p-md border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-colors hover:bg-primary/5">Français (法语)</button><button class="p-md border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-colors hover:bg-primary/5">Deutsch (德语)</button></div></div>
+<div class="px-lg py-md border-t border-outline-variant bg-surface flex justify-end gap-sm">
+<button class="px-md py-2 rounded-lg font-label-md text-on-surface-variant border border-outline-variant hover:bg-surface-container-high transition-colors" onclick="document.getElementById('ai-action-modal').classList.add('hidden')">取消</button>
+<button class="px-md py-2 rounded-lg font-label-md bg-primary text-on-primary hover:bg-primary/90 transition-colors" id="modal-confirm" onclick="document.getElementById('ai-action-modal').classList.add('hidden'); const loader = document.getElementById('ai-loading'); loader.classList.remove('hidden'); loader.classList.add('flex'); setTimeout(() =&gt; { loader.classList.add('hidden'); loader.classList.remove('flex'); }, 1500);">确认执行</button>
+</div>
+</div>
+</div>
+
+</body></html>
