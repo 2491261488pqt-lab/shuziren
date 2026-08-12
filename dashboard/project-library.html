@@ -191,9 +191,18 @@
 <button class="text-primary hover:bg-primary-fixed px-2 py-1 rounded font-label-md text-label-md transition-colors flex items-center gap-1">
 <span class="material-symbols-outlined text-[16px]">play_arrow</span>预览
                                 </button>
-<button class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high p-1 rounded transition-colors tooltip-trigger" title="更多">
+<div class="relative">
+<button class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high p-1 rounded transition-colors" title="更多" onclick="const d=this.nextElementSibling;d.classList.toggle('hidden')">
 <span class="material-symbols-outlined text-[20px]">more_vert</span>
 </button>
+<div class="absolute right-0 top-full mt-1 w-40 bg-surface rounded-xl border border-surface-container-highest shadow-xl z-50 hidden py-1">
+<button class="w-full text-left px-lg py-sm hover:bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[16px]">content_copy</span>复制项目</button>
+<button class="w-full text-left px-lg py-sm hover:bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[16px]">drive_file_rename_outline</span>重命名</button>
+<button class="w-full text-left px-lg py-sm hover:bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[16px]">file_download</span>导出</button>
+<div class="border-t border-surface-container-highest my-1"></div>
+<button class="w-full text-left px-lg py-sm hover:bg-error-container text-error font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation();this.closest('.bg-surface-container-lowest').remove();let t=document.getElementById('delete-toast');t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2000)"><span class="material-symbols-outlined text-[16px]">delete</span>删除</button>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -228,9 +237,18 @@
 <button class="text-primary hover:bg-primary-fixed px-3 py-1 rounded font-label-md text-label-md transition-colors flex items-center gap-1 border border-primary">
                                     继续编辑
                                 </button>
-<button class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high p-1 rounded transition-colors tooltip-trigger" title="更多">
+<div class="relative">
+<button class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high p-1 rounded transition-colors" title="更多" onclick="const d=this.nextElementSibling;d.classList.toggle('hidden')">
 <span class="material-symbols-outlined text-[20px]">more_vert</span>
 </button>
+<div class="absolute right-0 top-full mt-1 w-40 bg-surface rounded-xl border border-surface-container-highest shadow-xl z-50 hidden py-1">
+<button class="w-full text-left px-lg py-sm hover:bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[16px]">content_copy</span>复制项目</button>
+<button class="w-full text-left px-lg py-sm hover:bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[16px]">drive_file_rename_outline</span>重命名</button>
+<button class="w-full text-left px-lg py-sm hover:bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[16px]">file_download</span>导出</button>
+<div class="border-t border-surface-container-highest my-1"></div>
+<button class="w-full text-left px-lg py-sm hover:bg-error-container text-error font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation();this.closest('.bg-surface-container-lowest').remove();let t=document.getElementById('delete-toast');t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2000)"><span class="material-symbols-outlined text-[16px]">delete</span>删除</button>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -255,4 +273,5 @@
 </div>
 </div>
 </main>
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden" id="delete-toast"><div class="bg-error-container text-on-error-container px-lg py-sm rounded-full shadow-lg flex items-center gap-sm"><span class="material-symbols-outlined">delete</span><span class="font-body-md font-semibold">项目已删除</span></div></div>
 </body></html>
