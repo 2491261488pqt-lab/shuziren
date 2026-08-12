@@ -147,7 +147,7 @@
 </div>
 </div>
 <!-- Primary Action -->
-<button class="px-xl py-sm bg-primary text-on-primary rounded-lg font-title-lg text-title-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-sm" onclick="const btn = this; const original = btn.innerHTML; btn.disabled = true; btn.innerHTML = '&lt;span class=&quot;material-symbols-outlined animate-spin&quot;&gt;sync&lt;/span&gt; 生成中...'; setTimeout(() =&gt; { btn.disabled = false; btn.innerHTML = original; }, 3000);">
+<button class="px-xl py-sm bg-primary text-on-primary rounded-lg font-title-lg text-title-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-sm" onclick="const btn = this; btn.disabled = true; btn.innerHTML = '<span class=material-symbols-outlined>sync</span> 生成中...'; setTimeout(() => { window.location.href = 'audio-generating.html'; }, 1500);">
 <span class="material-symbols-outlined">record_voice_over</span>
                 生成音频
             </button>
