@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../assets/css/tailwind.css">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<style>
+.sidebar-active{background-color:#d4e3ff;color:#001c3a;border-right:4px solid #005daa}
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #dce3f2;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c0c7d6;
+        }
+        
+        .card-checkbox {
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .group:hover .card-checkbox,
+        .card-checkbox:checked {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md h-screen overflow-x-hidden flex">
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50"><div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div><nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav><div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest"><div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="micro-lecture-agent.html" class="hover:text-primary transition-colors">微课智能体</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">项目库</span></div></div><div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
+<!-- Main Content Area -->
+<main class="ml-[240px] mt-16 p-xl flex-1 h-[calc(100vh-64px)] overflow-y-auto">
+<div class="max-w-[1400px] mx-auto flex flex-col gap-lg">
+<!-- Page Header -->
+<div class="flex items-start justify-between">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">项目库</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">管理与追溯所有微课创作项目，支持状态筛选与快速二次编辑。</p>
+</div>
+<div class="flex items-center gap-sm">
+<button class="text-on-surface-variant hover:text-primary px-sm py-sm rounded-lg font-title-lg text-title-lg transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+                    回收站
+                </button>
+<div class="h-6 w-px bg-outline-variant mx-1"></div>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-title-lg text-title-lg hover:-translate-y-0.5 transition-transform shadow-sm hover:shadow-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                    新建项目
+                </button>
+</div>
+</div>
+<!-- Filters and Search -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm flex flex-col gap-sm">
+<div class="flex flex-wrap items-center justify-between gap-md">
+<div class="flex items-center gap-2">
+<button class="px-md py-xs rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md transition-colors">全部项目</button>
+<button class="px-md py-xs rounded-full bg-transparent hover:bg-surface-container-low text-on-surface-variant font-label-md text-label-md transition-colors border border-outline-variant">进行中</button>
+<button class="px-md py-xs rounded-full bg-transparent hover:bg-surface-container-low text-on-surface-variant font-label-md text-label-md transition-colors border border-outline-variant">已完成</button>
+<button class="px-md py-xs rounded-full bg-transparent hover:bg-surface-container-low text-on-surface-variant font-label-md text-label-md transition-colors border border-outline-variant">草稿</button>
+<button class="px-md py-xs rounded-full bg-transparent hover:bg-error-container text-on-error-container font-label-md text-label-md transition-colors border border-outline-variant">失败</button>
+</div>
+<div class="flex items-center gap-sm">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-1.5 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="搜索项目名称..." type="text"/>
+</div>
+<div class="relative group">
+<button class="flex items-center gap-1 px-3 py-1.5 border border-outline-variant rounded-lg font-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">sort</span>
+                                排序
+                                <span class="material-symbols-outlined text-[18px]">arrow_drop_down</span>
+</button>
+<div class="absolute right-0 top-full mt-1 w-32 bg-surface-container-lowest border border-outline-variant rounded-lg shadow-md hidden group-hover:block z-10">
+<a class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low cursor-pointer" href="#">创建时间</a>
+<a class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low cursor-pointer" href="#">修改时间</a>
+<a class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low cursor-pointer" href="#">名称</a>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-sm border-t border-outline-variant">
+<div class="flex items-center gap-sm">
+<label class="flex items-center gap-2 cursor-pointer text-on-surface-variant text-sm hover:text-primary transition-colors">
+<input class="form-checkbox rounded text-primary focus:ring-primary border-outline-variant" type="checkbox"/>
+<span>全选</span>
+</label>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<button class="flex items-center gap-1 text-sm text-on-surface-variant hover:text-primary transition-colors font-medium">
+<span class="material-symbols-outlined text-[18px]">checklist</span>
+                            批量管理
+                        </button>
+</div>
+<div class="flex items-center gap-sm hidden">
+<button class="flex items-center gap-1 text-sm text-on-surface-variant hover:text-primary transition-colors font-medium px-2 py-1 rounded hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-[18px]">folder_open</span>
+                            移动到文件夹
+                        </button>
+<button class="flex items-center gap-1 text-sm text-error hover:text-error transition-colors font-medium px-2 py-1 rounded hover:bg-error-container">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+                            删除选中
+                        </button>
+</div>
+</div>
+</div>
+<!-- Project Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-md">
+<!-- Project Card 1: Rendering -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm hover:shadow-md hover:border-primary transition-all overflow-hidden group relative flex flex-col">
+<input class="card-checkbox absolute top-sm left-sm z-20 form-checkbox h-5 w-5 rounded text-primary focus:ring-primary border-white bg-white/80 backdrop-blur-sm shadow-sm cursor-pointer" type="checkbox"/>
+<!-- Progress Bar Overlay -->
+<div class="absolute top-0 left-0 h-1 bg-primary w-[65%] z-10"></div>
+<div class="h-40 bg-surface-container-low relative cursor-pointer">
+<div class="bg-cover bg-center w-full h-full opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A cinematic, high-quality rendering of a digital human professor standing in a modern, well-lit virtual classroom setting. The environment features subtle academic blue accents, soft volumetric lighting, and a clean, high-tech educational aesthetic. 4k resolution, photorealistic, suitable for a professional AI courseware presentation." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD2nafHcMxYZx-N3-ykSwGNKf1N3lSoanEQJeStCfmlL6vSu8PdvDA9LM52LeoB8ElijD580a40LVV-Eq2nMDC7v3at-nRgqgbmxMay9O6U6eEiatiwagiWPdBzOsx-MI4JfNg4ieFYLm8uUkrTJB-4C2eTQ9kvJ3C1QD0GXspucitvZ4iIimTLu1wgGnsbexwC_oDAxu8qh6cYubxXpmR6kgBi3BY9P91Z-UkFYBLND0enHs6YfBtZ')"></div>
+<div class="absolute top-sm right-sm bg-surface-container-lowest/90 backdrop-blur-md px-2 py-1 rounded text-xs font-label-md text-primary font-medium flex items-center gap-1 shadow-sm border border-outline-variant">
+<span class="material-symbols-outlined text-[14px] animate-spin">sync</span>
+                            渲染中 65%
+                        </div>
+<div class="absolute bottom-sm right-sm bg-surface-container-lowest/80 backdrop-blur-sm px-1.5 py-0.5 rounded text-[10px] font-label-caps text-on-surface-variant flex items-center gap-1">
+                            12:45
+                        </div>
+</div>
+<div class="p-md flex flex-col flex-1">
+<div class="cursor-pointer flex-1">
+<h3 class="font-title-lg text-title-lg text-on-surface truncate">《人工智能基础导论 - 第1讲》</h3>
+<div class="flex items-center gap-3 mt-1">
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">description</span> 脚本驱动模式
+                                </p>
+<span class="text-xs text-outline">•</span>
+<span class="font-body-sm text-body-sm text-outline-variant">256 MB</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-md border-t border-surface-variant pt-sm">
+<span class="font-label-caps text-label-caps text-outline">2023-10-25 14:30</span>
+<div class="flex gap-2">
+<button class="text-primary hover:bg-primary-fixed px-2 py-1 rounded font-label-md text-label-md transition-colors flex items-center gap-1 border border-primary">
+                                    查看进度
+                                </button>
+<button class="text-on-surface-variant hover:text-error hover:bg-error-container p-1.5 rounded transition-colors tooltip-trigger" title="取消">
+<span class="material-symbols-outlined text-[20px]">cancel</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Project Card 2: Completed -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm hover:shadow-md hover:border-primary transition-all overflow-hidden group relative flex flex-col">
+<input class="card-checkbox absolute top-sm left-sm z-20 form-checkbox h-5 w-5 rounded text-primary focus:ring-primary border-white bg-white/80 backdrop-blur-sm shadow-sm cursor-pointer" type="checkbox"/>
+<div class="h-40 bg-surface-container-low relative cursor-pointer">
+<div class="bg-cover bg-center w-full h-full opacity-90 group-hover:opacity-100 transition-opacity" data-alt="A professional digital human presenter, female, dressed in contemporary business casual attire, delivering a presentation against a sleek, minimalist data-visualization background. Bright, high-key lighting, emphasizing clarity and modern SaaS aesthetic. Shallow depth of field focusing on the presenter." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB3oNDnMBKL4UhK006N-noGnKFNHmrEHlhI7-yjWZG0u_K6YN6shrmIvzQHKMZFcUnhJFqOzhRCLn2Fcp2v8FQT4QLjIyVbskiV0eWzytJ-YEt2nHiu0sJ27_Xdo35h34kDqj5yPtoBMCQDFRpG6o-yo4hYeqr77irTxZ04C446yzd1jYFactrGSRaR0U11oq5WxlM4iqsH48AZiPWsT9BJqTs8HWruMJXN5OGZJMiNOKuLJ49b4h-h')"></div>
+<div class="absolute top-sm right-sm bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-xs font-label-md font-medium flex items-center gap-1 shadow-sm border border-secondary-fixed">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                            已完成
+                        </div>
+<div class="absolute bottom-sm right-sm bg-surface-container-lowest/80 backdrop-blur-sm px-1.5 py-0.5 rounded text-[10px] font-label-caps text-on-surface-variant flex items-center gap-1">
+                            08:30
+                        </div>
+</div>
+<div class="p-md flex flex-col flex-1">
+<div class="cursor-pointer flex-1">
+<h3 class="font-title-lg text-title-lg text-on-surface truncate">《数据结构与算法核心概念》</h3>
+<div class="flex items-center gap-3 mt-1">
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">slideshow</span> 课件转视频
+                                </p>
+<span class="text-xs text-outline">•</span>
+<span class="font-body-sm text-body-sm text-outline-variant">142 MB</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-md border-t border-surface-variant pt-sm">
+<span class="font-label-caps text-label-caps text-outline">2023-10-24 09:15</span>
+<div class="flex gap-2">
+<button class="text-primary hover:bg-primary-fixed px-2 py-1 rounded font-label-md text-label-md transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">edit</span>编辑
+                                </button>
+<button class="text-primary hover:bg-primary-fixed px-2 py-1 rounded font-label-md text-label-md transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span>预览
+                                </button>
+<button class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high p-1 rounded transition-colors tooltip-trigger" title="更多">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Project Card 3: Draft -->
+<div class="bg-surface-container-lowest rounded-xl border border-dashed border-outline-variant shadow-sm hover:shadow-md hover:border-primary hover:bg-surface-container/30 transition-all overflow-hidden group relative flex flex-col opacity-80 hover:opacity-100">
+<input class="card-checkbox absolute top-sm left-sm z-20 form-checkbox h-5 w-5 rounded text-primary focus:ring-primary border-outline bg-white/80 backdrop-blur-sm shadow-sm cursor-pointer" type="checkbox"/>
+<div class="h-40 bg-surface-container-high relative flex items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined text-[48px] text-outline-variant group-hover:text-primary transition-colors">draft</span>
+<div class="absolute top-sm right-sm bg-surface-variant text-on-surface-variant px-2 py-1 rounded text-xs font-label-md font-medium flex items-center gap-1 shadow-sm border border-outline-variant">
+<span class="material-symbols-outlined text-[14px]">edit_document</span>
+                            草稿
+                        </div>
+<div class="absolute bottom-sm right-sm bg-surface-container-lowest/80 backdrop-blur-sm px-1.5 py-0.5 rounded text-[10px] font-label-caps text-on-surface-variant flex items-center gap-1">
+                            --:--
+                        </div>
+</div>
+<div class="p-md flex flex-col flex-1">
+<div class="cursor-pointer flex-1">
+<h3 class="font-title-lg text-title-lg text-on-surface truncate">《Python基础语法速成》</h3>
+<div class="flex items-center gap-3 mt-1">
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">description</span> 脚本驱动模式
+                                </p>
+<span class="text-xs text-outline">•</span>
+<span class="font-body-sm text-body-sm text-outline-variant">-- MB</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-md border-t border-surface-variant pt-sm">
+<span class="font-label-caps text-label-caps text-outline">2023-10-26 10:05</span>
+<div class="flex gap-2">
+<button class="text-primary hover:bg-primary-fixed px-3 py-1 rounded font-label-md text-label-md transition-colors flex items-center gap-1 border border-primary">
+                                    继续编辑
+                                </button>
+<button class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high p-1 rounded transition-colors tooltip-trigger" title="更多">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between mt-lg pt-md border-t border-outline-variant">
+<span class="font-body-sm text-body-sm text-on-surface-variant">共 42 个项目，显示 1-3</span>
+<div class="flex items-center gap-1 bg-surface-container-lowest border border-outline-variant rounded-lg p-1 shadow-sm">
+<button class="p-1.5 rounded hover:bg-surface-container-high text-outline transition-colors disabled:opacity-50 flex items-center justify-center" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-md bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center shadow-sm">1</button>
+<button class="w-8 h-8 rounded-md hover:bg-surface-container-high text-on-surface-variant font-label-md text-label-md flex items-center justify-center transition-colors">2</button>
+<button class="w-8 h-8 rounded-md hover:bg-surface-container-high text-on-surface-variant font-label-md text-label-md flex items-center justify-center transition-colors">3</button>
+<span class="text-on-surface-variant mx-1 text-sm">...</span>
+<button class="w-8 h-8 rounded-md hover:bg-surface-container-high text-on-surface-variant font-label-md text-label-md flex items-center justify-center transition-colors">14</button>
+<button class="p-1.5 rounded-md hover:bg-surface-container-high text-on-surface-variant transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</body></html>
