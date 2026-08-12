@@ -31,17 +31,17 @@ input[type=range]:focus { outline: none; }
 <!-- Stepper -->
 <div class="w-full bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-md flex items-center justify-between mb-2">
 <div class="flex items-center gap-3 flex-1 relative z-10">
-<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-title-lg text-title-lg shadow-md ring-4 ring-primary-container/30 scale-110 cursor-pointer" id="step-indicator-1" onclick="goToStep(1)"><span class="step-num-1">1</span><span class="step-check-1 hidden material-symbols-outlined text-[16px]">check</span></div>
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-title-lg text-title-lg shadow-md ring-4 ring-primary-container/30 cursor-pointer" id="step-indicator-1" onclick="goToStep(1)"><span class="step-num-1">1</span><span class="step-check-1 hidden material-symbols-outlined text-[18px]">check</span></div>
 <span class="font-title-lg text-title-lg text-primary" id="step-label-1">文案编辑</span>
 </div>
 <div class="h-[2px] bg-outline-variant flex-1 mx-4 relative z-0" id="connector-1"><div class="absolute left-0 top-0 h-full bg-primary transition-all duration-500" style="width:0%" id="connector-fill-1"></div></div>
 <div class="flex items-center gap-3 flex-1 justify-center relative z-10">
-<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-title-lg text-title-lg border border-outline-variant cursor-pointer" id="step-indicator-2" onclick="goToStep(2)"><span class="step-num-2">2</span><span class="step-check-2 hidden material-symbols-outlined text-[16px]">check</span></div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-title-lg text-title-lg border border-outline-variant cursor-pointer" id="step-indicator-2" onclick="goToStep(2)"><span class="step-num-2">2</span><span class="step-check-2 hidden material-symbols-outlined text-[18px]">check</span></div>
 <span class="font-body-md text-body-md text-on-surface-variant" id="step-label-2">视觉配置</span>
 </div>
 <div class="h-[2px] bg-outline-variant flex-1 mx-4 relative z-0" id="connector-2"><div class="absolute left-0 top-0 h-full bg-primary transition-all duration-500" style="width:0%" id="connector-fill-2"></div></div>
 <div class="flex items-center gap-3 flex-1 justify-end relative z-10">
-<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-title-lg text-title-lg border border-outline-variant cursor-pointer" id="step-indicator-3" onclick="goToStep(3)"><span class="step-num-3">3</span><span class="step-check-3 hidden material-symbols-outlined text-[16px]">check</span></div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-title-lg text-title-lg border border-outline-variant cursor-pointer" id="step-indicator-3" onclick="goToStep(3)"><span class="step-num-3">3</span><span class="step-check-3 hidden material-symbols-outlined text-[18px]">check</span></div>
 <span class="font-body-md text-body-md text-on-surface-variant" id="step-label-3">预览与生成</span>
 </div>
 </div>
@@ -322,33 +322,29 @@ function updateStepper() {
         const numEl = document.querySelector('.step-num-' + i);
         const checkEl = document.querySelector('.step-check-' + i);
         const connectorFill = document.getElementById('connector-fill-' + i);
-        const connector = document.getElementById('connector-' + i);
 
-        // Reset all
-        indicator.className = indicator.className.replace(/bg-primary|bg-surface-container-highest|text-on-primary|text-on-surface-variant|ring-4|ring-primary-container\/30|scale-110|shadow-md|border|border-outline-variant/g, '');
+        // Reset indicator to base style
+        indicator.className = 'w-10 h-10 rounded-full flex items-center justify-center font-title-lg text-title-lg cursor-pointer';
+        // Reset label
         label.className = 'font-body-md text-body-md text-on-surface-variant';
 
         if (i < currentStep) {
-            // Completed
-            indicator.classList.add('bg-primary', 'text-on-primary', 'shadow-sm', 'cursor-pointer');
-            label.classList.add('text-primary');
-            label.classList.replace('font-body-md', 'font-title-lg');
-            label.classList.replace('text-body-md', 'text-title-lg');
+            // Completed: filled circle with checkmark
+            indicator.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+            label.classList.add('text-primary', 'font-title-lg', 'text-title-lg');
             if (numEl) numEl.classList.add('hidden');
             if (checkEl) checkEl.classList.remove('hidden');
             if (connectorFill) connectorFill.style.width = '100%';
         } else if (i === currentStep) {
-            // Active
+            // Active: filled circle with ring, larger
             indicator.classList.add('bg-primary', 'text-on-primary', 'shadow-md', 'ring-4', 'ring-primary-container/30', 'scale-110');
-            label.classList.add('text-primary');
-            label.classList.replace('font-body-md', 'font-title-lg');
-            label.classList.replace('text-body-md', 'text-title-lg');
+            label.classList.add('text-primary', 'font-title-lg', 'text-title-lg');
             if (numEl) numEl.classList.remove('hidden');
             if (checkEl) checkEl.classList.add('hidden');
             if (connectorFill) connectorFill.style.width = '0%';
         } else {
-            // Upcoming
-            indicator.classList.add('bg-surface-container-highest', 'text-on-surface-variant', 'border', 'border-outline-variant', 'cursor-pointer');
+            // Upcoming: muted circle with border
+            indicator.classList.add('bg-surface-container-highest', 'text-on-surface-variant', 'border', 'border-outline-variant');
             if (numEl) numEl.classList.remove('hidden');
             if (checkEl) checkEl.classList.add('hidden');
             if (connectorFill) connectorFill.style.width = '0%';
@@ -374,5 +370,8 @@ function switchTab(tabId) {
     activeBtn.classList.remove('text-on-surface-variant');
     activeBtn.classList.add('text-primary', 'border-b-2', 'border-primary');
 }
+
+// Initialize stepper on page load
+updateStepper();
 </script>
 </body></html>
