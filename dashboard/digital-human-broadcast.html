@@ -40,9 +40,14 @@ input[type=range]:focus { outline: none; }
 <span class="font-body-md text-body-md text-on-surface-variant" id="step-label-2">视觉配置</span>
 </div>
 <div class="h-[2px] bg-outline-variant flex-1 mx-4 relative z-0" id="connector-2"><div class="absolute left-0 top-0 h-full bg-primary transition-all duration-500" style="width:0%" id="connector-fill-2"></div></div>
-<div class="flex items-center gap-3 flex-1 justify-end relative z-10">
+<div class="flex items-center gap-3 flex-1 justify-center relative z-10">
 <div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-title-lg text-title-lg border border-outline-variant cursor-pointer" id="step-indicator-3" onclick="goToStep(3)"><span class="step-num-3">3</span><span class="step-check-3 material-symbols-outlined text-[18px]" style="display:none">check</span></div>
 <span class="font-body-md text-body-md text-on-surface-variant" id="step-label-3">预览与生成</span>
+</div>
+<div class="h-[2px] bg-outline-variant flex-1 mx-4 relative z-0" id="connector-3"><div class="absolute left-0 top-0 h-full bg-primary transition-all duration-500" style="width:0%" id="connector-fill-3"></div></div>
+<div class="flex items-center gap-3 flex-1 justify-end relative z-10">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-title-lg text-title-lg border border-outline-variant cursor-pointer" id="step-indicator-4" onclick="goToStep(4)"><span class="step-num-4">4</span><span class="step-check-4 material-symbols-outlined text-[18px]" style="display:none">check</span></div>
+<span class="font-body-md text-body-md text-on-surface-variant" id="step-label-4">分段审核</span>
 </div>
 </div>
 
@@ -276,6 +281,73 @@ input[type=range]:focus { outline: none; }
 </div>
 </div>
 
+<!-- ==================== STEP 4: 分段审核 ==================== -->
+<div class="step-content flex-col lg:flex-row gap-lg flex-1 min-h-[600px]" id="step-4">
+<!-- Left Column: Preview + Timeline -->
+<div class="lg:flex-[2] flex flex-col gap-md">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant overflow-hidden flex flex-col">
+<div class="p-md border-b border-outline-variant flex justify-between items-center">
+<h2 class="font-title-lg text-title-lg text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-primary">visibility</span>分段预览</h2>
+<span class="flex items-center gap-1 text-secondary font-label-md text-label-md"><span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>已生成 4 个片段</span>
+</div>
+<div class="relative bg-inverse-surface aspect-video flex flex-col justify-end group overflow-hidden">
+<div class="absolute inset-0"><img alt="Segment Preview" class="w-full h-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9KT0EIU3xY8DNoNVp6XvwTVdBjSfP_pCzRLEl6P6C5krT57cm6Mry9CMqWH_IjFMyetBIspyhzCcTQIJFzGv2CwZFCG4wNe54WzZSjzC_15eVGMTb3EaBuUDFr_Mg8UiD21ao-QGfpAFW5Na5TE94jaAuQGX_7bGEZ8FptOIHH6Rli_kp95CfmooF4ocZmwHqSf0QzeHMqEosS2A121-qwx49Yg4lyaWxdlx4T-D0l9FWKLQrsr9W"></div>
+<div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors pointer-events-none"><button class="w-16 h-16 rounded-full bg-surface-container-lowest/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary hover:scale-110 transition-all shadow-2xl pointer-events-auto"><span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span></button></div>
+<div class="absolute top-4 left-4 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded text-white font-label-md text-label-md" id="segment-preview-label">片段 1</div>
+<div class="relative z-20 bg-gradient-to-t from-black/80 to-transparent p-md pt-xl w-full">
+<div class="w-full h-1.5 bg-white/30 rounded-full mb-3 cursor-pointer relative"><div class="absolute top-0 left-0 h-full bg-primary rounded-full" style="width:25%"></div></div>
+<div class="flex items-center justify-between text-white"><div class="flex items-center gap-3"><span class="font-label-caps text-xs font-mono tracking-wider">00:00 / 00:08</span></div><div class="flex items-center gap-2"><span class="font-label-md text-label-md">片段 1/4</span></div></div>
+</div>
+</div>
+</div>
+<!-- Timeline -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-md">
+<div class="flex items-center justify-between mb-3"><h3 class="font-title-lg text-title-lg text-on-surface">时间轴</h3><span class="font-label-md text-label-md text-on-surface-variant">点击节点切换片段</span></div>
+<div class="flex items-center gap-2">
+<div class="flex flex-col items-center gap-1 cursor-pointer" onclick="selectSegment(1)"><div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md text-label-md shadow-sm" id="tl-node-1">1</div><span class="text-[10px] text-on-surface-variant">00:00</span></div>
+<div class="flex-1 h-0.5 bg-primary relative -mt-4"></div>
+<div class="flex flex-col items-center gap-1 cursor-pointer" onclick="selectSegment(2)"><div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-label-md text-label-md border border-outline-variant" id="tl-node-2">2</div><span class="text-[10px] text-on-surface-variant">00:08</span></div>
+<div class="flex-1 h-0.5 bg-outline-variant relative -mt-4"></div>
+<div class="flex flex-col items-center gap-1 cursor-pointer" onclick="selectSegment(3)"><div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-label-md text-label-md border border-outline-variant" id="tl-node-3">3</div><span class="text-[10px] text-on-surface-variant">00:16</span></div>
+<div class="flex-1 h-0.5 bg-outline-variant relative -mt-4"></div>
+<div class="flex flex-col items-center gap-1 cursor-pointer" onclick="selectSegment(4)"><div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-label-md text-label-md border border-outline-variant" id="tl-node-4">4</div><span class="text-[10px] text-on-surface-variant">00:24</span></div>
+</div>
+</div>
+</div>
+<!-- Right Column: Segment List -->
+<div class="lg:flex-[1] min-w-[380px] max-w-[420px] flex flex-col gap-md">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-md">
+<div class="flex items-center justify-between mb-3"><h3 class="font-title-lg text-title-lg text-on-surface">片段审核</h3><span class="font-label-md text-label-md text-on-surface-variant" id="segment-progress">已通过 0/4</span></div>
+<div class="space-y-3">
+<!-- Segment 1 -->
+<div class="rounded-lg border border-outline-variant p-3 transition-all cursor-pointer hover:border-primary/50" id="seg-card-1" onclick="selectSegment(1)">
+<div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md text-label-md">1</span><span class="font-title-lg text-title-lg text-on-surface">片段 1</span></div><span class="px-2 py-0.5 rounded-full font-label-md text-label-md bg-surface-container-high text-on-surface-variant" id="seg-status-1">待审核</span></div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-2 line-clamp-2">欢迎来到本期课程，我是今天的数字人讲师。</p>
+<div class="flex gap-2"><button class="flex-1 py-1.5 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors" onclick="event.stopPropagation();selectSegment(1)">预览</button><button class="flex-1 py-1.5 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors" onclick="event.stopPropagation();regenerateSegment(1)">重新生成</button><button class="flex-1 py-1.5 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors" onclick="event.stopPropagation();goToStep(1)">编辑文案</button></div>
+</div>
+<!-- Segment 2 -->
+<div class="rounded-lg border border-outline-variant p-3 transition-all cursor-pointer hover:border-primary/50" id="seg-card-2" onclick="selectSegment(2)">
+<div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-label-md text-label-md">2</span><span class="font-title-lg text-title-lg text-on-surface">片段 2</span></div><span class="px-2 py-0.5 rounded-full font-label-md text-label-md bg-surface-container-high text-on-surface-variant" id="seg-status-2">待审核</span></div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-2 line-clamp-2">今天我们将一起探讨人工智能在商业领域的应用。</p>
+<div class="flex gap-2"><button class="flex-1 py-1.5 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors" onclick="event.stopPropagation();selectSegment(2)">预览</button><button class="flex-1 py-1.5 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors" onclick="event.stopPropagation();regenerateSegment(2)">重新生成</button><button class="flex-1 py-1.5 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors" onclick="event.stopPropagation();goToStep(1)">编辑文案</button></div>
+</div>
+<!-- Segment 3 -->
+<div class="rounded-lg border border-outline-variant p-3 transition-all cursor-pointer hover:border-primary/50" id="seg-card-3" onclick="selectSegment(3)">
+<div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-label-md text-label-md">3</span><span class="font-title-lg text-title-lg text-on-surface">片段 3</span></div><span class="px-2 py-0.5 rounded-full font-label-md text-label-md bg-surface-container-high text-on-surface-variant" id="seg-status-3">待审核</span></div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-2 line-clamp-2">首先，让我们回顾一下人工智能的发展历程。</p>
+<div class="flex gap-2"><button class="flex-1 py-1.5 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors" onclick="event.stopPropagation();selectSegment(3)">预览</button><button class="flex-1 py-1.5 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors" onclick="event.stopPropagation();regenerateSegment(3)">重新生成</button><button class="flex-1 py-1.5 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors" onclick="event.stopPropagation();goToStep(1)">编辑文案</button></div>
+</div>
+<!-- Segment 4 -->
+<div class="rounded-lg border border-outline-variant p-3 transition-all cursor-pointer hover:border-primary/50" id="seg-card-4" onclick="selectSegment(4)">
+<div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-label-md text-label-md">4</span><span class="font-title-lg text-title-lg text-on-surface">片段 4</span></div><span class="px-2 py-0.5 rounded-full font-label-md text-label-md bg-surface-container-high text-on-surface-variant" id="seg-status-4">待审核</span></div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-2 line-clamp-2">接下来，我们将深入分析几个典型案例。</p>
+<div class="flex gap-2"><button class="flex-1 py-1.5 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors" onclick="event.stopPropagation();selectSegment(4)">预览</button><button class="flex-1 py-1.5 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors" onclick="event.stopPropagation();regenerateSegment(4)">重新生成</button><button class="flex-1 py-1.5 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors" onclick="event.stopPropagation();goToStep(1)">编辑文案</button></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
 <!-- Bottom Action Bar -->
 <div class="w-full flex justify-between items-center pt-md mt-auto" id="bottom-bar-step-1">
 <div></div>
@@ -290,7 +362,11 @@ input[type=range]:focus { outline: none; }
 </div>
 <div class="w-full flex justify-between items-center pt-md mt-auto hidden" id="bottom-bar-step-3">
 <button class="px-xl py-2.5 rounded-lg border-2 border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary font-label-md text-label-md transition-all active:scale-95 flex items-center gap-2 group" onclick="goToStep(2)"><span class="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>上一步: 视觉配置</button>
-<button class="px-xl py-2.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-bold transition-all hover:-translate-y-0.5 hover:shadow-md active:scale-95 flex items-center gap-2 group relative overflow-hidden active:scale-[0.97] hover:shadow-primary/20 hover:shadow-lg" onclick="alert('视频生成任务已提交！您可以在处理任务页面查看进度。');window.location.href='processing-tasks.html'"><div class="absolute inset-0 bg-white/20 w-full translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out"></div><span class="material-symbols-outlined text-sm">auto_awesome</span>开始生成视频</button>
+<button class="px-xl py-2.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-bold transition-all hover:-translate-y-0.5 hover:shadow-md active:scale-95 flex items-center gap-2 group relative overflow-hidden active:scale-[0.97] hover:shadow-primary/20 hover:shadow-lg" onclick="generateVideo()"><div class="absolute inset-0 bg-white/20 w-full translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out"></div><span class="material-symbols-outlined text-sm">auto_awesome</span>开始生成视频</button>
+</div>
+<div class="w-full flex justify-between items-center pt-md mt-auto hidden" id="bottom-bar-step-4">
+<button class="px-xl py-2.5 rounded-lg border-2 border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary font-label-md text-label-md transition-all active:scale-95 flex items-center gap-2 group" onclick="goToStep(3)"><span class="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>上一步: 预览与生成</button>
+<button class="px-xl py-2.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-bold transition-all hover:-translate-y-0.5 hover:shadow-md active:scale-95 flex items-center gap-2 group relative overflow-hidden active:scale-[0.97] hover:shadow-primary/20 hover:shadow-lg" onclick="exportVideo()"><span class="material-symbols-outlined text-sm">movie_edit</span>合成导出</button>
 </div>
 </div>
 </main>
@@ -316,7 +392,7 @@ function goToStep(step) {
 }
 
 function updateStepper() {
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 4; i++) {
         const indicator = document.getElementById('step-indicator-' + i);
         const label = document.getElementById('step-label-' + i);
         const numEl = document.querySelector('.step-num-' + i);
@@ -369,6 +445,71 @@ function switchTab(tabId) {
     const activeBtn = document.getElementById(activeBtnId);
     activeBtn.classList.remove('text-on-surface-variant');
     activeBtn.classList.add('text-primary', 'border-b-2', 'border-primary');
+}
+
+// Segment review state
+let segmentApproved = [false, false, false, false];
+
+function selectSegment(n) {
+    // Update timeline nodes
+    for (let i = 1; i <= 4; i++) {
+        const node = document.getElementById('tl-node-' + i);
+        if (i === n) {
+            node.className = 'w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md text-label-md shadow-sm';
+        } else {
+            node.className = 'w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-label-md text-label-md border border-outline-variant';
+        }
+    }
+    // Update segment cards highlight
+    for (let i = 1; i <= 4; i++) {
+        const card = document.getElementById('seg-card-' + i);
+        if (i === n) {
+            card.classList.add('border-primary', 'bg-primary/5');
+        } else {
+            card.classList.remove('border-primary', 'bg-primary/5');
+        }
+    }
+    // Update preview label
+    const label = document.getElementById('segment-preview-label');
+    if (label) label.textContent = '片段 ' + n;
+}
+
+function regenerateSegment(n) {
+    const statusEl = document.getElementById('seg-status-' + n);
+    if (!statusEl) return;
+    // Show generating state
+    statusEl.textContent = '生成中...';
+    statusEl.className = 'px-2 py-0.5 rounded-full font-label-md text-label-md bg-primary-container text-on-primary-container animate-pulse';
+    // Simulate regeneration
+    setTimeout(() => {
+        segmentApproved[n - 1] = true;
+        statusEl.textContent = '已通过';
+        statusEl.className = 'px-2 py-0.5 rounded-full font-label-md text-label-md bg-secondary-container text-on-secondary-container';
+        updateSegmentProgress();
+    }, 1500);
+}
+
+function updateSegmentProgress() {
+    const approvedCount = segmentApproved.filter(Boolean).length;
+    const progressEl = document.getElementById('segment-progress');
+    if (progressEl) progressEl.textContent = '已通过 ' + approvedCount + '/4';
+}
+
+function generateVideo() {
+    // Simulate generation delay, then go to step 4
+    setTimeout(() => {
+        goToStep(4);
+        updateSegmentProgress();
+    }, 800);
+}
+
+function exportVideo() {
+    if (segmentApproved.filter(Boolean).length < 4) {
+        alert('还有片段未审核通过，请先完成所有片段的审核。');
+        return;
+    }
+    alert('视频合成导出任务已提交！您可以在处理任务页面查看进度。');
+    window.location.href = 'processing-tasks.html';
 }
 
 // Initialize stepper on page load
