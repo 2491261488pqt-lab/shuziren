@@ -4200,6 +4200,11 @@ video {
   color: rgb(64 71 83 / 0.5);
 }
 
+.text-on-tertiary {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
 .text-on-tertiary-container {
   --tw-text-opacity: 1;
   color: rgb(255 251 255 / var(--tw-text-opacity, 1));
