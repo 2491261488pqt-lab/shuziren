@@ -1407,12 +1407,20 @@ video {
   height: 24rem;
 }
 
+.h-\[140px\] {
+  height: 140px;
+}
+
 .h-\[18px\] {
   height: 18px;
 }
 
 .h-\[20\%\] {
   height: 20%;
+}
+
+.h-\[200px\] {
+  height: 200px;
 }
 
 .h-\[25\%\] {
@@ -1779,6 +1787,10 @@ video {
   min-width: 800px;
 }
 
+.min-w-\[80px\] {
+  min-width: 80px;
+}
+
 .max-w-2xl {
   max-width: 42rem;
 }
@@ -2129,6 +2141,10 @@ video {
 
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .grid-cols-7 {
@@ -2655,6 +2671,10 @@ video {
   border-color: rgb(38 109 0 / 0.1);
 }
 
+.border-secondary\/40 {
+  border-color: rgb(38 109 0 / 0.4);
+}
+
 .border-surface {
   --tw-border-opacity: 1;
   border-color: rgb(250 249 249 / var(--tw-border-opacity, 1));
@@ -2904,6 +2924,11 @@ video {
   background-color: rgb(27 28 28 / 0.4);
 }
 
+.bg-on-surface-variant {
+  --tw-bg-opacity: 1;
+  background-color: rgb(64 71 83 / var(--tw-bg-opacity, 1));
+}
+
 .bg-on-surface-variant\/20 {
   background-color: rgb(64 71 83 / 0.2);
 }
@@ -2989,6 +3014,10 @@ video {
 .bg-secondary-container {
   --tw-bg-opacity: 1;
   background-color: rgb(133 250 81 / var(--tw-bg-opacity, 1));
+}
+
+.bg-secondary-container\/30 {
+  background-color: rgb(133 250 81 / 0.3);
 }
 
 .bg-secondary-container\/5 {
@@ -3889,6 +3918,10 @@ video {
 
 .text-\[8px\] {
   font-size: 8px;
+}
+
+.text-\[9px\] {
+  font-size: 9px;
 }
 
 .text-body-md {
@@ -5078,6 +5111,10 @@ video {
   background-color: rgb(125 84 0 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-white\/20:hover {
+  background-color: rgb(255 255 255 / 0.2);
+}
+
 .hover\:text-\[\#005daa\]:hover {
   --tw-text-opacity: 1;
   color: rgb(0 93 170 / var(--tw-text-opacity, 1));
@@ -5450,6 +5487,11 @@ video {
   border-color: rgb(0 93 170 / 0.3);
 }
 
+.group:hover .group-hover\:border-surface-variant {
+  --tw-border-opacity: 1;
+  border-color: rgb(227 226 226 / var(--tw-border-opacity, 1));
+}
+
 .group:hover .group-hover\:bg-\[\#d4e3ff\]\/40 {
   background-color: rgb(212 227 255 / 0.4);
 }
@@ -5630,6 +5672,10 @@ video {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .sm\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
   .sm\:flex-row {
     flex-direction: row;
   }
@@ -5766,6 +5812,10 @@ video {
 
   .lg\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-\[240px_1fr_360px\] {
+    grid-template-columns: 240px 1fr 360px;
   }
 
   .lg\:flex-row {
