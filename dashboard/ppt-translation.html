@@ -1,0 +1,189 @@
+<!DOCTYPE html><html class="light" lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>PPT 翻译与讲稿处理 - 数字人微课平台</title>
+<link rel="stylesheet" href="../assets/css/tailwind.css">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<link rel="stylesheet" href="../assets/css/ppt-app.css">
+<style>
+.sidebar-active{background-color:#d4e3ff;color:#001c3a;border-right:4px solid #005daa}
+body { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen overflow-x-hidden">
+<!-- Shared Sidebar -->
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50"><div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div><nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav><div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
+<!-- Shared Header -->
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest"><div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="micro-lecture-agent.html" class="hover:text-primary transition-colors">微课智能体</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">PPT 翻译与讲稿处理</span></div></div><div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
+<!-- 主内容区 -->
+<main class="ml-sidebar-width pt-16 min-h-screen pb-28">
+<div class="p-lg">
+    <div class="flex items-end justify-between mb-lg">
+        <div>
+            <h2 class="text-headline-md text-on-surface">PPT 翻译与讲稿处理</h2>
+            <p class="text-body-md text-on-surface-variant mt-1">多语言 PPT 解析、AI 增强翻译及智能化口播讲稿合成。</p>
+        </div>
+        <div class="flex gap-sm">
+            <button id="btn-history" class="px-md py-2 bg-white border border-outline-variant rounded-lg text-label-md hover:bg-surface-container flex items-center gap-xs">
+                <span class="material-symbols-outlined text-sm">history</span>版本历史
+            </button>
+            <button id="btn-new-project" class="px-md py-2 bg-primary text-white rounded-lg text-label-md hover:opacity-90 flex items-center gap-xs shadow-sm shadow-primary/20">
+                <span class="material-symbols-outlined text-sm">add</span>新建项目
+            </button>
+        </div>
+    </div>
+    <div class="grid grid-cols-12 gap-lg min-h-[600px]">
+        <!-- 左列: PPT 原件 + 幻灯片概览 -->
+        <div class="col-span-4 flex flex-col gap-lg">
+            <section class="bg-white rounded-xl border border-outline-variant overflow-hidden p-lg">
+                <div class="flex items-center justify-between mb-md">
+                    <h3 class="text-title-lg text-primary flex items-center gap-xs">
+                        <span class="material-symbols-outlined">upload_file</span>PPT 原件
+                    </h3>
+                    <span id="parse-badge" class="status-badge status-completed"><span class="dot"></span>已解析</span>
+                </div>
+                <div id="dropzone" class="dropzone relative bg-surface-container-low border-2 border-dashed border-outline-variant rounded-xl p-lg text-center cursor-pointer hover:border-primary transition-colors">
+                    <input type="file" id="ppt-file-input" accept=".ppt,.pptx" class="hidden"/>
+                    <div class="mb-sm"><span class="material-symbols-outlined text-primary text-4xl">view_in_ar_new</span></div>
+                    <p id="ppt-name" class="text-body-md font-semibold text-on-surface">高等量子物理.pptx</p>
+                    <p id="ppt-meta" class="text-body-sm text-on-surface-variant">12.4 MB • 14 页</p>
+                    <div class="mt-md w-full progress-track h-1.5">
+                        <div id="parse-progress" class="progress-fill" style="width:100%"></div>
+                    </div>
+                    <div class="mt-2 flex items-center justify-between text-[11px] font-bold text-secondary">
+                        <span id="parse-status-text">解析完成</span><span id="parse-percent">100%</span>
+                    </div>
+                    <p class="mt-sm text-[11px] text-outline">点击选择 PPT 来源，或拖拽文件直接上传</p>
+                </div>
+            </section>
+            <section class="flex-1 bg-white rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+                <div class="p-md border-b border-outline-variant flex items-center justify-between bg-surface-container-lowest">
+                    <span class="text-label-md font-bold text-on-surface-variant">幻灯片概览</span>
+                    <span id="slide-count" class="text-label-caps text-outline">14 页</span>
+                </div>
+                <div id="slide-list" class="flex-1 overflow-y-auto custom-scrollbar p-md space-y-md"></div>
+            </section>
+        </div>
+        <!-- 右列: 对照编辑器 + 讲稿生成 -->
+        <div class="col-span-8 flex flex-col gap-lg">
+            <section class="bg-white rounded-xl border border-outline-variant flex flex-col" style="min-height: 420px;">
+                <div class="h-14 border-b border-outline-variant flex items-center justify-between px-md shrink-0">
+                    <div class="flex items-center gap-md">
+                        <div class="flex bg-surface-container rounded-lg p-0.5">
+                            <button id="btn-split-mode" class="px-md py-1.5 text-label-md font-bold tab-active rounded-md">对照模式</button>
+                            <button id="btn-focus-mode" class="px-md py-1.5 text-label-md font-bold text-on-surface-variant hover:text-on-surface rounded-md">专注讲稿</button>
+                        </div>
+                        <div class="h-6 w-[1px] bg-outline-variant mx-2"></div>
+                        <div class="flex items-center gap-sm">
+                            <span class="text-label-caps text-outline">目标语言：</span>
+                            <select id="lang-select" class="bg-transparent border-none focus:ring-0 text-label-md font-bold text-primary cursor-pointer">
+                                <option value="en">English (US)</option>
+                                <option value="ja" selected>Japanese</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-sm">
+                        <button id="btn-spellcheck" class="p-2 hover:bg-surface-container rounded-lg text-on-surface-variant" title="校对">
+                            <span class="material-symbols-outlined text-[20px]">spellcheck</span>
+                        </button>
+                        <button id="btn-rewrite" class="px-md py-1.5 bg-tertiary-container text-on-tertiary-fixed text-label-md rounded-lg hover:opacity-90 flex items-center gap-xs">
+                            <span class="material-symbols-outlined text-sm">auto_fix_high</span>AI 改写
+                        </button>
+                    </div>
+                </div>
+                <div class="flex-1 flex overflow-hidden" style="max-height: 460px;">
+                    <div class="w-1/2 border-r border-outline-variant flex flex-col transition-all duration-300" id="pane-source">
+                        <div class="px-md py-2 bg-surface-container-low text-[11px] font-bold text-outline shrink-0" id="source-label">原件内容 (幻灯片 01)</div>
+                        <div class="flex-1 p-lg overflow-y-auto custom-scrollbar bg-surface/30">
+                            <h4 id="source-title" class="text-title-lg mb-md text-on-surface"></h4>
+                            <div id="source-blocks" class="space-y-md text-body-md text-on-surface-variant leading-relaxed"></div>
+                        </div>
+                    </div>
+                    <div class="w-1/2 flex flex-col transition-all duration-300" id="pane-edit">
+                        <div class="px-md py-2 bg-surface-container-low text-[11px] font-bold text-primary flex items-center justify-between shrink-0">
+                            <span id="edit-label">AI 翻訳と編集</span>
+                            <span id="sync-status" class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-secondary rounded-full"></span>已同步</span>
+                        </div>
+                        <div class="flex-1 p-lg overflow-y-auto custom-scrollbar bg-white">
+                            <input id="trans-title" class="w-full text-title-lg mb-md border-none focus:ring-0 p-0 text-on-surface bg-transparent" type="text"/>
+                            <div id="trans-blocks" class="space-y-md"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="bg-white rounded-xl border border-outline-variant flex flex-col glass-effect" style="min-height: 260px;">
+                <div class="h-12 border-b border-outline-variant flex items-center justify-between px-md bg-surface-container-low/50 shrink-0">
+                    <div class="flex items-center gap-sm">
+                        <span class="material-symbols-outlined text-primary" style='font-variation-settings:"FILL" 1;'>mic</span>
+                        <h3 class="text-title-lg">口播讲稿生成</h3>
+                    </div>
+                    <div class="flex items-center gap-md">
+                        <div class="flex items-center gap-xs">
+                            <span class="text-label-caps text-outline">配音风格：</span>
+                            <select id="style-select" class="bg-transparent border-none focus:ring-0 text-label-md font-bold text-on-surface cursor-pointer p-0">
+                                <option>学术专家（男声）</option>
+                                <option>亲切讲师（女声）</option>
+                                <option>新闻主播（男声）</option>
+                                <option>青春活力（女声）</option>
+                            </select>
+                        </div>
+                        <button id="btn-regen-script" class="px-md py-1 bg-primary-container text-white text-xs font-bold rounded-full flex items-center gap-xs">
+                            <span class="material-symbols-outlined text-sm">refresh</span>重新生成
+                        </button>
+                    </div>
+                </div>
+                <div class="flex-1 p-md flex gap-md">
+                    <div class="flex-1 bg-surface rounded-xl p-md border border-outline-variant relative flex flex-col">
+                        <textarea id="script-text" class="flex-1 w-full bg-transparent border-none focus:ring-0 p-0 text-body-md leading-relaxed text-on-surface resize-none custom-scrollbar" placeholder="点击「重新生成」基于当前幻灯片内容生成口播讲稿..."></textarea>
+                        <div class="flex justify-end gap-xs mt-2">
+                            <span id="char-count" class="text-[10px] text-outline px-2 py-0.5 bg-surface-container-highest rounded">0 字</span>
+                            <span id="duration-est" class="text-[10px] text-outline px-2 py-0.5 bg-surface-container-highest rounded">约 0:00 分钟</span>
+                        </div>
+                    </div>
+                    <div class="w-48 space-y-sm shrink-0" id="ai-suggestions">
+                        <div class="ai-sug-card p-sm rounded-lg bg-surface-container-low border border-outline-variant">
+                            <p class="text-[10px] font-bold text-outline mb-1 uppercase tracking-tighter">AI 建议</p>
+                            <p class="text-[11px] text-on-surface leading-tight">在“薛定谔方程”后添加停顿以示强调。</p>
+                        </div>
+                        <div class="ai-sug-card p-sm rounded-lg bg-surface-container-low border border-outline-variant border-l-4 border-secondary">
+                            <p class="text-[10px] font-bold text-secondary mb-1 uppercase tracking-tighter">词汇优化</p>
+                            <p class="text-[11px] text-on-surface leading-tight">使用“概率性”代替“随机”以提高准确度。</p>
+                        </div>
+                        <button id="btn-ai-preview" class="w-full py-2 bg-secondary text-white text-xs font-bold rounded-lg flex items-center justify-center gap-xs">
+                            <span class="material-symbols-outlined text-sm">play_circle</span>AI 预览
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+</main>
+<!-- 悬浮操作栏 -->
+<footer class="fixed bottom-lg left-1/2 z-50" style="transform: translateX(calc(-50% + 120px));">
+    <div class="bg-inverse-surface text-inverse-on-surface rounded-2xl shadow-2xl p-sm flex items-center justify-between border border-white/10 ring-1 ring-black/20" style="width: 600px;">
+        <div class="flex items-center gap-md ml-md">
+            <div class="flex flex-col">
+                <span class="text-[10px] font-bold text-surface-variant uppercase">当前状态</span>
+                <span class="text-label-md flex items-center gap-xs">
+                    <span id="fab-status-dot" class="w-2 h-2 rounded-full bg-secondary pulse-processing"></span>
+                    <span id="fab-status-text">待同步</span>
+                </span>
+            </div>
+        </div>
+        <div class="flex items-center gap-sm mr-sm">
+            <button id="btn-save-draft" class="px-md py-2.5 rounded-xl text-label-md text-surface-bright hover:bg-white/10">保存草稿</button>
+            <div class="h-6 w-[1px] bg-white/20 mx-1"></div>
+            <button id="btn-preview" class="px-md py-2.5 rounded-xl text-label-md text-surface-bright hover:bg-white/10 flex items-center gap-xs">
+                <span class="material-symbols-outlined text-sm">volume_up</span>预览
+            </button>
+            <button id="btn-sync" class="px-lg py-2.5 bg-primary text-white rounded-xl text-label-md font-bold hover:brightness-110 flex items-center gap-md shadow-lg shadow-primary/40">
+                <span>同步至微课合成</span><span class="material-symbols-outlined">rocket_launch</span>
+            </button>
+        </div>
+    </div>
+</footer>
+<script src="../assets/js/ppt-app.js"></script>
+<script src="../assets/js/ppt-translation.js"></script>
+</body>
+</html>

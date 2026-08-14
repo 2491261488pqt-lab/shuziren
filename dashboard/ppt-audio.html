@@ -1,0 +1,174 @@
+<!DOCTYPE html><html class="light" lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>音频生成 - 数字人微课平台</title>
+<link rel="stylesheet" href="../assets/css/tailwind.css">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<link rel="stylesheet" href="../assets/css/ppt-app.css">
+<style>
+.sidebar-active{background-color:#d4e3ff;color:#001c3a;border-right:4px solid #005daa}
+body { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen overflow-x-hidden">
+<!-- Shared Sidebar -->
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50"><div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div><nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav><div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
+<!-- Shared Header -->
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest"><div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="micro-lecture-agent.html" class="hover:text-primary transition-colors">微课智能体</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="ppt-translation.html" class="hover:text-primary transition-colors">PPT 翻译与讲稿处理</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">音频生成</span></div></div><div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
+<!-- 主内容区 -->
+<main class="ml-sidebar-width pt-16 min-h-screen pb-28">
+<div class="p-lg">
+    <div class="flex items-end justify-between mb-lg">
+        <div>
+            <h2 class="text-headline-md text-on-surface">音频生成</h2>
+            <p class="text-body-md text-on-surface-variant mt-1">选择音色，从待生成列表载入各页讲稿，微调后合成课程旁白并写入数字人视频流程。</p>
+        </div>
+        <div class="flex gap-sm">
+            <button id="btn-back-ppt" class="px-md py-2 bg-white border border-outline-variant rounded-lg text-label-md hover:bg-surface-container hover:text-primary flex items-center gap-xs">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>返回 PPT 处理
+            </button>
+            <button id="btn-history" class="px-md py-2 bg-white border border-outline-variant rounded-lg text-label-md hover:bg-surface-container flex items-center gap-xs">
+                <span class="material-symbols-outlined text-sm">history</span>生成历史
+            </button>
+        </div>
+    </div>
+    <!-- 讲稿同步横幅 -->
+    <div id="sync-banner" class="sync-banner hidden mb-lg bg-primary/5 border border-primary/30 rounded-xl p-md flex items-center gap-md">
+        <span class="material-symbols-outlined text-primary" style='font-variation-settings:"FILL" 1;'>move_to_inbox</span>
+        <div class="flex-1">
+            <p class="text-body-md font-semibold text-on-surface" id="sync-banner-title">已接收来自「PPT 处理」的讲稿</p>
+            <p class="text-body-sm text-on-surface-variant" id="sync-banner-desc"></p>
+        </div>
+        <button id="sync-banner-close" class="p-1 rounded-lg hover:bg-white text-on-surface-variant">
+            <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+    </div>
+    <div class="grid grid-cols-12 gap-lg">
+        <!-- 左列: 音色库 + 待生成列表 -->
+        <div class="col-span-4 flex flex-col gap-lg">
+            <section class="bg-white rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+                <div class="p-md border-b border-outline-variant flex items-center justify-between">
+                    <h3 class="text-title-lg text-primary flex items-center gap-xs">
+                        <span class="material-symbols-outlined">record_voice_over</span>音色库
+                    </h3>
+                    <div class="flex bg-surface-container rounded-lg p-0.5" id="voice-tabs">
+                        <button data-filter="all" class="px-sm py-1 text-[11px] font-bold tab-active rounded-md">全部</button>
+                        <button data-filter="male" class="px-sm py-1 text-[11px] font-bold text-on-surface-variant rounded-md">男声</button>
+                        <button data-filter="female" class="px-sm py-1 text-[11px] font-bold text-on-surface-variant rounded-md">女声</button>
+                        <button data-filter="intl" class="px-sm py-1 text-[11px] font-bold text-on-surface-variant rounded-md">外语</button>
+                    </div>
+                </div>
+                <div id="voice-list" class="p-md space-y-sm overflow-y-auto custom-scrollbar" style="max-height: 420px;"></div>
+            </section>
+            <section class="bg-white rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+                <div class="p-md border-b border-outline-variant flex items-center justify-between gap-sm">
+                    <h3 class="text-title-lg text-primary flex items-center gap-xs shrink-0">
+                        <span class="material-symbols-outlined">playlist_play</span>待生成列表
+                    </h3>
+                    <button id="btn-generate-all" class="px-sm py-1 bg-primary text-white text-[11px] font-bold rounded-full hover:opacity-90 flex items-center gap-1 shrink-0">
+                        <span class="material-symbols-outlined text-sm">bolt</span>全部生成
+                    </button>
+                </div>
+                <div id="pending-list" class="p-md space-y-sm overflow-y-auto custom-scrollbar" style="max-height: 376px;"></div>
+            </section>
+        </div>
+        <!-- 右列: 讲稿输入 + 生成结果 -->
+        <div class="col-span-8 flex flex-col gap-lg">
+            <section class="bg-white rounded-xl border border-outline-variant flex flex-col glass-effect">
+                <div class="h-12 border-b border-outline-variant flex items-center justify-between px-md bg-surface-container-low/50 shrink-0">
+                    <div class="flex items-center gap-sm">
+                        <span class="material-symbols-outlined text-primary" style='font-variation-settings:"FILL" 1;'>description</span>
+                        <h3 class="text-title-lg">讲稿文本</h3>
+                        <span id="script-source-badge" class="hidden text-[10px] font-bold text-primary bg-primary-fixed px-2 py-0.5 rounded-full">来自 PPT 处理</span>
+                    </div>
+                    <div class="flex items-center gap-sm">
+                        <button id="btn-insert-pause" class="px-sm py-1 text-[11px] font-bold bg-white border border-outline-variant rounded-lg hover:bg-surface-container flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">pause</span>插入停顿
+                        </button>
+                        <button id="btn-clear-script" class="px-sm py-1 text-[11px] font-bold bg-white border border-outline-variant rounded-lg hover:bg-surface-container flex items-center gap-1 text-error">
+                            <span class="material-symbols-outlined text-sm">delete</span>清空
+                        </button>
+                    </div>
+                </div>
+                <div class="p-md flex gap-md">
+                    <div class="flex-1 bg-surface rounded-xl p-md border border-outline-variant flex flex-col" style="min-height: 180px;">
+                        <textarea id="tts-text" class="flex-1 w-full bg-transparent border-none focus:ring-0 p-0 text-body-md leading-relaxed text-on-surface resize-none custom-scrollbar" placeholder="在此输入或粘贴讲稿文本，也可从「PPT 处理」页一键同步..."></textarea>
+                        <div class="flex justify-end gap-xs mt-2">
+                            <span id="tts-char-count" class="text-[10px] text-outline px-2 py-0.5 bg-surface-container-highest rounded">0 字</span>
+                            <span id="tts-duration-est" class="text-[10px] text-outline px-2 py-0.5 bg-surface-container-highest rounded">约 0:00 分钟</span>
+                        </div>
+                    </div>
+                    <div class="w-52 shrink-0 space-y-md">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-label-caps text-outline">语速</span>
+                                <span id="rate-val" class="text-[11px] font-bold text-primary">1.0x</span>
+                            </div>
+                            <input type="range" id="param-rate" min="0.5" max="2" step="0.1" value="1" class="w-full"/>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-label-caps text-outline">音调</span>
+                                <span id="pitch-val" class="text-[11px] font-bold text-primary">1.0</span>
+                            </div>
+                            <input type="range" id="param-pitch" min="0.5" max="1.5" step="0.1" value="1" class="w-full"/>
+                        </div>
+                        <div>
+                            <span class="text-label-caps text-outline block mb-1">情感风格</span>
+                            <select id="param-emotion" class="w-full bg-surface-container-low border-outline-variant rounded-lg text-label-md focus:ring-primary/30">
+                                <option>专业讲解</option><option>亲切自然</option><option>激昂有力</option><option>舒缓沉静</option>
+                            </select>
+                        </div>
+                        <div class="p-sm rounded-lg bg-surface-container-low border border-outline-variant border-l-4 border-primary">
+                            <p class="text-[10px] font-bold text-primary mb-1 uppercase tracking-tighter">合成提示</p>
+                            <p class="text-[11px] text-on-surface leading-tight">使用「插入停顿」可在句间加入 0.5s 静音，让旁白节奏更自然。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="flex-1 bg-white rounded-xl border border-outline-variant flex flex-col" style="min-height: 320px;">
+                <div class="p-md border-b border-outline-variant flex items-center justify-between">
+                    <h3 class="text-title-lg text-primary flex items-center gap-xs">
+                        <span class="material-symbols-outlined">graphic_eq</span>生成结果
+                    </h3>
+                    <span class="text-label-caps text-outline" id="result-count">0 条音频</span>
+                </div>
+                <div id="result-list" class="flex-1 overflow-y-auto custom-scrollbar p-md space-y-md"></div>
+            </section>
+        </div>
+    </div>
+</div>
+</main>
+<!-- 悬浮操作栏 -->
+<footer class="fixed bottom-lg left-1/2 z-50" style="transform: translateX(calc(-50% + 120px));">
+    <div class="bg-inverse-surface text-inverse-on-surface rounded-2xl shadow-2xl p-sm flex items-center justify-between border border-white/10 ring-1 ring-black/20" style="width: 640px;">
+        <div class="flex items-center gap-md ml-md">
+            <div class="flex flex-col">
+                <span class="text-[10px] font-bold text-surface-variant uppercase">当前状态</span>
+                <span class="text-label-md flex items-center gap-xs">
+                    <span id="fab-status-dot" class="w-2 h-2 rounded-full bg-tertiary-fixed-dim pulse-processing"></span>
+                    <span id="fab-status-text">待生成</span>
+                </span>
+            </div>
+            <div class="h-6 w-[1px] bg-white/20 mx-1"></div>
+            <div class="flex flex-col">
+                <span class="text-[10px] font-bold text-surface-variant uppercase">当前音色</span>
+                <span id="fab-voice" class="text-label-md">未选择</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-sm mr-sm">
+            <button id="btn-save-draft" class="px-md py-2.5 rounded-xl text-label-md text-surface-bright hover:bg-white/10">保存草稿</button>
+            <div class="h-6 w-[1px] bg-white/20 mx-1"></div>
+            <button id="btn-audition" class="px-md py-2.5 rounded-xl text-label-md text-surface-bright hover:bg-white/10 flex items-center gap-xs">
+                <span class="material-symbols-outlined text-sm">volume_up</span>试听
+            </button>
+            <button id="btn-generate" class="px-lg py-2.5 bg-primary text-white rounded-xl text-label-md font-bold hover:brightness-110 flex items-center gap-md shadow-lg shadow-primary/40">
+                <span>生成语音</span><span class="material-symbols-outlined">graphic_eq</span>
+            </button>
+        </div>
+    </div>
+</footer>
+<script src="../assets/js/ppt-app.js"></script>
+<script src="../assets/js/ppt-audio.js"></script>
+</body>
+</html>
