@@ -1,0 +1,473 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>背景管理 - Digital Human System</title>
+<link rel="stylesheet" href="../assets/css/tailwind.css">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<style>
+.sidebar-active { background-color: #d4e3ff; color: #001c3a; border-right: 4px solid #005daa; }
+body { font-family: 'Inter', 'Noto Sans SC', sans-serif; background-color: #f0f2f5; }
+.cat-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; color: #404753; font-size: 13px; transition: all .15s; }
+.cat-item:hover { background: #e7eefd; color: #004581; }
+.cat-item.active { background: #d4e3ff; color: #001c3a; font-weight: 600; }
+.cat-item .count { margin-left: auto; font-size: 11px; color: #707785; }
+.cat-item.active .count { color: #004785; }
+.bg-card { position: relative; border-radius: 12px; overflow: hidden; background: #fff; border: 1px solid #e3e2e2; cursor: pointer; transition: all .18s; }
+.bg-card:hover { box-shadow: 0 8px 24px rgba(0,28,58,.12); transform: translateY(-2px); border-color: #a5c8ff; }
+.bg-card .thumb { position: relative; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; }
+.bg-card .check { position: absolute; top: 8px; left: 8px; z-index: 20; }
+.bg-card .hover-mask { position: absolute; inset: 0; background: rgba(0,0,0,.35); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .18s; }
+.bg-card:hover .hover-mask { opacity: 1; }
+.menu-pop { position: absolute; z-index: 60; background: #fff; border: 1px solid #e3e2e2; border-radius: 10px; box-shadow: 0 12px 32px rgba(0,28,58,.18); min-width: 180px; padding: 6px; animation: pop-in .16s ease; }
+.menu-pop button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 12px; border-radius: 7px; font-size: 13px; color: #1b1c1c; text-align: left; }
+.menu-pop button:hover { background: #f4f3f3; }
+.menu-pop button.danger { color: #ba1a1a; }
+.menu-pop button.danger:hover { background: #ffdad6; }
+.menu-pop .divider { height: 1px; background: #e3e2e2; margin: 4px 8px; }
+@keyframes pop-in { from { transform: scale(.95); opacity: 0; } }
+.cbx { width: 18px; height: 18px; border-radius: 5px; border: 2px solid #c0c7d6; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; transition: all .15s; }
+.cbx.checked { background: #005daa; border-color: #005daa; }
+.view-btn { padding: 7px 10px; border-radius: 8px; cursor: pointer; color: #404753; transition: all .15s; }
+.view-btn.active { background: #005daa; color: #fff; }
+.batch-bar { animation: slide-up .2s ease; }
+@keyframes slide-up { from { transform: translateY(8px); opacity: 0; } }
+#toast-root { position: fixed; top: 80px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+.toast { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; background: #2f3031; color: #f2f0f0; font-size: 13px; box-shadow: 0 8px 24px rgba(0,28,58,.18); animation: toast-in .25s ease; }
+.toast.success { border-left: 4px solid #266d00; }
+.toast.error { border-left: 4px solid #ba1a1a; }
+@keyframes toast-in { from { transform: translateX(40px); opacity: 0; } }
+.modal-mask { position: fixed; inset: 0; z-index: 100; background: rgba(27,28,28,.45); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; }
+.modal-panel { background: #fff; border-radius: 14px; box-shadow: 0 20px 60px rgba(0,28,58,.25); width: 440px; max-width: 92vw; max-height: 90vh; overflow-y: auto; animation: pop-in .2s ease; }
+</style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- 共享 Sidebar -->
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50"><div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div><nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav><div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
+<!-- 共享 Header -->
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest"><div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="asset-management.html" class="hover:text-primary transition-colors">资产管理</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">背景管理</span></div></div><div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
+<!-- 主内容区 -->
+<main class="ml-sidebar-width mt-16 p-xl" style="width:calc(100% - 240px)">
+<!-- 页头 -->
+<div class="mb-lg flex justify-between items-end">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-background">背景管理</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-base">上传与组织虚拟演播室背景、PPT 模板及视频素材。</p>
+</div>
+<button class="flex items-center gap-xs bg-primary text-on-primary px-md py-sm rounded-lg font-title-lg hover:opacity-90 transition-opacity" onclick="openBgModal()">
+<span class="material-symbols-outlined">add</span>上传背景
+</button>
+</div>
+
+<div class="flex gap-lg items-start">
+<!-- 左侧分类侧栏 -->
+<div class="w-56 shrink-0 bg-surface rounded-xl border border-surface-variant p-sm sticky top-20">
+<div class="px-sm pt-xs pb-sm">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider px-1 mb-1">背景库</p>
+<div class="cat-item active" data-cat="all" onclick="setCategory('all', this)"><span class="material-symbols-outlined text-[18px]">wallpaper</span>全部背景<span class="count" id="count-all"></span></div>
+</div>
+<div class="px-sm py-sm">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider px-1 mb-1">类型</p>
+<div class="cat-item" data-cat="studio" onclick="setCategory('studio', this)"><span class="material-symbols-outlined text-[18px]">meeting_room</span>演播室背景<span class="count" id="count-studio"></span></div>
+<div class="cat-item" data-cat="color" onclick="setCategory('color', this)"><span class="material-symbols-outlined text-[18px]">palette</span>纯色背景<span class="count" id="count-color"></span></div>
+<div class="cat-item" data-cat="ppt" onclick="setCategory('ppt', this)"><span class="material-symbols-outlined text-[18px]">slideshow</span>PPT 模板<span class="count" id="count-ppt"></span></div>
+<div class="cat-item" data-cat="video" onclick="setCategory('video', this)"><span class="material-symbols-outlined text-[18px]">movie</span>视频素材<span class="count" id="count-video"></span></div>
+</div>
+<div class="px-sm py-sm">
+<div class="flex items-center justify-between px-1 mb-1">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider">分组</p>
+<button class="text-primary hover:bg-primary/10 p-1 rounded transition-colors" title="新建分组" onclick="openGroupModal()"><span class="material-symbols-outlined text-[16px]">create_new_folder</span></button>
+</div>
+<div id="group-list"></div>
+</div>
+</div>
+
+<!-- 右侧内容区 -->
+<div class="flex-1 min-w-0 flex flex-col gap-md">
+<!-- 工具栏 -->
+<div class="bg-surface rounded-xl border border-surface-variant p-md flex flex-wrap items-center justify-between gap-md">
+<div class="flex items-center gap-sm">
+<div class="flex bg-surface-container rounded-lg p-0.5">
+<button class="view-btn active flex items-center gap-xs" id="view-grid" onclick="switchView('grid')"><span class="material-symbols-outlined text-[18px]">grid_view</span></button>
+<button class="view-btn flex items-center gap-xs" id="view-list" onclick="switchView('list')"><span class="material-symbols-outlined text-[18px]">view_list</span></button>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+<input id="search-input" class="pl-9 pr-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg text-sm w-56 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="搜索背景名称..." type="text" oninput="applyFilters()">
+</div>
+</div>
+<label class="flex items-center gap-xs cursor-pointer select-none ml-2">
+<span class="cbx" id="select-all-cbx" onclick="toggleSelectAll()"><span class="material-symbols-outlined text-[14px]">check</span></span>
+<span class="text-sm text-on-surface-variant">全选</span>
+</label>
+</div>
+<!-- 批量操作栏 -->
+<div class="batch-bar bg-primary-fixed border border-primary/30 rounded-xl p-md hidden" id="batch-bar">
+<div class="flex items-center justify-between">
+<span class="text-sm font-semibold text-on-primary-fixed">已选 <span id="batch-count">0</span> 项</span>
+<div class="flex items-center gap-sm">
+<button class="px-md py-sm rounded-lg bg-surface text-on-surface text-sm hover:bg-surface-container-high transition-colors flex items-center gap-xs" onclick="batchMove()"><span class="material-symbols-outlined text-[18px]">drive_file_move</span>移动分组</button>
+<button class="px-md py-sm rounded-lg bg-error text-on-error text-sm hover:opacity-90 transition-colors flex items-center gap-xs" onclick="batchDelete()"><span class="material-symbols-outlined text-[18px]">delete</span>批量删除</button>
+<button class="p-1 rounded text-on-primary-fixed-variant hover:bg-primary/20 transition-colors" onclick="clearSelection()"><span class="material-symbols-outlined text-[18px]">close</span></button>
+</div>
+</div>
+</div>
+<!-- 背景列表 -->
+<div id="bg-list" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-lg"></div>
+<div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
+<span class="material-symbols-outlined text-6xl text-outline mb-md">wallpaper</span>
+<p class="text-on-surface-variant text-body-md">没有找到匹配的背景</p>
+</div>
+<div class="flex items-center justify-between mt-md">
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="page-info">共 0 个背景</p>
+</div>
+</div>
+</div>
+</main>
+
+<!-- 菜单容器 -->
+<div id="menu-root"></div>
+<!-- 弹窗容器 -->
+<div id="modal-root"></div>
+<!-- Toast -->
+<div id="toast-root"></div>
+
+<script>
+const GRADS = [
+  { from: '#d4e3ff', to: '#a5c8ff', c: '#005daa' },
+  { from: '#e0f7fa', to: '#b2ebf2', c: '#006064' },
+  { from: '#ede7f6', to: '#d1c4e9', c: '#4527a0' },
+  { from: '#e3ffd0', to: '#b6f58b', c: '#266d00' },
+  { from: '#ffddb0', to: '#ffba45', c: '#7d5400' },
+  { from: '#e8f5e9', to: '#c8e6c9', c: '#2e7d32' },
+  { from: '#fce4ec', to: '#f8bbd0', c: '#880e4f' },
+  { from: '#fff9c4', to: '#ffe082', c: '#f57f17' },
+];
+
+let backgrounds = [
+  { id: 1, name: '现代学术演播室 01', type: '演播室背景', typeKey: 'studio', group: '学术', desc: '蓝白配色 · 现代学术演播室', icon: 'meeting_room', grad: 0, size: '24 MB', date: '2023-10-24' },
+  { id: 2, name: '新闻演播室', type: '演播室背景', typeKey: 'studio', group: '新闻', desc: '深蓝基调 · 专业新闻播报', icon: 'videocam', grad: 1, size: '31 MB', date: '2023-10-20' },
+  { id: 3, name: '虚拟教室', type: '演播室背景', typeKey: 'studio', group: '学术', desc: '明亮教室 · 智能大屏', icon: 'school', grad: 2, size: '28 MB', date: '2023-10-15' },
+  { id: 4, name: '纯色蓝', type: '纯色背景', typeKey: 'color', group: '通用', desc: '品牌蓝 · 简洁纯色', icon: 'palette', grad: 0, size: '2 MB', date: '2023-09-30' },
+  { id: 5, name: '绿幕背景', type: '纯色背景', typeKey: 'color', group: '通用', desc: '标准绿幕 · 便于抠像', icon: 'color_lens', grad: 3, size: '1 MB', date: '2023-09-25' },
+  { id: 6, name: '学术 PPT 模板', type: 'PPT 模板', typeKey: 'ppt', group: '学术', desc: '简约学术 · 蓝白主题', icon: 'slideshow', grad: 4, size: '8 MB', date: '2023-09-18' },
+  { id: 7, name: '商务 PPT 模板', type: 'PPT 模板', typeKey: 'ppt', group: '商务', desc: '现代商务 · 橙蓝配色', icon: 'description', grad: 5, size: '9 MB', date: '2023-09-12' },
+  { id: 8, name: '动态数据可视化', type: '视频素材', typeKey: 'video', group: '商务', desc: '数据图表 · 动态展示', icon: 'monitoring', grad: 6, size: '56 MB', date: '2023-09-08' },
+  { id: 9, name: '校园风光', type: '视频素材', typeKey: 'video', group: '通用', desc: '海南大学校园 · 实景航拍', icon: 'movie', grad: 7, size: '120 MB', date: '2023-08-28' },
+  { id: 10, name: '科技感背景', type: '演播室背景', typeKey: 'studio', group: '商务', desc: '科技蓝 · 数字粒子效果', icon: 'auto_awesome', grad: 1, size: '42 MB', date: '2023-08-20' },
+];
+
+let groups = ['学术', '新闻', '商务', '通用'];
+let view = 'grid';
+let category = 'all';
+let selected = new Set();
+
+function thumbStyle(i) { const g = GRADS[i % GRADS.length]; return `background:linear-gradient(135deg,${g.from},${g.to})`; }
+function thumbColor(i) { return GRADS[i % GRADS.length].c; }
+
+function filteredBackgrounds() {
+  let list = [...backgrounds];
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  if (q) list = list.filter(b => b.name.toLowerCase().includes(q));
+  if (category === 'studio' || category === 'color' || category === 'ppt' || category === 'video') list = list.filter(b => b.typeKey === category);
+  else if (category.startsWith('group-')) { const g = category.slice(6); list = list.filter(b => b.group === g); }
+  return list;
+}
+
+function render() {
+  const list = filteredBackgrounds();
+  const container = document.getElementById('bg-list');
+  const empty = document.getElementById('empty-state');
+  document.getElementById('page-info').textContent = '共 ' + list.length + ' 个背景';
+  updateCounts();
+  if (list.length === 0) {
+    container.innerHTML = '';
+    container.classList.add('hidden');
+    empty.classList.remove('hidden'); empty.classList.add('flex');
+    return;
+  }
+  container.classList.remove('hidden');
+  empty.classList.add('hidden'); empty.classList.remove('flex');
+
+  if (view === 'grid') {
+    container.className = 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-lg';
+    container.innerHTML = list.map(b => `
+      <div class="bg-card">
+        <div class="thumb" style="${thumbStyle(b.id)}">
+          <span class="material-symbols-outlined text-6xl" style="color:${thumbColor(b.id)}">${b.icon}</span>
+          <div class="check" onclick="event.stopPropagation();toggleSelect(${b.id})">
+            <span class="cbx ${selected.has(b.id) ? 'checked' : ''}" id="cbx-${b.id}"><span class="material-symbols-outlined text-[14px]">check</span></span>
+          </div>
+          <div class="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-surface/85 text-on-surface-variant text-[10px] font-medium backdrop-blur">${b.type}</div>
+          <div class="hover-mask"><span class="material-symbols-outlined text-white text-5xl" style="font-variation-settings:'FILL' 1">visibility</span></div>
+        </div>
+        <div class="p-md">
+          <div class="flex items-start justify-between gap-xs">
+            <h3 class="text-sm font-semibold text-on-surface leading-snug">${b.name}</h3>
+            <button class="shrink-0 p-1 text-on-surface-variant hover:bg-surface-container rounded transition-colors" onclick="event.stopPropagation();openMenu(event, ${b.id})"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+          </div>
+          <p class="text-xs text-on-surface-variant mt-1 leading-snug">${b.desc}</p>
+          <div class="flex items-center justify-between mt-3 pt-3 border-t border-surface-variant">
+            <span class="text-[11px] text-outline">${b.size}</span>
+            <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold" style="background:#e7eefd;color:#004581">${b.group}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    container.className = 'grid grid-cols-1 gap-0 bg-surface rounded-xl border border-surface-variant overflow-hidden';
+    container.innerHTML = `
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead><tr class="bg-surface-container-low border-b border-surface-variant">
+            <th class="px-lg py-md w-10"></th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">背景名称</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">类型</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">分组</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">大小</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">添加日期</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase text-right">操作</th>
+          </tr></thead>
+          <tbody class="divide-y divide-surface-variant">
+          ${list.map(b => `
+            <tr class="hover:bg-surface-container-lowest transition-colors">
+              <td class="px-lg py-md" onclick="toggleSelect(${b.id})">
+                <span class="cbx ${selected.has(b.id) ? 'checked' : ''}" id="cbx-${b.id}"><span class="material-symbols-outlined text-[14px]">check</span></span>
+              </td>
+              <td class="px-lg py-md">
+                <div class="flex items-center gap-md">
+                  <div class="w-20 h-12 rounded-lg overflow-hidden flex items-center justify-center shrink-0" style="${thumbStyle(b.id)}"><span class="material-symbols-outlined" style="color:${thumbColor(b.id)}">${b.icon}</span></div>
+                  <div><p class="font-title-lg text-title-lg text-on-surface">${b.name}</p><p class="font-body-sm text-body-sm text-on-surface-variant">${b.desc}</p></div>
+                </div>
+              </td>
+              <td class="px-lg py-md"><span class="px-base py-[2px] bg-surface-variant text-on-surface-variant rounded font-label-md text-label-md">${b.type}</span></td>
+              <td class="px-lg py-md"><span class="px-base py-[2px] bg-primary-fixed text-on-primary-fixed-variant rounded font-label-md text-label-md">${b.group}</span></td>
+              <td class="px-lg py-md"><span class="font-body-md text-body-md text-on-surface">${b.size}</span></td>
+              <td class="px-lg py-md"><p class="font-body-md text-body-md text-on-surface">${b.date}</p></td>
+              <td class="px-lg py-md text-right">
+                <div class="flex items-center justify-end gap-sm">
+                  <button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="预览" onclick="previewBg(${b.id})"><span class="material-symbols-outlined">visibility</span></button>
+                  <button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="更多" onclick="openMenu(event, ${b.id})"><span class="material-symbols-outlined">more_vert</span></button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+  updateSelectAll();
+  updateBatchBar();
+}
+
+function updateCounts() {
+  document.getElementById('count-all').textContent = backgrounds.length;
+  document.getElementById('count-studio').textContent = backgrounds.filter(b => b.typeKey === 'studio').length;
+  document.getElementById('count-color').textContent = backgrounds.filter(b => b.typeKey === 'color').length;
+  document.getElementById('count-ppt').textContent = backgrounds.filter(b => b.typeKey === 'ppt').length;
+  document.getElementById('count-video').textContent = backgrounds.filter(b => b.typeKey === 'video').length;
+}
+
+function renderGroups() {
+  const el = document.getElementById('group-list');
+  el.innerHTML = groups.map(g => `
+    <div class="cat-item ${category === 'group-' + g ? 'active' : ''}" data-cat="group-${g}" onclick="setCategory('group-${g}', this)">
+      <span class="material-symbols-outlined text-[18px]">folder</span><span class="truncate">${g}</span>
+      <span class="count">${backgrounds.filter(b => b.group === g).length}</span>
+    </div>`).join('');
+}
+
+function setCategory(cat, el) {
+  category = cat;
+  document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  render();
+}
+
+function switchView(v) {
+  view = v;
+  document.getElementById('view-grid').classList.toggle('active', v === 'grid');
+  document.getElementById('view-list').classList.toggle('active', v === 'list');
+  render();
+}
+
+function applyFilters() { render(); }
+
+function toggleSelect(id) {
+  if (selected.has(id)) selected.delete(id); else selected.add(id);
+  document.getElementById('cbx-' + id)?.classList.toggle('checked', selected.has(id));
+  updateSelectAll(); updateBatchBar();
+}
+
+function toggleSelectAll() {
+  const list = filteredBackgrounds();
+  if (selected.size === list.length && list.length > 0) selected.clear();
+  else list.forEach(b => selected.add(b.id));
+  render();
+}
+
+function updateSelectAll() {
+  const list = filteredBackgrounds();
+  document.getElementById('select-all-cbx').classList.toggle('checked', list.length > 0 && selected.size === list.length);
+}
+
+function updateBatchBar() {
+  const bar = document.getElementById('batch-bar');
+  if (selected.size > 0) { bar.classList.remove('hidden'); document.getElementById('batch-count').textContent = selected.size; }
+  else bar.classList.add('hidden');
+}
+
+function clearSelection() { selected.clear(); render(); }
+
+function previewBg(id) { toast('预览：' + backgrounds.find(b => b.id === id).name, 'success'); }
+
+function openMenu(event, id) {
+  closeMenu();
+  const b = backgrounds.find(x => x.id === id);
+  const menu = document.createElement('div');
+  menu.className = 'menu-pop';
+  menu.id = 'menu-pop';
+  menu.innerHTML = `
+    <button onclick="previewBg(${id})"><span class="material-symbols-outlined text-[18px]">visibility</span>预览</button>
+    <button onclick="renameBg(${id})"><span class="material-symbols-outlined text-[18px]">edit</span>重命名</button>
+    <div class="divider"></div>
+    <button onclick="moveBg(${id})"><span class="material-symbols-outlined text-[18px]">drive_file_move</span>移动到分组</button>
+    <div class="divider"></div>
+    <button class="danger" onclick="deleteBg(${id})"><span class="material-symbols-outlined text-[18px]">delete</span>删除</button>`;
+  document.getElementById('menu-root').appendChild(menu);
+  const rect = event.currentTarget.getBoundingClientRect();
+  menu.style.top = rect.bottom + 4 + 'px';
+  menu.style.left = Math.min(rect.left, window.innerWidth - 200) + 'px';
+  document.addEventListener('click', outsideMenu);
+}
+function closeMenu() { document.getElementById('menu-pop')?.remove(); document.removeEventListener('click', outsideMenu); }
+function outsideMenu(e) { if (!e.target.closest('.menu-pop')) closeMenu(); }
+
+function renameBg(id) {
+  closeMenu();
+  const b = backgrounds.find(x => x.id === id);
+  openModal('重命名背景', `
+    <label class="block text-sm text-on-surface-variant mb-1">背景名称</label>
+    <input id="modal-input" class="w-full px-md py-sm border border-outline-variant rounded-lg text-sm focus:border-primary focus:ring-2 focus:ring-primary/20" value="${b.name}" type="text">
+  `, () => {
+    const nv = document.getElementById('modal-input').value.trim();
+    if (!nv) { toast('名称不能为空', 'error'); return; }
+    b.name = nv; toast('重命名成功', 'success'); render();
+  });
+}
+
+function moveBg(id) {
+  closeMenu();
+  const b = backgrounds.find(x => x.id === id);
+  openModal('移动到分组', `
+    <div class="space-y-2">
+      ${groups.map(g => `<label class="flex items-center gap-sm p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-primary/5 transition-colors"><input type="radio" name="group" value="${g}" ${b.group === g ? 'checked' : ''} class="text-primary focus:ring-primary"> <span class="text-sm">${g}</span></label>`).join('')}
+    </div>
+  `, () => {
+    const sel = document.querySelector('input[name="group"]:checked');
+    if (sel) { b.group = sel.value; toast('已移动到「' + b.group + '」', 'success'); renderGroups(); render(); }
+  });
+}
+
+function deleteBg(id) {
+  closeMenu();
+  openModal('删除背景', `<p class="text-sm text-on-surface-variant">确定要删除「${backgrounds.find(b => b.id === id).name}」吗？此操作不可撤销。</p>`, () => {
+    backgrounds = backgrounds.filter(b => b.id !== id);
+    selected.delete(id);
+    toast('已删除', 'success'); renderGroups(); render();
+  }, '删除', true);
+}
+
+function batchMove() {
+  openModal('批量移动到分组', `
+    <div class="space-y-2">
+      ${groups.map(g => `<label class="flex items-center gap-sm p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-primary/5 transition-colors"><input type="radio" name="group" value="${g}" class="text-primary focus:ring-primary"> <span class="text-sm">${g}</span></label>`).join('')}
+    </div>
+  `, () => {
+    const sel = document.querySelector('input[name="group"]:checked');
+    if (sel) { backgrounds.forEach(b => { if (selected.has(b.id)) b.group = sel.value; }); toast('已移动 ' + selected.size + ' 个背景', 'success'); clearSelection(); renderGroups(); }
+  });
+}
+
+function batchDelete() {
+  openModal('批量删除', `<p class="text-sm text-on-surface-variant">确定要删除选中的 ${selected.size} 个背景吗？此操作不可撤销。</p>`, () => {
+    backgrounds = backgrounds.filter(b => !selected.has(b.id));
+    selected.clear();
+    toast('已批量删除', 'success'); renderGroups(); render();
+  }, '删除', true);
+}
+
+function openGroupModal() {
+  openModal('新建分组', `
+    <label class="block text-sm text-on-surface-variant mb-1">分组名称</label>
+    <input id="modal-input" class="w-full px-md py-sm border border-outline-variant rounded-lg text-sm focus:border-primary focus:ring-2 focus:ring-primary/20" placeholder="例如：实训课程" type="text">
+  `, () => {
+    const nv = document.getElementById('modal-input').value.trim();
+    if (!nv) { toast('名称不能为空', 'error'); return; }
+    if (groups.includes(nv)) { toast('分组已存在', 'error'); return; }
+    groups.push(nv); toast('分组已创建', 'success'); renderGroups();
+  });
+}
+
+function openBgModal() {
+  openModal('上传背景', `
+    <div class="space-y-md">
+      <div class="space-y-base"><label class="font-label-md text-on-surface-variant block">背景名称</label><input id="bg-name" class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md" placeholder="输入名称，如：实验演播室" type="text"></div>
+      <div class="grid grid-cols-2 gap-sm">
+        <div class="space-y-base"><label class="font-label-md text-on-surface-variant block">类型</label><select id="bg-type" class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md"><option>演播室背景</option><option>纯色背景</option><option>PPT 模板</option><option>视频素材</option></select></div>
+        <div class="space-y-base"><label class="font-label-md text-on-surface-variant block">分组</label><select id="bg-group" class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md">${groups.map(g => `<option>${g}</option>`).join('')}</select></div>
+      </div>
+      <div class="border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center p-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition-all">
+        <span class="material-symbols-outlined text-4xl text-primary mb-sm">cloud_upload</span>
+        <p class="text-body-sm font-semibold text-on-surface">点击或拖拽上传背景文件</p>
+        <p class="text-label-md text-on-surface-variant mt-1 text-center">支持 JPG/PNG/MP4 格式，建议 16:9 比例</p>
+      </div>
+    </div>
+  `, () => {
+    const name = document.getElementById('bg-name').value.trim();
+    if (!name) { toast('请输入背景名称', 'error'); return; }
+    const type = document.getElementById('bg-type').value;
+    const group = document.getElementById('bg-group').value;
+    const typeKey = { '演播室背景': 'studio', '纯色背景': 'color', 'PPT 模板': 'ppt', '视频素材': 'video' }[type];
+    const iconMap = { studio: 'meeting_room', color: 'palette', ppt: 'slideshow', video: 'movie' };
+    backgrounds.push({ id: Date.now(), name, type, typeKey, group, desc: '新上传背景', icon: iconMap[typeKey], grad: Math.floor(Math.random() * GRADS.length), size: '--', date: '刚刚' });
+    toast('背景上传成功', 'success'); renderGroups(); render();
+  }, '确认上传');
+}
+
+function openModal(title, bodyHtml, onConfirm, confirmLabel = '确认', danger = false) {
+  closeModal();
+  const mask = document.createElement('div');
+  mask.className = 'modal-mask';
+  mask.id = 'modal';
+  mask.innerHTML = `
+    <div class="modal-panel overflow-hidden">
+      <div class="px-lg py-md border-b border-outline-variant flex justify-between items-center bg-surface">
+        <h3 class="font-title-lg text-title-lg text-on-surface font-semibold">${title}</h3>
+        <button class="text-on-surface-variant hover:text-primary p-1 rounded transition-colors" onclick="closeModal()"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="p-lg">${bodyHtml}</div>
+      <div class="px-lg py-md border-t border-outline-variant bg-surface flex justify-end gap-sm">
+        <button class="px-md py-2 rounded-lg text-sm text-on-surface-variant border border-outline-variant hover:bg-surface-container-high transition-colors" onclick="closeModal()">取消</button>
+        <button class="px-md py-2 rounded-lg text-sm ${danger ? 'bg-error text-on-error hover:opacity-90' : 'bg-primary text-on-primary hover:opacity-90'} transition-colors" onclick="modalConfirm()">${confirmLabel}</button>
+      </div>
+    </div>`;
+  mask.addEventListener('click', e => { if (e.target === mask) closeModal(); });
+  mask._onConfirm = onConfirm;
+  document.getElementById('modal-root').appendChild(mask);
+}
+function modalConfirm() { const m = document.getElementById('modal'); if (m && m._onConfirm) m._onConfirm(); closeModal(); }
+function closeModal() { document.getElementById('modal')?.remove(); }
+
+function toast(msg, type = 'success') {
+  const root = document.getElementById('toast-root');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = `<span class="material-symbols-outlined text-[18px]">${type === 'error' ? 'error' : 'check_circle'}</span>${msg}`;
+  root.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 300); }, 2400);
+}
+
+renderGroups();
+render();
+</script>
+</body></html>
