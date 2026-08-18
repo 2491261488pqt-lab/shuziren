@@ -5,419 +5,547 @@
 <link rel="stylesheet" href="../assets/css/tailwind.css">
 <link rel="stylesheet" href="../assets/css/fonts.css">
 <style>
-        body {
-            background-color: #f0f2f5;
-            color: #1b1c1c;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .sidebar-active {
-            background-color: #d4e3ff;
-            color: #001c3a;
-            border-right: 4px solid #005daa;
-        }
-
-        .status-pulse {
-            position: relative;
-        }
-        .status-pulse::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: inherit;
-            animation: pulse 2s infinite;
-            opacity: 0.5;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.5; }
-            100% { transform: scale(2.5); opacity: 0; }
-        }
-
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #c0c7d6;
-            border-radius: 10px;
-        }
-
-        /* Circular Progress for Storage */
-        .circular-progress {
-            position: relative;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: conic-gradient(#005daa 64%, #e9e8e8 0);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .circular-progress::before {
-            content: "";
-            position: absolute;
-            inset: 4px;
-            border-radius: 50%;
-            background: #faf9f9;
-        }
-        .circular-progress-icon {
-            position: relative;
-            z-index: 10;
-        }
-    </style>
+.sidebar-active { background-color: #d4e3ff; color: #001c3a; border-right: 4px solid #005daa; }
+body { font-family: 'Inter', 'Noto Sans SC', sans-serif; background-color: #f0f2f5; }
+/* 分类侧栏项 */
+.cat-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; color: #404753; font-size: 13px; transition: all .15s; }
+.cat-item:hover { background: #e7eefd; color: #004581; }
+.cat-item.active { background: #d4e3ff; color: #001c3a; font-weight: 600; }
+.cat-item .count { margin-left: auto; font-size: 11px; color: #707785; }
+.cat-item.active .count { color: #004785; }
+/* 网格卡片 */
+.video-card { position: relative; border-radius: 12px; overflow: hidden; background: #fff; border: 1px solid #e3e2e2; cursor: pointer; transition: all .18s; }
+.video-card:hover { box-shadow: 0 8px 24px rgba(0,28,58,.12); transform: translateY(-2px); border-color: #a5c8ff; }
+.video-card .thumb { position: relative; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; }
+.video-card .check { position: absolute; top: 8px; left: 8px; z-index: 10; }
+.video-card .fav { position: absolute; top: 8px; right: 8px; z-index: 10; }
+.video-card .hover-mask { position: absolute; inset: 0; background: rgba(0,0,0,.35); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .18s; }
+.video-card:hover .hover-mask { opacity: 1; }
+/* 三点菜单 */
+.menu-pop { position: absolute; z-index: 60; background: #fff; border: 1px solid #e3e2e2; border-radius: 10px; box-shadow: 0 12px 32px rgba(0,28,58,.18); min-width: 180px; padding: 6px; animation: pop-in .16s ease; }
+.menu-pop button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 12px; border-radius: 7px; font-size: 13px; color: #1b1c1c; text-align: left; }
+.menu-pop button:hover { background: #f4f3f3; }
+.menu-pop button.danger { color: #ba1a1a; }
+.menu-pop button.danger:hover { background: #ffdad6; }
+.menu-pop .divider { height: 1px; background: #e3e2e2; margin: 4px 8px; }
+@keyframes pop-in { from { transform: scale(.95); opacity: 0; } }
+/* 复选框 */
+.cbx { width: 18px; height: 18px; border-radius: 5px; border: 2px solid #c0c7d6; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; transition: all .15s; }
+.cbx.checked { background: #005daa; border-color: #005daa; }
+/* 视图切换 */
+.view-btn { padding: 7px 10px; border-radius: 8px; cursor: pointer; color: #404753; transition: all .15s; }
+.view-btn.active { background: #005daa; color: #fff; }
+/* 标签 chip */
+.tag-chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+/* 状态点 */
+.dot { width: 7px; height: 7px; border-radius: 50%; }
+.dot.processing { background: #005daa; animation: pulse-blue 1.6s infinite; }
+.dot.completed { background: #266d00; }
+.dot.failed { background: #ba1a1a; }
+@keyframes pulse-blue { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+/* 批量操作栏 */
+.batch-bar { animation: slide-up .2s ease; }
+@keyframes slide-up { from { transform: translateY(8px); opacity: 0; } }
+/* toast */
+#toast-root { position: fixed; top: 80px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+.toast { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; background: #2f3031; color: #f2f0f0; font-size: 13px; box-shadow: 0 8px 24px rgba(0,28,58,.18); animation: toast-in .25s ease; }
+.toast.success { border-left: 4px solid #266d00; }
+.toast.error { border-left: 4px solid #ba1a1a; }
+@keyframes toast-in { from { transform: translateX(40px); opacity: 0; } }
+/* modal */
+.modal-mask { position: fixed; inset: 0; z-index: 100; background: rgba(27,28,28,.45); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; }
+.modal-panel { background: #fff; border-radius: 14px; box-shadow: 0 20px 60px rgba(0,28,58,.25); width: 420px; max-width: 92vw; animation: pop-in .2s ease; }
+</style>
 </head>
 <body class="font-body-md text-body-md overflow-x-hidden">
-<!-- SideNavBar (Authority: JSON + Design System) -->
-<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50">
-<div class="px-6 py-8 flex flex-col items-center">
-<img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png">
-<h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1>
-<p class="font-label-md text-label-md text-outline">Hainan University</p>
-</div>
-<nav class="flex-1 mt-4 px-3 space-y-1">
-<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html">
-<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
-<span class="font-label-md text-label-md">业务总览</span>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html">
-<span class="material-symbols-outlined mr-3" data-icon="video_call">video_call</span>
-<span class="font-label-md text-label-md">微课智能体</span>
-</a>
-<a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html">
-<span class="material-symbols-outlined mr-3" data-icon="videocam">videocam</span>
-<span class="font-label-md text-label-md">视频管理</span>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html">
-<span class="material-symbols-outlined mr-3" data-icon="folder_open">folder_open</span>
-<span class="font-label-md text-label-md">资产管理</span>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html">
-<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
-<span class="font-label-md text-label-md">系统设置</span>
-</a>
-</nav>
-<div class="p-4 mt-auto">
-<div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3">
-<div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm">
-<img class="w-full h-full object-cover" data-alt="A professional business headshot of a university administrator in a modern office, bright natural lighting, corporate aesthetic, clean light-mode environment." src="../assets/images/user-avatar.png">
-</div>
-<div class="flex-1 min-w-0">
-<p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p>
-<p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p>
-</div>
-<a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer" data-icon="logout">logout</a>
-</div>
-</div>
-</aside>
-<!-- TopNavBar (Authority: JSON) -->
-<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest">
-<div class="flex items-center gap-4">
-<div class="flex items-center text-outline font-body-sm text-body-sm">
-<span class="">业务总览</span>
-<span class="material-symbols-outlined text-sm mx-2" data-icon="chevron_right">chevron_right</span>
-<span class="text-primary font-bold">视频管理</span>
-</div>
-</div>
-<div class="flex items-center gap-6">
-<div class="relative group">
-<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-<span class="material-symbols-outlined text-outline text-lg" data-icon="search">search</span>
-</div>
-<input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索资源或项目..." type="text">
-</div>
-<div class="flex items-center gap-4 text-on-surface-variant">
-<a href="notifications.html" class="relative hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span>
-</a>
-<a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1">
-<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
-<span class="font-body-sm text-body-sm">帮助</span>
-</a>
-</div>
-</div>
-</header>
-<!-- Main Content Area -->
+<!-- 共享 Sidebar -->
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50"><div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div><nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav><div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
+<!-- 共享 Header -->
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest"><div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">视频管理</span></div></div><div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
+<!-- 主内容区 -->
 <main class="ml-sidebar-width mt-16 p-xl" style="width:calc(100% - 240px)">
-<!-- Header Section -->
+<!-- 页头 -->
 <div class="mb-lg flex justify-between items-end">
 <div>
 <h2 class="font-headline-md text-headline-md text-on-background">视频管理</h2>
-<p class="font-body-md text-body-md text-on-surface-variant mt-base">监控与管理您的数字人微课生成任务，支持状态查询、视频预览与导出。</p>
+<p class="font-body-md text-body-md text-on-surface-variant mt-base">整理、筛选与管理您的数字人微课视频。</p>
 </div>
 <button class="flex items-center gap-xs bg-primary text-on-primary px-md py-sm rounded-lg font-title-lg hover:opacity-90 transition-opacity" onclick="window.location.href='new-video-project.html'">
-<span class="material-symbols-outlined">add</span>
-<span class="">制作新视频</span>
-</a>
+<span class="material-symbols-outlined">add</span>制作新视频
+</button>
 </div>
-<!-- Filter & Stats Bar -->
-<div class="bg-surface rounded-xl p-md mb-lg border border-surface-variant flex flex-wrap gap-md items-center justify-between">
-<div class="flex flex-wrap gap-md items-center">
-<div class="flex flex-col gap-base">
-<label class="font-label-md text-label-md text-on-surface-variant">搜索视频名称</label>
-<input class="px-md py-sm border border-outline-variant rounded-lg font-body-sm focus:ring-primary focus:border-primary w-64 bg-surface" placeholder="输入关键字..." type="text">
+
+<div class="flex gap-lg items-start">
+<!-- 左侧分类侧栏 -->
+<div class="w-56 shrink-0 bg-surface rounded-xl border border-surface-variant p-sm sticky top-20">
+<div class="px-sm pt-xs pb-sm">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider px-1 mb-1">视频库</p>
+<div class="cat-item active" data-cat="all" onclick="setCategory('all', this)"><span class="material-symbols-outlined text-[18px]">video_library</span>全部视频<span class="count" id="count-all"></span></div>
+<div class="cat-item" data-cat="favorites" onclick="setCategory('favorites', this)"><span class="material-symbols-outlined text-[18px]">star</span>我的收藏<span class="count" id="count-fav"></span></div>
+<div class="cat-item" data-cat="recent" onclick="setCategory('recent', this)"><span class="material-symbols-outlined text-[18px]">schedule</span>最近使用</div>
 </div>
-<div class="flex flex-col gap-base">
-<label class="font-label-md text-label-md text-on-surface-variant">生成状态</label>
-<select class="px-md py-sm border border-outline-variant rounded-lg font-body-sm focus:ring-primary focus:border-primary w-40 bg-surface">
-<option>全部状态</option>
-<option>合成中</option>
-<option>已完成</option>
-<option>生成失败</option>
+<div class="px-sm py-sm">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider px-1 mb-1">状态</p>
+<div class="cat-item" data-cat="processing" onclick="setCategory('processing', this)"><span class="dot processing"></span>合成中<span class="count" id="count-processing"></span></div>
+<div class="cat-item" data-cat="completed" onclick="setCategory('completed', this)"><span class="dot completed"></span>已完成<span class="count" id="count-completed"></span></div>
+<div class="cat-item" data-cat="failed" onclick="setCategory('failed', this)"><span class="dot failed"></span>生成失败<span class="count" id="count-failed"></span></div>
+</div>
+<div class="px-sm py-sm">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider px-1 mb-1">来源</p>
+<div class="cat-item" data-cat="src-script" onclick="setCategory('src-script', this)"><span class="material-symbols-outlined text-[18px]">auto_fix_high</span>脚本生成</div>
+<div class="cat-item" data-cat="src-ppt" onclick="setCategory('src-ppt', this)"><span class="material-symbols-outlined text-[18px]">present_to_all</span>PPT 转换</div>
+<div class="cat-item" data-cat="src-course" onclick="setCategory('src-course', this)"><span class="material-symbols-outlined text-[18px]">library_books</span>课件合成</div>
+<div class="cat-item" data-cat="src-broadcast" onclick="setCategory('src-broadcast', this)"><span class="material-symbols-outlined text-[18px]">mic</span>口播生成</div>
+</div>
+<div class="px-sm py-sm">
+<div class="flex items-center justify-between px-1 mb-1">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider">文件夹</p>
+<button class="text-primary hover:bg-primary/10 p-1 rounded transition-colors" title="新建文件夹" onclick="openFolderModal()"><span class="material-symbols-outlined text-[16px]">create_new_folder</span></button>
+</div>
+<div id="folder-list"></div>
+</div>
+</div>
+
+<!-- 右侧内容区 -->
+<div class="flex-1 min-w-0 flex flex-col gap-md">
+<!-- 工具栏 -->
+<div class="bg-surface rounded-xl border border-surface-variant p-md flex flex-wrap items-center justify-between gap-md">
+<div class="flex items-center gap-sm">
+<div class="flex bg-surface-container rounded-lg p-0.5">
+<button class="view-btn active flex items-center gap-xs" id="view-grid" onclick="switchView('grid')"><span class="material-symbols-outlined text-[18px]">grid_view</span></button>
+<button class="view-btn flex items-center gap-xs" id="view-list" onclick="switchView('list')"><span class="material-symbols-outlined text-[18px]">view_list</span></button>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+<input id="search-input" class="pl-9 pr-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg text-sm w-56 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="搜索视频名称..." type="text" oninput="applyFilters()">
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<div class="flex items-center gap-xs text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">sort</span>
+<select id="sort-select" class="bg-transparent border-none focus:ring-0 text-sm font-semibold text-on-surface cursor-pointer" onchange="applyFilters()">
+<option value="newest">最新创建</option>
+<option value="oldest">最早创建</option>
+<option value="name">名称排序</option>
+<option value="duration">时长排序</option>
 </select>
 </div>
-<div class="flex flex-col gap-base">
-<label class="font-label-md text-label-md text-on-surface-variant">创建时间段</label>
-<div class="flex items-center border border-outline-variant rounded-lg px-md bg-surface">
-<input class="border-none focus:ring-0 font-body-sm py-sm text-on-surface bg-transparent" type="date">
-<span class="mx-xs text-outline">-</span>
-<input class="border-none focus:ring-0 font-body-sm py-sm text-on-surface bg-transparent" type="date">
+<!-- 全选 -->
+<label class="flex items-center gap-xs cursor-pointer select-none ml-2">
+<span class="cbx" id="select-all-cbx" onclick="toggleSelectAll()"><span class="material-symbols-outlined text-[14px]">check</span></span>
+<span class="text-sm text-on-surface-variant">全选</span>
+</label>
 </div>
 </div>
-<div class="flex items-end self-end pb-[2px]">
-<button class="px-md py-sm bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors rounded-lg font-title-lg">重置筛选</a>
-</div>
-</div>
-<div class="flex items-center gap-lg px-md border-l border-outline-variant h-12">
-<div class="text-center">
-<p class="font-label-caps text-label-caps text-on-surface-variant">总视频数</p>
-<p class="font-headline-sm text-headline-sm text-primary">128</p>
-</div>
-<div class="text-center">
-<p class="font-label-caps text-label-caps text-on-surface-variant">今日完成</p>
-<p class="font-headline-sm text-headline-sm text-secondary">12</p>
+<!-- 批量操作栏 -->
+<div class="batch-bar bg-primary-fixed border border-primary/30 rounded-xl p-md hidden" id="batch-bar">
+<div class="flex items-center justify-between">
+<span class="text-sm font-semibold text-on-primary-fixed">已选 <span id="batch-count">0</span> 项</span>
+<div class="flex items-center gap-sm">
+<button class="px-md py-sm rounded-lg bg-surface text-on-surface text-sm hover:bg-surface-container-high transition-colors flex items-center gap-xs" onclick="batchMove()"><span class="material-symbols-outlined text-[18px]">drive_file_move</span>移动到文件夹</button>
+<button class="px-md py-sm rounded-lg bg-surface text-on-surface text-sm hover:bg-surface-container-high transition-colors flex items-center gap-xs" onclick="batchDownload()"><span class="material-symbols-outlined text-[18px]">download</span>批量下载</button>
+<button class="px-md py-sm rounded-lg bg-error text-on-error text-sm hover:opacity-90 transition-colors flex items-center gap-xs" onclick="batchDelete()"><span class="material-symbols-outlined text-[18px]">delete</span>批量删除</button>
+<button class="p-1 rounded text-on-primary-fixed-variant hover:bg-primary/20 transition-colors" onclick="clearSelection()"><span class="material-symbols-outlined text-[18px]">close</span></button>
 </div>
 </div>
 </div>
-<!-- Video Data Table -->
-<div class="bg-surface rounded-xl border border-surface-variant overflow-hidden shadow-sm">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="bg-surface-container-low border-b border-surface-variant">
-<th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">视频封面与名称</th>
-<th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">生成来源</th>
-<th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">状态</th>
-<th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">创建日期</th>
-<th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase text-right">操作</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-surface-variant">
-<!-- Row 1: Processing -->
-<tr class="hover:bg-surface-container-lowest transition-colors">
-<td class="px-lg py-md">
-<div class="flex items-center gap-md">
-<div class="w-24 h-14 rounded-lg bg-surface-container-high overflow-hidden relative group">
-<div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-white">play_circle</span>
+<!-- 视频列表 -->
+<div id="video-list" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-lg"></div>
+<div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
+<span class="material-symbols-outlined text-6xl text-outline mb-md">video_search</span>
+<p class="text-on-surface-variant text-body-md">没有找到匹配的视频</p>
 </div>
-<img class="w-full h-full object-cover grayscale opacity-60" data-alt="A cinematic cinematic wide shot of a high-tech university laboratory for AI and robotics. The setting includes blue holographic displays, clean white desks, and a sophisticated atmosphere. The mood is innovative and academic, styled after a professional ed-tech digital human interface." src="../assets/images/video-thumbnail.svg">
-<div class="absolute bottom-0 left-0 w-full h-1 bg-primary status-pulse"></div>
-</div>
-<div>
-<p class="font-title-lg text-title-lg text-on-surface">人工智能导论 - 第一章</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant">1080p | 05:24</p>
-</div>
-</div>
-</td>
-<td class="px-lg py-md">
-<span class="px-base py-[2px] bg-primary-fixed text-on-primary-fixed-variant rounded font-label-md text-label-md">课程大纲合成</span>
-</td>
-<td class="px-lg py-md">
-<div class="flex items-center gap-xs">
-<div class="w-2 h-2 rounded-full bg-primary status-pulse"></div>
-<span class="font-body-md text-body-md text-primary">合成中 (85%)</span>
-</div>
-</td>
-<td class="px-lg py-md">
-<p class="font-body-md text-body-md text-on-surface">2023-11-20</p>
-<p class="font-label-md text-label-md text-outline">14:30:22</p>
-</td>
-<td class="px-lg py-md text-right">
-<div class="flex items-center justify-end gap-sm">
-<button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" disabled="" title="预览">
-<span class="material-symbols-outlined opacity-30">visibility</span>
-</a>
-<button class="p-base hover:bg-surface-container-high rounded text-error" title="停止">
-<span class="material-symbols-outlined">stop_circle</span>
-</a>
-</div>
-</td>
-</tr>
-<!-- Row 2: Completed -->
-<tr class="hover:bg-surface-container-lowest transition-colors">
-<td class="px-lg py-md">
-<div class="flex items-center gap-md">
-<div class="w-24 h-14 rounded-lg bg-surface-container-high overflow-hidden relative group cursor-pointer">
-<div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-white">play_circle</span>
-</div>
-<img class="w-full h-full object-cover" data-alt="A medium shot of an ultra-realistic 3D digital human professor, a middle-aged woman with glasses and a kind expression, standing in front of a virtual whiteboard. The lighting is soft and flattering, with a modern academic feel. The colors are dominated by soft blues and whites to match the Hainan University brand." src="../assets/images/video-thumbnail.svg">
-</div>
-<div>
-<p class="font-title-lg text-title-lg text-on-surface">机器学习进阶 - 线性回归</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant">4K | 12:45</p>
-</div>
-</div>
-</td>
-<td class="px-lg py-md">
-<span class="px-base py-[2px] bg-secondary-container text-on-secondary-container rounded font-label-md text-label-md">脚本直接生成</span>
-</td>
-<td class="px-lg py-md">
-<div class="flex items-center gap-xs text-secondary">
-<div class="w-2 h-2 rounded-full bg-secondary"></div>
-<span class="font-body-md text-body-md">生成成功</span>
-</div>
-</td>
-<td class="px-lg py-md">
-<p class="font-body-md text-body-md text-on-surface">2023-11-19</p>
-<p class="font-label-md text-label-md text-outline">09:12:45</p>
-</td>
-<td class="px-lg py-md text-right">
-<div class="flex items-center justify-end gap-sm">
-<button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="预览">
-<span class="material-symbols-outlined">visibility</span>
-</a>
-<button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="下载">
-<span class="material-symbols-outlined">download</span>
-</a>
-<button class="p-base hover:bg-surface-container-high rounded text-error" title="删除">
-<span class="material-symbols-outlined">delete</span>
-</a>
-</div>
-</td>
-</tr>
-<!-- Row 3: Failed -->
-<tr class="hover:bg-surface-container-lowest transition-colors">
-<td class="px-lg py-md">
-<div class="flex items-center gap-md opacity-70">
-<div class="w-24 h-14 rounded-lg bg-surface-container-high overflow-hidden flex items-center justify-center">
-<span class="material-symbols-outlined text-outline">broken_image</span>
-</div>
-<div>
-<p class="font-title-lg text-title-lg text-on-surface">区块链技术基础 - 共识机制</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant">未知分辨率</p>
-</div>
-</div>
-</td>
-<td class="px-lg py-md">
-<span class="px-base py-[2px] bg-tertiary-fixed text-on-tertiary-fixed-variant rounded font-label-md text-label-md">PPT转换生成</span>
-</td>
-<td class="px-lg py-md">
-<div class="flex items-center gap-xs text-error">
-<div class="w-2 h-2 rounded-full bg-error"></div>
-<span class="font-body-md text-body-md">生成失败</span>
-</div>
-</td>
-<td class="px-lg py-md">
-<p class="font-body-md text-body-md text-on-surface">2023-11-18</p>
-<p class="font-label-md text-label-md text-outline">16:40:00</p>
-</td>
-<td class="px-lg py-md text-right">
-<div class="flex items-center justify-end gap-sm">
-<button class="p-base hover:bg-surface-container-high rounded text-primary" title="重新合成">
-<span class="material-symbols-outlined">refresh</span>
-</a>
-<button class="p-base hover:bg-surface-container-high rounded text-error" title="删除">
-<span class="material-symbols-outlined">delete</span>
-</a>
-</div>
-</td>
-</tr>
-<!-- Row 4: Completed -->
-<tr class="hover:bg-surface-container-lowest transition-colors">
-<td class="px-lg py-md">
-<div class="flex items-center gap-md">
-<div class="w-24 h-14 rounded-lg bg-surface-container-high overflow-hidden relative group cursor-pointer">
-<div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-white">play_circle</span>
-</div>
-<img class="w-full h-full object-cover" data-alt="A realistic 3D character design of a digital instructor, a young male with short hair and professional casual attire. He is gesturing towards complex mathematical equations flowing in a 3D digital space. High-key lighting, bright white background, and a sharp, corporate visual aesthetic consistent with academic research platforms." src="../assets/images/video-thumbnail.svg">
-</div>
-<div>
-<p class="font-title-lg text-title-lg text-on-surface">深度学习 - 卷积神经网络</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant">1080p | 15:30</p>
-</div>
-</div>
-</td>
-<td class="px-lg py-md">
-<span class="px-base py-[2px] bg-primary-fixed text-on-primary-fixed-variant rounded font-label-md text-label-md">课程大纲合成</span>
-</td>
-<td class="px-lg py-md">
-<div class="flex items-center gap-xs text-secondary">
-<div class="w-2 h-2 rounded-full bg-secondary"></div>
-<span class="font-body-md text-body-md">生成成功</span>
-</div>
-</td>
-<td class="px-lg py-md">
-<p class="font-body-md text-body-md text-on-surface">2023-11-17</p>
-<p class="font-label-md text-label-md text-outline">11:05:30</p>
-</td>
-<td class="px-lg py-md text-right">
-<div class="flex items-center justify-end gap-sm">
-<button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="预览">
-<span class="material-symbols-outlined">visibility</span>
-</a>
-<button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="下载">
-<span class="material-symbols-outlined">download</span>
-</a>
-<button class="p-base hover:bg-surface-container-high rounded text-error" title="删除">
-<span class="material-symbols-outlined">delete</span>
-</a>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-<!-- Pagination -->
-<div class="px-lg py-md bg-surface-container-low border-t border-surface-variant flex items-center justify-between">
-<p class="font-body-sm text-body-sm text-on-surface-variant">显示 1 到 10 条，共 128 条记录</p>
-<div class="flex items-center gap-base">
-<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container-high transition-colors disabled:opacity-30" disabled="">
-<span class="material-symbols-outlined">chevron_left</span>
-</a>
-<button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-on-primary font-bold text-label-md">1</a>
-<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container-high transition-colors text-label-md">2</a>
-<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container-high transition-colors text-label-md">3</a>
-<span class="mx-xs text-outline">...</span>
-<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container-high transition-colors text-label-md">13</a>
-<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined">chevron_right</span>
-</a>
+<!-- 分页 -->
+<div class="flex items-center justify-between mt-md">
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="page-info">共 0 个视频</p>
 </div>
 </div>
 </div>
 </main>
-<!-- Contextual FAB (Only shown here as it relates to creating video) -->
-<div class="fixed bottom-lg right-lg group">
-<div class="absolute bottom-16 right-0 mb-xs opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none group-hover:pointer-events-auto">
-<div class="flex flex-col gap-xs items-end">
-<button class="flex items-center gap-xs px-md py-base bg-surface border border-outline-variant shadow-lg rounded-full text-on-surface hover:bg-surface-container-high">
-<span class="font-label-md">从PPT导入</span>
-<span class="material-symbols-outlined">present_to_all</span>
-</a>
-<button class="flex items-center gap-xs px-md py-base bg-surface border border-outline-variant shadow-lg rounded-full text-on-surface hover:bg-surface-container-high">
-<span class="font-label-md">AI脚本创作</span>
-<span class="material-symbols-outlined">auto_fix_high</span>
-</a>
-</div>
-</div>
-<button class="w-14 h-14 bg-primary text-on-primary rounded-full shadow-xl flex items-center justify-center hover:shadow-2xl transition-all hover:scale-110 active:scale-95">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
-</a>
-</div>
+
+<!-- 三点菜单容器 -->
+<div id="menu-root"></div>
+<!-- 弹窗容器 -->
+<div id="modal-root"></div>
+<!-- Toast 容器 -->
+<div id="toast-root"></div>
+
 <script>
-        // Simple micro-interaction for active states
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                document.querySelectorAll('nav a').forEach(l => l.classList.remove('sidebar-active'));
-                this.classList.add('sidebar-active');
-            });
-        });
-    </script>
+const COLORS = [
+  { from: '#d4e3ff', to: '#a5c8ff', icon: 'psychology', c: '#005daa' },
+  { from: '#e3ffd0', to: '#b6f58b', icon: 'calculate', c: '#266d00' },
+  { from: '#ffddb0', to: '#ffba45', icon: 'account_balance', c: '#7d5400' },
+  { from: '#e0f7fa', to: '#b2ebf2', icon: 'memory', c: '#006064' },
+  { from: '#fce4ec', to: '#f8bbd0', icon: 'record_voice_over', c: '#880e4f' },
+  { from: '#ede7f6', to: '#d1c4e9', icon: 'functions', c: '#4527a0' },
+  { from: '#fff9c4', to: '#ffe082', icon: 'translate', c: '#f57f17' },
+  { from: '#e8f5e9', to: '#c8e6c9', icon: 'science', c: '#2e7d32' },
+  { from: '#ffebee', to: '#ffcdd2', icon: 'dns', c: '#c62828' },
+  { from: '#e3f2fd', to: '#bbdefb', icon: 'biotech', c: '#1565c0' },
+];
+
+let videos = [
+  { id: 1, name: '人工智能导论 - 第一章', duration: '05:24', resolution: '1080p', size: '245 MB', status: 'processing', progress: 85, source: '课程大纲合成', sourceKey: 'src-course', date: '2023-11-20 14:30', ts: 202311201430, fav: false, tags: ['必修'], folder: 'AI 基础' },
+  { id: 2, name: '机器学习进阶 - 线性回归', duration: '12:45', resolution: '4K', size: '612 MB', status: 'completed', progress: 100, source: '脚本直接生成', sourceKey: 'src-script', date: '2023-11-19 09:12', ts: 202311190912, fav: true, tags: ['必修', '进阶'], folder: 'AI 基础' },
+  { id: 3, name: '区块链技术基础 - 共识机制', duration: '--', resolution: '未知', size: '--', status: 'failed', progress: 0, source: 'PPT转换生成', sourceKey: 'src-ppt', date: '2023-11-18 16:40', ts: 202311181640, fav: false, tags: ['选修'], folder: '未分类' },
+  { id: 4, name: '深度学习 - 卷积神经网络', duration: '15:30', resolution: '1080p', size: '430 MB', status: 'completed', progress: 100, source: '课程大纲合成', sourceKey: 'src-course', date: '2023-11-17 11:05', ts: 202311171105, fav: false, tags: ['必修', '公开课'], folder: 'AI 基础' },
+  { id: 5, name: '数字人新闻播报 - 校园快讯', duration: '03:12', resolution: '1080p', size: '98 MB', status: 'completed', progress: 100, source: '口播生成', sourceKey: 'src-broadcast', date: '2023-11-16 18:22', ts: 202311161822, fav: true, tags: ['测试'], folder: '未分类' },
+  { id: 6, name: '高等数学 - 微积分基础', duration: '08:40', resolution: '1080p', size: '310 MB', status: 'processing', progress: 45, source: '课件合成', sourceKey: 'src-course', date: '2023-11-16 10:08', ts: 202311161008, fav: false, tags: ['必修'], folder: '数学课程' },
+  { id: 7, name: '英语口语 - 日常对话', duration: '06:18', resolution: '720p', size: '156 MB', status: 'completed', progress: 100, source: '口播生成', sourceKey: 'src-broadcast', date: '2023-11-15 15:45', ts: 202311151545, fav: true, tags: ['复习'], folder: '外语课程' },
+  { id: 8, name: '物理 - 量子力学导论', duration: '--', resolution: '未知', size: '--', status: 'failed', progress: 0, source: 'PPT转换生成', sourceKey: 'src-ppt', date: '2023-11-14 09:30', ts: 202311140930, fav: false, tags: ['选修'], folder: '未分类' },
+  { id: 9, name: '计算机组成原理 - CPU 架构', duration: '20:05', resolution: '1080p', size: '580 MB', status: 'completed', progress: 100, source: '课件合成', sourceKey: 'src-course', date: '2023-11-13 13:20', ts: 202311131320, fav: false, tags: ['必修', '进阶'], folder: '数学课程' },
+  { id: 10, name: '化学实验 - 安全操作规范', duration: '04:55', resolution: '1080p', size: '120 MB', status: 'completed', progress: 100, source: '脚本直接生成', sourceKey: 'src-script', date: '2023-11-12 08:15', ts: 202311120815, fav: false, tags: ['公开课'], folder: '未分类' },
+];
+
+let folders = ['未分类', 'AI 基础', '数学课程', '外语课程'];
+let view = 'grid';
+let category = 'all';
+let selected = new Set();
+
+function statusText(s) { return { processing: '合成中', completed: '已完成', failed: '生成失败' }[s]; }
+function statusClass(s) { return { processing: 'text-primary', completed: 'text-secondary', failed: 'text-error' }[s]; }
+
+function filteredVideos() {
+  let list = [...videos];
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  if (q) list = list.filter(v => v.name.toLowerCase().includes(q));
+  if (category === 'favorites') list = list.filter(v => v.fav);
+  else if (category === 'recent') list = list.slice().sort((a, b) => b.ts - a.ts).slice(0, 5);
+  else if (category === 'processing' || category === 'completed' || category === 'failed') list = list.filter(v => v.status === category);
+  else if (category.startsWith('src-')) list = list.filter(v => v.sourceKey === category);
+  else if (category.startsWith('folder-')) { const f = category.slice(7); list = list.filter(v => v.folder === f); }
+  const sort = document.getElementById('sort-select').value;
+  if (sort === 'newest') list.sort((a, b) => b.ts - a.ts);
+  else if (sort === 'oldest') list.sort((a, b) => a.ts - b.ts);
+  else if (sort === 'name') list.sort((a, b) => a.name.localeCompare(b.name, 'zh'));
+  else if (sort === 'duration') list.sort((a, b) => (a.duration === '--' ? 0 : dur(a.duration)) - (b.duration === '--' ? 0 : dur(b.duration)));
+  return list;
+}
+function dur(t) { const [m, s] = t.split(':').map(Number); return m * 60 + s; }
+
+function thumbStyle(i) { const c = COLORS[i % COLORS.length]; return `background:linear-gradient(135deg,${c.from},${c.to})`; }
+function thumbIcon(i) { return COLORS[i % COLORS.length].icon; }
+function thumbColor(i) { return COLORS[i % COLORS.length].c; }
+
+function render() {
+  const list = filteredVideos();
+  const container = document.getElementById('video-list');
+  const empty = document.getElementById('empty-state');
+  document.getElementById('page-info').textContent = '共 ' + list.length + ' 个视频';
+  updateCounts();
+  if (list.length === 0) {
+    container.innerHTML = '';
+    container.classList.add('hidden');
+    empty.classList.remove('hidden'); empty.classList.add('flex');
+    return;
+  }
+  container.classList.remove('hidden');
+  empty.classList.add('hidden'); empty.classList.remove('flex');
+
+  if (view === 'grid') {
+    container.className = 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-lg';
+    container.innerHTML = list.map((v, i) => `
+      <div class="video-card" onclick="previewVideo(${v.id})">
+        <div class="thumb" style="${thumbStyle(v.id)}">
+          <span class="material-symbols-outlined text-5xl" style="color:${thumbColor(v.id)}">${thumbIcon(v.id)}</span>
+          <div class="check" onclick="event.stopPropagation();toggleSelect(${v.id})">
+            <span class="cbx ${selected.has(v.id) ? 'checked' : ''}" id="cbx-${v.id}"><span class="material-symbols-outlined text-[14px]">check</span></span>
+          </div>
+          <div class="fav" onclick="event.stopPropagation();toggleFav(${v.id})">
+            <span class="material-symbols-outlined ${v.fav ? 'text-amber-400' : 'text-white'}" style="font-variation-settings:'FILL' ${v.fav ? 1 : 0};text-shadow:0 1px 3px rgba(0,0,0,.4)">${v.fav ? 'star' : 'star_outline'}</span>
+          </div>
+          <div class="hover-mask"><span class="material-symbols-outlined text-white text-5xl">play_circle</span></div>
+          <div class="absolute bottom-2 right-2 bg-black/60 text-white text-[11px] px-2 py-0.5 rounded">${v.duration}</div>
+          ${v.status === 'processing' ? `<div class="absolute bottom-0 left-0 right-0 h-1 bg-white/30"><div class="h-full bg-primary" style="width:${v.progress}%"></div></div>` : ''}
+        </div>
+        <div class="p-md">
+          <div class="flex items-start justify-between gap-xs">
+            <p class="text-sm font-semibold text-on-surface leading-snug line-clamp-2">${v.name}</p>
+            <button class="shrink-0 p-1 text-on-surface-variant hover:bg-surface-container rounded transition-colors" onclick="event.stopPropagation();openMenu(event, ${v.id})"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+          </div>
+          <div class="flex items-center justify-between mt-2">
+            <div class="flex items-center gap-xs">
+              <span class="dot ${v.status}"></span>
+              <span class="text-xs ${statusClass(v.status)}">${v.status === 'processing' ? statusText(v.status) + ' (' + v.progress + '%)' : statusText(v.status)}</span>
+            </div>
+            <span class="text-[11px] text-outline">${v.resolution}</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            ${v.tags.map(t => `<span class="tag-chip" style="background:#e7eefd;color:#004581">${t}</span>`).join('')}
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    container.className = 'grid grid-cols-1 gap-0 bg-surface rounded-xl border border-surface-variant overflow-hidden';
+    container.innerHTML = `
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead><tr class="bg-surface-container-low border-b border-surface-variant">
+            <th class="px-lg py-md w-10"></th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">视频名称</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">生成来源</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">状态</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">创建日期</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">标签</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase text-right">操作</th>
+          </tr></thead>
+          <tbody class="divide-y divide-surface-variant">
+          ${list.map((v, i) => `
+            <tr class="hover:bg-surface-container-lowest transition-colors">
+              <td class="px-lg py-md" onclick="toggleSelect(${v.id})">
+                <span class="cbx ${selected.has(v.id) ? 'checked' : ''}" id="cbx-${v.id}"><span class="material-symbols-outlined text-[14px]">check</span></span>
+              </td>
+              <td class="px-lg py-md">
+                <div class="flex items-center gap-md">
+                  <div class="w-24 h-14 rounded-lg overflow-hidden flex items-center justify-center shrink-0" style="${thumbStyle(v.id)}">
+                    <span class="material-symbols-outlined text-on-surface-variant" style="color:${thumbColor(v.id)}">${thumbIcon(v.id)}</span>
+                  </div>
+                  <div>
+                    <p class="font-title-lg text-title-lg text-on-surface flex items-center gap-xs">${v.name}
+                      ${v.fav ? '<span class="material-symbols-outlined text-amber-400 text-[16px]" style="font-variation-settings:\'FILL\' 1">star</span>' : ''}
+                    </p>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">${v.resolution} | ${v.duration} | ${v.size}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-lg py-md"><span class="px-base py-[2px] bg-primary-fixed text-on-primary-fixed-variant rounded font-label-md text-label-md">${v.source}</span></td>
+              <td class="px-lg py-md">
+                <div class="flex items-center gap-xs ${statusClass(v.status)}"><span class="dot ${v.status}"></span>
+                <span class="font-body-md text-body-md">${v.status === 'processing' ? statusText(v.status) + ' (' + v.progress + '%)' : statusText(v.status)}</span></div>
+              </td>
+              <td class="px-lg py-md"><p class="font-body-md text-body-md text-on-surface">${v.date.split(' ')[0]}</p><p class="font-label-md text-label-md text-outline">${v.date.split(' ')[1]}</p></td>
+              <td class="px-lg py-md"><div class="flex flex-wrap gap-1">${v.tags.map(t => `<span class="tag-chip" style="background:#e7eefd;color:#004581">${t}</span>`).join('')}</div></td>
+              <td class="px-lg py-md text-right">
+                <div class="flex items-center justify-end gap-sm">
+                  <button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="收藏" onclick="toggleFav(${v.id})"><span class="material-symbols-outlined ${v.fav ? 'text-amber-400' : ''}">${v.fav ? 'star' : 'star_outline'}</span></button>
+                  <button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="下载" onclick="event.stopPropagation();downloadVideo(${v.id})"><span class="material-symbols-outlined">download</span></button>
+                  <button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="更多" onclick="openMenu(event, ${v.id})"><span class="material-symbols-outlined">more_vert</span></button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+  updateSelectAll();
+  updateBatchBar();
+}
+
+function updateCounts() {
+  document.getElementById('count-all').textContent = videos.length;
+  document.getElementById('count-fav').textContent = videos.filter(v => v.fav).length;
+  document.getElementById('count-processing').textContent = videos.filter(v => v.status === 'processing').length;
+  document.getElementById('count-completed').textContent = videos.filter(v => v.status === 'completed').length;
+  document.getElementById('count-failed').textContent = videos.filter(v => v.status === 'failed').length;
+}
+
+function renderFolders() {
+  const el = document.getElementById('folder-list');
+  el.innerHTML = folders.map(f => `
+    <div class="cat-item ${category === 'folder-' + f ? 'active' : ''}" data-cat="folder-${f}" onclick="setCategory('folder-${f}', this)">
+      <span class="material-symbols-outlined text-[18px]">folder</span><span class="truncate">${f}</span>
+      <span class="count">${videos.filter(v => v.folder === f).length}</span>
+    </div>`).join('');
+}
+
+function setCategory(cat, el) {
+  category = cat;
+  document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  render();
+}
+
+function switchView(v) {
+  view = v;
+  document.getElementById('view-grid').classList.toggle('active', v === 'grid');
+  document.getElementById('view-list').classList.toggle('active', v === 'list');
+  render();
+}
+
+function applyFilters() { render(); }
+
+function toggleFav(id) {
+  const v = videos.find(x => x.id === id);
+  v.fav = !v.fav;
+  toast(v.fav ? '已添加到收藏' : '已取消收藏', 'success');
+  render();
+}
+
+function toggleSelect(id) {
+  if (selected.has(id)) selected.delete(id); else selected.add(id);
+  const cbx = document.getElementById('cbx-' + id);
+  if (cbx) cbx.classList.toggle('checked', selected.has(id));
+  updateSelectAll(); updateBatchBar();
+}
+
+function toggleSelectAll() {
+  const list = filteredVideos();
+  if (selected.size === list.length && list.length > 0) selected.clear();
+  else list.forEach(v => selected.add(v.id));
+  render();
+}
+
+function updateSelectAll() {
+  const list = filteredVideos();
+  const cbx = document.getElementById('select-all-cbx');
+  cbx.classList.toggle('checked', list.length > 0 && selected.size === list.length);
+}
+
+function updateBatchBar() {
+  const bar = document.getElementById('batch-bar');
+  if (selected.size > 0) { bar.classList.remove('hidden'); document.getElementById('batch-count').textContent = selected.size; }
+  else bar.classList.add('hidden');
+}
+
+function clearSelection() { selected.clear(); render(); }
+
+function previewVideo(id) { toast('预览播放：' + videos.find(v => v.id === id).name, 'success'); }
+function downloadVideo(id) { toast('已开始下载：' + videos.find(v => v.id === id).name, 'success'); }
+
+function openMenu(event, id) {
+  closeMenu();
+  const v = videos.find(x => x.id === id);
+  const menu = document.createElement('div');
+  menu.className = 'menu-pop';
+  menu.id = 'menu-pop';
+  menu.innerHTML = `
+    <button onclick="previewVideo(${id})"><span class="material-symbols-outlined text-[18px]">visibility</span>预览</button>
+    <button onclick="renameVideo(${id})"><span class="material-symbols-outlined text-[18px]">edit</span>重命名</button>
+    <button onclick="downloadVideo(${id})"><span class="material-symbols-outlined text-[18px]">download</span>下载</button>
+    <button onclick="toggleFav(${id});closeMenu()"><span class="material-symbols-outlined text-[18px]">${v.fav ? 'star' : 'star_outline'}</span>${v.fav ? '取消收藏' : '收藏'}</button>
+    <div class="divider"></div>
+    <button onclick="moveVideo(${id})"><span class="material-symbols-outlined text-[18px]">drive_file_move</span>移动到文件夹</button>
+    <button onclick="tagVideo(${id})"><span class="material-symbols-outlined text-[18px]">sell</span>编辑标签</button>
+    <div class="divider"></div>
+    <button class="danger" onclick="deleteVideo(${id})"><span class="material-symbols-outlined text-[18px]">delete</span>删除</button>`;
+  document.getElementById('menu-root').appendChild(menu);
+  const rect = event.currentTarget.getBoundingClientRect();
+  menu.style.top = rect.bottom + 4 + 'px';
+  menu.style.left = Math.min(rect.left, window.innerWidth - 200) + 'px';
+  document.addEventListener('click', outsideMenu);
+}
+function closeMenu() { document.getElementById('menu-pop')?.remove(); document.removeEventListener('click', outsideMenu); }
+function outsideMenu(e) { if (!e.target.closest('.menu-pop')) closeMenu(); }
+
+function renameVideo(id) {
+  closeMenu();
+  const v = videos.find(x => x.id === id);
+  openModal('重命名视频', `
+    <label class="block text-sm text-on-surface-variant mb-1">视频名称</label>
+    <input id="modal-input" class="w-full px-md py-sm border border-outline-variant rounded-lg text-sm focus:border-primary focus:ring-2 focus:ring-primary/20" value="${v.name}" type="text">
+  `, () => {
+    const nv = document.getElementById('modal-input').value.trim();
+    if (!nv) { toast('名称不能为空', 'error'); return; }
+    v.name = nv; toast('重命名成功', 'success'); render();
+  });
+}
+
+function moveVideo(id) {
+  closeMenu();
+  const v = videos.find(x => x.id === id);
+  openModal('移动到文件夹', `
+    <div class="space-y-2">
+      ${folders.map(f => `<label class="flex items-center gap-sm p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-primary/5 transition-colors"><input type="radio" name="folder" value="${f}" ${v.folder === f ? 'checked' : ''} class="text-primary focus:ring-primary"> <span class="text-sm">${f}</span></label>`).join('')}
+    </div>
+  `, () => {
+    const sel = document.querySelector('input[name="folder"]:checked');
+    if (sel) { v.folder = sel.value; toast('已移动到「' + v.folder + '」', 'success'); renderFolders(); render(); }
+  });
+}
+
+const ALL_TAGS = ['必修', '选修', '公开课', '复习', '进阶', '测试'];
+
+function tagVideo(id) {
+  closeMenu();
+  const v = videos.find(x => x.id === id);
+  openModal('编辑标签', `
+    <div class="flex flex-wrap gap-2">
+      ${ALL_TAGS.map(t => `<label class="flex items-center gap-xs px-md py-sm border border-outline-variant rounded-full cursor-pointer hover:bg-primary/5 transition-colors ${v.tags.includes(t) ? 'border-primary bg-primary/5' : ''}"><input type="checkbox" value="${t}" ${v.tags.includes(t) ? 'checked' : ''} class="text-primary focus:ring-primary"> <span class="text-sm">${t}</span></label>`).join('')}
+    </div>
+  `, () => {
+    v.tags = [...document.querySelectorAll('#modal-root input[type="checkbox"]:checked')].map(i => i.value);
+    toast('标签已更新', 'success'); render();
+  });
+}
+
+function deleteVideo(id) {
+  closeMenu();
+  openModal('删除视频', `<p class="text-sm text-on-surface-variant">确定要删除「${videos.find(v => v.id === id).name}」吗？此操作不可撤销。</p>`, () => {
+    videos = videos.filter(v => v.id !== id);
+    selected.delete(id);
+    toast('已删除', 'success'); renderFolders(); render();
+  }, '删除', true);
+}
+
+function batchDelete() {
+  openModal('批量删除', `<p class="text-sm text-on-surface-variant">确定要删除选中的 ${selected.size} 个视频吗？此操作不可撤销。</p>`, () => {
+    videos = videos.filter(v => !selected.has(v.id));
+    selected.clear();
+    toast('已批量删除', 'success'); renderFolders(); render();
+  }, '删除', true);
+}
+
+function batchMove() {
+  openModal('批量移动到文件夹', `
+    <div class="space-y-2">
+      ${folders.map(f => `<label class="flex items-center gap-sm p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-primary/5 transition-colors"><input type="radio" name="folder" value="${f}" class="text-primary focus:ring-primary"> <span class="text-sm">${f}</span></label>`).join('')}
+    </div>
+  `, () => {
+    const sel = document.querySelector('input[name="folder"]:checked');
+    if (sel) { videos.forEach(v => { if (selected.has(v.id)) v.folder = sel.value; }); toast('已移动 ' + selected.size + ' 个视频', 'success'); clearSelection(); renderFolders(); }
+  });
+}
+
+function batchDownload() { toast('已开始批量下载 ' + selected.size + ' 个视频', 'success'); clearSelection(); }
+
+function openFolderModal() {
+  openModal('新建文件夹', `
+    <label class="block text-sm text-on-surface-variant mb-1">文件夹名称</label>
+    <input id="modal-input" class="w-full px-md py-sm border border-outline-variant rounded-lg text-sm focus:border-primary focus:ring-2 focus:ring-primary/20" placeholder="例如：期末复习" type="text">
+  `, () => {
+    const nv = document.getElementById('modal-input').value.trim();
+    if (!nv) { toast('名称不能为空', 'error'); return; }
+    if (folders.includes(nv)) { toast('文件夹已存在', 'error'); return; }
+    folders.push(nv); toast('文件夹已创建', 'success'); renderFolders();
+  });
+}
+
+function openModal(title, bodyHtml, onConfirm, confirmLabel = '确认', danger = false) {
+  closeModal();
+  const mask = document.createElement('div');
+  mask.className = 'modal-mask';
+  mask.id = 'modal';
+  mask.innerHTML = `
+    <div class="modal-panel overflow-hidden">
+      <div class="px-lg py-md border-b border-outline-variant flex justify-between items-center bg-surface">
+        <h3 class="font-title-lg text-title-lg text-on-surface font-semibold">${title}</h3>
+        <button class="text-on-surface-variant hover:text-primary p-1 rounded transition-colors" onclick="closeModal()"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="p-lg">${bodyHtml}</div>
+      <div class="px-lg py-md border-t border-outline-variant bg-surface flex justify-end gap-sm">
+        <button class="px-md py-2 rounded-lg text-sm text-on-surface-variant border border-outline-variant hover:bg-surface-container-high transition-colors" onclick="closeModal()">取消</button>
+        <button class="px-md py-2 rounded-lg text-sm ${danger ? 'bg-error text-on-error hover:opacity-90' : 'bg-primary text-on-primary hover:opacity-90'} transition-colors" onclick="this.dataset.confirm='1';modalConfirm()" data-onconfirm>${confirmLabel}</button>
+      </div>
+    </div>`;
+  mask.addEventListener('click', e => { if (e.target === mask) closeModal(); });
+  mask._onConfirm = onConfirm;
+  document.getElementById('modal-root').appendChild(mask);
+}
+function modalConfirm() { const m = document.getElementById('modal'); if (m && m._onConfirm) m._onConfirm(); closeModal(); }
+function closeModal() { document.getElementById('modal')?.remove(); }
+
+function toast(msg, type = 'success') {
+  const root = document.getElementById('toast-root');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = `<span class="material-symbols-outlined text-[18px]">${type === 'error' ? 'error' : 'check_circle'}</span>${msg}`;
+  root.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 300); }, 2400);
+}
+
+renderFolders();
+render();
+</script>
 </body></html>
