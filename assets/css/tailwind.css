@@ -645,20 +645,12 @@ video {
   bottom: 0px;
 }
 
-.-bottom-12 {
-  bottom: -3rem;
-}
-
 .-left-6 {
   left: -1.5rem;
 }
 
 .-left-\[27px\] {
   left: -27px;
-}
-
-.-right-12 {
-  right: -3rem;
 }
 
 .-right-3 {
@@ -927,10 +919,6 @@ video {
 
 .z-\[100\] {
   z-index: 100;
-}
-
-.z-\[110\] {
-  z-index: 110;
 }
 
 .z-\[55\] {
@@ -1327,6 +1315,10 @@ video {
   height: 2.5rem;
 }
 
+.h-11 {
+  height: 2.75rem;
+}
+
 .h-12 {
   height: 3rem;
 }
@@ -1509,10 +1501,6 @@ video {
 
 .max-h-\[80vh\] {
   max-height: 80vh;
-}
-
-.max-h-\[90vh\] {
-  max-height: 90vh;
 }
 
 .max-h-full {
@@ -1719,20 +1707,12 @@ video {
   width: 360px;
 }
 
-.w-\[3px\] {
-  width: 3px;
-}
-
 .w-\[400px\] {
   width: 400px;
 }
 
 .w-\[420px\] {
   width: 420px;
-}
-
-.w-\[45\%\] {
-  width: 45%;
 }
 
 .w-\[60\%\] {
@@ -1859,10 +1839,6 @@ video {
   max-width: 28rem;
 }
 
-.max-w-sm {
-  max-width: 24rem;
-}
-
 .max-w-xl {
   max-width: 36rem;
 }
@@ -1938,11 +1914,6 @@ video {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.translate-y-4 {
-  --tw-translate-y: 1rem;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
 .translate-y-\[-50\%\] {
   --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -1991,70 +1962,6 @@ video {
 
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(-25%);
-    animation-timing-function: cubic-bezier(0.8,0,1,1);
-  }
-
-  50% {
-    transform: none;
-    animation-timing-function: cubic-bezier(0,0,0.2,1);
-  }
-}
-
-.animate-\[bounce_0\.8s_infinite\] {
-  animation: bounce 0.8s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(-25%);
-    animation-timing-function: cubic-bezier(0.8,0,1,1);
-  }
-
-  50% {
-    transform: none;
-    animation-timing-function: cubic-bezier(0,0,0.2,1);
-  }
-}
-
-.animate-\[bounce_0\.9s_infinite\] {
-  animation: bounce 0.9s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(-25%);
-    animation-timing-function: cubic-bezier(0.8,0,1,1);
-  }
-
-  50% {
-    transform: none;
-    animation-timing-function: cubic-bezier(0,0,0.2,1);
-  }
-}
-
-.animate-\[bounce_1\.2s_infinite\] {
-  animation: bounce 1.2s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(-25%);
-    animation-timing-function: cubic-bezier(0.8,0,1,1);
-  }
-
-  50% {
-    transform: none;
-    animation-timing-function: cubic-bezier(0,0,0.2,1);
-  }
-}
-
-.animate-\[bounce_1s_infinite\] {
-  animation: bounce 1s infinite;
 }
 
 @keyframes ping {
@@ -2257,12 +2164,6 @@ video {
 
 .gap-xs {
   gap: 8px;
-}
-
-.-space-x-2 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(-0.5rem * var(--tw-space-x-reverse));
-  margin-left: calc(-0.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .space-x-1 > :not([hidden]) ~ :not([hidden]) {
@@ -2623,11 +2524,6 @@ video {
 .border-primary {
   --tw-border-opacity: 1;
   border-color: rgb(0 93 170 / var(--tw-border-opacity, 1));
-}
-
-.border-primary-container {
-  --tw-border-opacity: 1;
-  border-color: rgb(0 117 213 / var(--tw-border-opacity, 1));
 }
 
 .border-primary-container\/20 {
@@ -5065,10 +4961,6 @@ video {
   background-color: rgb(255 218 214 / var(--tw-bg-opacity, 1));
 }
 
-.hover\:bg-error-container\/50:hover {
-  background-color: rgb(255 218 214 / 0.5);
-}
-
 .hover\:bg-error\/90:hover {
   background-color: rgb(186 26 26 / 0.9);
 }
@@ -5760,14 +5652,6 @@ video {
 
   .md\:col-span-1 {
     grid-column: span 1 / span 1;
-  }
-
-  .md\:col-span-4 {
-    grid-column: span 4 / span 4;
-  }
-
-  .md\:col-span-8 {
-    grid-column: span 8 / span 8;
   }
 
   .md\:flex {

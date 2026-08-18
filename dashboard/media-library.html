@@ -1,390 +1,508 @@
 <!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>音色管理 - Digital Human System</title>
+<title>声音库 - Digital Human System</title>
 <link rel="stylesheet" href="../assets/css/tailwind.css">
 <link rel="stylesheet" href="../assets/css/fonts.css">
 <style>
-        body { background-color: #f0f2f5; }
-        .sidebar-active { background-color: #d4e3ff; color: #001c3a; border-right: 4px solid #005daa; }
-        .voice-card-hover {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .voice-card-hover:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 93, 170, 0.08);
-        }
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(8px);
-        }
-        /* Custom scrollbar for professional look */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #c0c7d6;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #707785;
-        }
-    </style>
+.sidebar-active { background-color: #d4e3ff; color: #001c3a; border-right: 4px solid #005daa; }
+body { font-family: 'Inter', 'Noto Sans SC', sans-serif; background-color: #f0f2f5; }
+.cat-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; color: #404753; font-size: 13px; transition: all .15s; }
+.cat-item:hover { background: #e7eefd; color: #004581; }
+.cat-item.active { background: #d4e3ff; color: #001c3a; font-weight: 600; }
+.cat-item .count { margin-left: auto; font-size: 11px; color: #707785; }
+.cat-item.active .count { color: #004785; }
+.voice-card { position: relative; border-radius: 12px; overflow: hidden; background: #fff; border: 1px solid #e3e2e2; cursor: pointer; transition: all .18s; }
+.voice-card:hover { box-shadow: 0 8px 24px rgba(0,28,58,.12); transform: translateY(-2px); border-color: #a5c8ff; }
+.voice-card .check { position: absolute; top: 8px; left: 8px; z-index: 20; }
+.menu-pop { position: absolute; z-index: 60; background: #fff; border: 1px solid #e3e2e2; border-radius: 10px; box-shadow: 0 12px 32px rgba(0,28,58,.18); min-width: 180px; padding: 6px; animation: pop-in .16s ease; }
+.menu-pop button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 12px; border-radius: 7px; font-size: 13px; color: #1b1c1c; text-align: left; }
+.menu-pop button:hover { background: #f4f3f3; }
+.menu-pop button.danger { color: #ba1a1a; }
+.menu-pop button.danger:hover { background: #ffdad6; }
+.menu-pop .divider { height: 1px; background: #e3e2e2; margin: 4px 8px; }
+@keyframes pop-in { from { transform: scale(.95); opacity: 0; } }
+.cbx { width: 18px; height: 18px; border-radius: 5px; border: 2px solid #c0c7d6; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; transition: all .15s; }
+.cbx.checked { background: #005daa; border-color: #005daa; }
+.view-btn { padding: 7px 10px; border-radius: 8px; cursor: pointer; color: #404753; transition: all .15s; }
+.view-btn.active { background: #005daa; color: #fff; }
+.batch-bar { animation: slide-up .2s ease; }
+@keyframes slide-up { from { transform: translateY(8px); opacity: 0; } }
+#toast-root { position: fixed; top: 80px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+.toast { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; background: #2f3031; color: #f2f0f0; font-size: 13px; box-shadow: 0 8px 24px rgba(0,28,58,.18); animation: toast-in .25s ease; }
+.toast.success { border-left: 4px solid #266d00; }
+.toast.error { border-left: 4px solid #ba1a1a; }
+@keyframes toast-in { from { transform: translateX(40px); opacity: 0; } }
+.modal-mask { position: fixed; inset: 0; z-index: 100; background: rgba(27,28,28,.45); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; }
+.modal-panel { background: #fff; border-radius: 14px; box-shadow: 0 20px 60px rgba(0,28,58,.25); width: 440px; max-width: 92vw; max-height: 90vh; overflow-y: auto; animation: pop-in .2s ease; }
+.wave { display: flex; align-items: center; gap: 2px; height: 20px; }
+.wave span { width: 3px; border-radius: 2px; background: #005daa; animation: wave-bounce .8s ease-in-out infinite alternate; }
+@keyframes wave-bounce { from { height: 4px; } to { height: 18px; } }
+</style>
 </head>
 <body class="bg-background text-on-surface">
-<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50">
-<div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div>
-<nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav>
-<div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
-<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest">
-<div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">音色资产库</span></div></div>
-<div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
-<!-- Main Content Area -->
-<main class="ml-sidebar-width mt-16 p-xl min-h-[calc(100vh-64px)]"" style="width:calc(100% - 240px)">
-<!-- Content Canvas -->
-<div class="p-lg">
-<!-- Stats Summary (Asymmetric UI Pattern) -->
-<div class="grid grid-cols-12 gap-gutter mb-lg">
-<div class="col-span-12 md:col-span-8 bg-white p-lg rounded-xl border border-outline-variant flex justify-between items-center relative overflow-hidden">
-<div class="relative z-10">
-<h2 class="font-headline-md text-headline-md text-on-surface">音色资产库</h2>
-<p class="font-body-md text-body-md text-on-surface-variant mt-base">当前库中共有 24 个高品质 AI 合成音色，涵盖 8 种语言。</p>
-</div>
-<div class="flex gap-lg relative z-10">
-<div class="text-center">
-<p class="text-display-lg font-display-lg text-primary">12</p>
-<p class="text-label-caps text-outline">专业录音</p>
-</div>
-<div class="text-center">
-<p class="text-display-lg font-display-lg text-secondary">8</p>
-<p class="text-label-caps text-outline">克隆音色</p>
-</div>
-<div class="text-center">
-<p class="text-display-lg font-display-lg text-tertiary">4</p>
-<p class="text-label-caps text-outline">预置风格</p>
-</div>
-</div>
-<!-- Decorative Background Element -->
-<div class="absolute -right-12 -bottom-12 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
-</div>
-<div class="col-span-12 md:col-span-4 bg-primary-container p-lg rounded-xl border border-primary/20 flex flex-col justify-center">
-<span class="font-label-caps text-white/80 mb-xs">最近使用</span>
-<h3 class="font-title-lg text-title-lg text-white">智慧导师 - 晓雅</h3>
-<p class="text-body-sm text-white/70 mt-xs italic">"正在生成《人工智能导论》课程音频..."</p>
-<div class="mt-md flex -space-x-2">
-<div class="w-8 h-8 rounded-full border-2 border-primary-container bg-white flex items-center justify-center text-[10px] font-bold text-primary">A1</div>
-<div class="w-8 h-8 rounded-full border-2 border-primary-container bg-white flex items-center justify-center text-[10px] font-bold text-primary">A2</div>
-<div class="w-8 h-8 rounded-full border-2 border-primary-container bg-white flex items-center justify-center text-[10px] font-bold text-primary">A3</div>
-</div>
-</div>
-</div>
-<!-- Filter Controls -->
-<div class="flex items-center gap-md mb-md">
-<button class="bg-primary text-white px-md py-xs rounded-full font-label-md text-label-md">全部音色</button>
-<button class="bg-white border border-outline-variant text-on-surface-variant px-md py-xs rounded-full font-label-md text-label-md hover:bg-surface-container transition-colors">中文</button>
-<button class="bg-white border border-outline-variant text-on-surface-variant px-md py-xs rounded-full font-label-md text-label-md hover:bg-surface-container transition-colors">英文</button>
-<button class="bg-white border border-outline-variant text-on-surface-variant px-md py-xs rounded-full font-label-md text-label-md hover:bg-surface-container transition-colors">新闻</button>
-<button class="bg-white border border-outline-variant text-on-surface-variant px-md py-xs rounded-full font-label-md text-label-md hover:bg-surface-container transition-colors">教育</button>
-</div>
-<!-- Voice List View (Bento-style Cards) -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
-<!-- Voice Card 1 -->
-<div class="bg-white rounded-xl border border-outline-variant p-md voice-card-hover flex flex-col justify-between group">
+<!-- 共享 Sidebar -->
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50"><div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div><nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav><div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
+<!-- 共享 Header -->
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest"><div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="asset-management.html" class="hover:text-primary transition-colors">资产管理</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">声音库</span></div></div><div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
+<!-- 主内容区 -->
+<main class="ml-sidebar-width mt-16 p-xl" style="width:calc(100% - 240px)">
+<!-- 页头 -->
+<div class="mb-lg flex justify-between items-end">
 <div>
-<div class="flex justify-between items-start mb-md">
-<div class="flex items-center gap-md">
-<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/10 relative">
-<img class="w-full h-full object-cover" data-alt="Close-up creative portrait of a gentle female teacher character for an AI voice avatar, studio lighting, soft pastel blue background, professional yet approachable vibe, realistic digital art style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9iK9ubA332bDiXAOOi2bWZFsQRlN9D1Cc_DCNMMx-EO2zT2kivJeF32v1hFM7GnC1XZ07u6Rfa6UqlOGmuJcHGF3CeRuQmXlIuFapHjY9_TjRpbZXPjak_SdZOUGi0D1m4c79nCgwNXpjGq8LnH1I2e-ze5AhhYTyt4XgLwrEuc45KIbKCMPFCvbbTMUSIckQ6AdkTU_h72VDpBF537BnQi9pGLPLfEJjQ4lz_heBLEq-2NwOFFKf">
-<button class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<h2 class="font-headline-md text-headline-md text-on-background">声音库</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-base">管理 AI 语音模型，支持多语种、情感音色克隆与分组归类。</p>
+</div>
+<button class="flex items-center gap-xs bg-primary text-on-primary px-md py-sm rounded-lg font-title-lg hover:opacity-90 transition-opacity" onclick="openVoiceModal()">
+<span class="material-symbols-outlined">add</span>新增音色
 </button>
 </div>
-<div>
-<h4 class="font-title-lg text-title-lg text-on-surface">晓雅 (智慧导师)</h4>
-<p class="text-body-sm text-on-surface-variant">温柔、知性、富有耐心</p>
+
+<div class="flex gap-lg items-start">
+<!-- 左侧分类侧栏 -->
+<div class="w-56 shrink-0 bg-surface rounded-xl border border-surface-variant p-sm sticky top-20">
+<div class="px-sm pt-xs pb-sm">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider px-1 mb-1">音色库</p>
+<div class="cat-item active" data-cat="all" onclick="setCategory('all', this)"><span class="material-symbols-outlined text-[18px]">record_voice_over</span>全部音色<span class="count" id="count-all"></span></div>
+</div>
+<div class="px-sm py-sm">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider px-1 mb-1">类型</p>
+<div class="cat-item" data-cat="pro" onclick="setCategory('pro', this)"><span class="material-symbols-outlined text-[18px]">mic</span>专业录音<span class="count" id="count-pro"></span></div>
+<div class="cat-item" data-cat="clone" onclick="setCategory('clone', this)"><span class="material-symbols-outlined text-[18px]">graphic_eq</span>克隆音色<span class="count" id="count-clone"></span></div>
+<div class="cat-item" data-cat="preset" onclick="setCategory('preset', this)"><span class="material-symbols-outlined text-[18px]">auto_awesome</span>预置风格<span class="count" id="count-preset"></span></div>
+</div>
+<div class="px-sm py-sm">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider px-1 mb-1">语言</p>
+<div class="cat-item" data-cat="zh" onclick="setCategory('zh', this)"><span class="material-symbols-outlined text-[18px]">translate</span>普通话<span class="count" id="count-zh"></span></div>
+<div class="cat-item" data-cat="en" onclick="setCategory('en', this)"><span class="material-symbols-outlined text-[18px]">language</span>英文<span class="count" id="count-en"></span></div>
+<div class="cat-item" data-cat="intl" onclick="setCategory('intl', this)"><span class="material-symbols-outlined text-[18px]">public</span>其他语种<span class="count" id="count-intl"></span></div>
+</div>
+<div class="px-sm py-sm">
+<div class="flex items-center justify-between px-1 mb-1">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider">分组</p>
+<button class="text-primary hover:bg-primary/10 p-1 rounded transition-colors" title="新建分组" onclick="openGroupModal()"><span class="material-symbols-outlined text-[16px]">create_new_folder</span></button>
+</div>
+<div id="group-list"></div>
 </div>
 </div>
-<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50" onclick="event.stopPropagation();showConfirm('确认删除', '确定要删除此音色吗？此操作不可撤销。', 'delete', '#ba1a1a', '确认删除', 'error', (function(el){return function(){el.closest('.bg-white, .voice-card-hover').remove()}})(this))">
-<span class="material-symbols-outlined text-lg">delete</span>
-</button>
+
+<!-- 右侧内容区 -->
+<div class="flex-1 min-w-0 flex flex-col gap-md">
+<!-- 工具栏 -->
+<div class="bg-surface rounded-xl border border-surface-variant p-md flex flex-wrap items-center justify-between gap-md">
+<div class="flex items-center gap-sm">
+<div class="flex bg-surface-container rounded-lg p-0.5">
+<button class="view-btn active flex items-center gap-xs" id="view-grid" onclick="switchView('grid')"><span class="material-symbols-outlined text-[18px]">grid_view</span></button>
+<button class="view-btn flex items-center gap-xs" id="view-list" onclick="switchView('list')"><span class="material-symbols-outlined text-[18px]">view_list</span></button>
 </div>
-<div class="flex flex-wrap gap-xs mb-lg">
-<span class="px-xs py-[2px] bg-primary/5 text-primary text-[11px] font-bold rounded-lg border border-primary/10">女性</span>
-<span class="px-xs py-[2px] bg-secondary/5 text-secondary text-[11px] font-bold rounded-lg border border-secondary/10">普通话</span>
-<span class="px-xs py-[2px] bg-tertiary/5 text-tertiary text-[11px] font-bold rounded-lg border border-tertiary/10">教育教学</span>
-</div>
-</div>
-<div class="flex gap-sm">
-<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors" onclick="showToast('已应用此音色到默认数字人！')">
-<span class="material-symbols-outlined text-lg">check_circle</span>
-                            使用此音色
-                        </button>
-<button class="px-md bg-surface-container text-on-surface-variant rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors flex items-center justify-center">
-<span class="material-symbols-outlined">play_arrow</span>
-</button>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+<input id="search-input" class="pl-9 pr-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg text-sm w-56 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="搜索音色名称..." type="text" oninput="applyFilters()">
 </div>
 </div>
-<!-- Voice Card 2 -->
-<div class="bg-white rounded-xl border border-outline-variant p-md voice-card-hover flex flex-col justify-between group">
-<div>
-<div class="flex justify-between items-start mb-md">
-<div class="flex items-center gap-md">
-<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/10 relative">
-<img class="w-full h-full object-cover" data-alt="A cinematic portrait of a mature male news anchor, sharp facial features, deep expressive eyes, charcoal grey studio background, high-end professional lighting, elegant corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkHdy5tRUhZTQcWqYtTrLvwG7r0C-tMp5BmXNg6o9yQIFe70Bs7pFznzxFhYgW3B2PN1aLpgHxvLlZ29lxBl8qXwtpWtuxzy9TxLaqLdCJzvkwFyHB6DcOPUu7n12ngYSqbQFRaO_K2mYIqSZlfS1IAQb3fvmR6hngg3DdbSJ1VQ9M-afv3vf2U3Q-vDZeyeZm6GphLWp1trDbVZRh0VUL3fgKDn0Jz5eBtkCi_CTbY409bjszkP6e">
-<button class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
-</button>
+<label class="flex items-center gap-xs cursor-pointer select-none ml-2">
+<span class="cbx" id="select-all-cbx" onclick="toggleSelectAll()"><span class="material-symbols-outlined text-[14px]">check</span></span>
+<span class="text-sm text-on-surface-variant">全选</span>
+</label>
 </div>
-<div>
-<h4 class="font-title-lg text-title-lg text-on-surface">志远 (新闻播音)</h4>
-<p class="text-body-sm text-on-surface-variant">稳重、专业、富有磁性</p>
-</div>
-</div>
-<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50" onclick="event.stopPropagation();showConfirm('确认删除', '确定要删除此音色吗？此操作不可撤销。', 'delete', '#ba1a1a', '确认删除', 'error', (function(el){return function(){el.closest('.bg-white, .voice-card-hover').remove()}})(this))">
-<span class="material-symbols-outlined text-lg">delete</span>
-</button>
-</div>
-<div class="flex flex-wrap gap-xs mb-lg">
-<span class="px-xs py-[2px] bg-primary/5 text-primary text-[11px] font-bold rounded-lg border border-primary/10">男性</span>
-<span class="px-xs py-[2px] bg-secondary/5 text-secondary text-[11px] font-bold rounded-lg border border-secondary/10">普通话</span>
-<span class="px-xs py-[2px] bg-tertiary/5 text-tertiary text-[11px] font-bold rounded-lg border border-tertiary/10">新闻报道</span>
+<!-- 批量操作栏 -->
+<div class="batch-bar bg-primary-fixed border border-primary/30 rounded-xl p-md hidden" id="batch-bar">
+<div class="flex items-center justify-between">
+<span class="text-sm font-semibold text-on-primary-fixed">已选 <span id="batch-count">0</span> 项</span>
+<div class="flex items-center gap-sm">
+<button class="px-md py-sm rounded-lg bg-surface text-on-surface text-sm hover:bg-surface-container-high transition-colors flex items-center gap-xs" onclick="batchMove()"><span class="material-symbols-outlined text-[18px]">drive_file_move</span>移动分组</button>
+<button class="px-md py-sm rounded-lg bg-error text-on-error text-sm hover:opacity-90 transition-colors flex items-center gap-xs" onclick="batchDelete()"><span class="material-symbols-outlined text-[18px]">delete</span>批量删除</button>
+<button class="p-1 rounded text-on-primary-fixed-variant hover:bg-primary/20 transition-colors" onclick="clearSelection()"><span class="material-symbols-outlined text-[18px]">close</span></button>
 </div>
 </div>
-<div class="flex gap-sm">
-<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors" onclick="showToast('已应用此音色到默认数字人！')">
-<span class="material-symbols-outlined text-lg">check_circle</span>
-                            使用此音色
-                        </button>
-<button class="px-md bg-surface-container text-on-surface-variant rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors flex items-center justify-center">
-<span class="material-symbols-outlined">play_arrow</span>
-</button>
 </div>
+<!-- 音色列表 -->
+<div id="voice-list" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-lg"></div>
+<div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
+<span class="material-symbols-outlined text-6xl text-outline mb-md">record_voice_over</span>
+<p class="text-on-surface-variant text-body-md">没有找到匹配的音色</p>
 </div>
-<!-- Voice Card 3 -->
-<div class="bg-white rounded-xl border border-outline-variant p-md voice-card-hover flex flex-col justify-between group">
-<div>
-<div class="flex justify-between items-start mb-md">
-<div class="flex items-center gap-md">
-<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/10 relative">
-<img class="w-full h-full object-cover" data-alt="Creative stylized portrait of a energetic young female influencer for AI voice branding, vibrant studio lighting with orange and white highlights, trendy tech-chic apparel, upbeat personality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChoOuxdGjqHFgm5R_FC2cHpPmcaru6rkOW2VN6MzKibjOBpdyPZVICWRSUcqbKiybwiF2JnvuY3tPBcxfbSRuoFq41WHBXEw6M_1wA0Dg_sev5tYiOhYGuTsOj3YtvOUIRwYKiClS3GlF7KXi4tqvG6hi_oC7RaR9uTkgYhOlYc2ketnx4OUa6fLXcwYzKvlzDc_bYhCePPABeL8lfLm0vpNUduBmvbfwI_0AJ2a_4zJVxGkoQVi1v">
-<button class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
-</button>
-</div>
-<div>
-<h4 class="font-title-lg text-title-lg text-on-surface">可儿 (活力元气)</h4>
-<p class="text-body-sm text-on-surface-variant">活泼、明快、富有感染力</p>
-</div>
-</div>
-<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50" onclick="event.stopPropagation();showConfirm('确认删除', '确定要删除此音色吗？此操作不可撤销。', 'delete', '#ba1a1a', '确认删除', 'error', (function(el){return function(){el.closest('.bg-white, .voice-card-hover').remove()}})(this))">
-<span class="material-symbols-outlined text-lg">delete</span>
-</button>
-</div>
-<div class="flex flex-wrap gap-xs mb-lg">
-<span class="px-xs py-[2px] bg-primary/5 text-primary text-[11px] font-bold rounded-lg border border-primary/10">女性</span>
-<span class="px-xs py-[2px] bg-secondary/5 text-secondary text-[11px] font-bold rounded-lg border border-secondary/10">普通话</span>
-<span class="px-xs py-[2px] bg-tertiary/5 text-tertiary text-[11px] font-bold rounded-lg border border-tertiary/10">社交营销</span>
-</div>
-</div>
-<div class="flex gap-sm">
-<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors" onclick="showToast('已应用此音色到默认数字人！')">
-<span class="material-symbols-outlined text-lg">check_circle</span>
-                            使用此音色
-                        </button>
-<button class="px-md bg-surface-container text-on-surface-variant rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors flex items-center justify-center">
-<span class="material-symbols-outlined">play_arrow</span>
-</button>
-</div>
-</div>
-<!-- Voice Card 4 -->
-<div class="bg-white rounded-xl border border-outline-variant p-md voice-card-hover flex flex-col justify-between group">
-<div>
-<div class="flex justify-between items-start mb-md">
-<div class="flex items-center gap-md">
-<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/10 relative">
-<img class="w-full h-full object-cover" data-alt="Portrait of a sophisticated international business professional, confident male, minimalist urban office backdrop, sleek modern glasses, natural high-key lighting, global corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAr3B3IRyt1NeSZm1gywZJKMZZWq1qkhAMtQGyzhLZpkeRx3mYjsOVToz9YYDhNdWzWfp8ZNGWgliyWc2S74UM47a5xsIvdoBYE0ZLHams-1Mx7jlMCrSDcrXUdPM-BR9ePnZGx-8N5zlglCnqwOJmB84w_IA0lJ1YEURV6D-ttOB3YpWVjhqYdg3rFkqkSGgiU8SGn9vDicaNiaeFm2swB_OIKrvH0QZ69dvw540xd1-iTle4u8Cbo">
-<button class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
-</button>
-</div>
-<div>
-<h4 class="font-title-lg text-title-lg text-on-surface">William (English)</h4>
-<p class="text-body-sm text-on-surface-variant">自然、流畅、标准英式口音</p>
-</div>
-</div>
-<button class="text-outline-variant hover:text-error transition-colors p-base rounded-lg hover:bg-error-container/50" onclick="event.stopPropagation();showConfirm('确认删除', '确定要删除此音色吗？此操作不可撤销。', 'delete', '#ba1a1a', '确认删除', 'error', (function(el){return function(){el.closest('.bg-white, .voice-card-hover').remove()}})(this))">
-<span class="material-symbols-outlined text-lg">delete</span>
-</button>
-</div>
-<div class="flex flex-wrap gap-xs mb-lg">
-<span class="px-xs py-[2px] bg-primary/5 text-primary text-[11px] font-bold rounded-lg border border-primary/10">男性</span>
-<span class="px-xs py-[2px] bg-secondary/5 text-secondary text-[11px] font-bold rounded-lg border border-secondary/10">英语</span>
-<span class="px-xs py-[2px] bg-tertiary/5 text-tertiary text-[11px] font-bold rounded-lg border border-tertiary/10">国际商务</span>
-</div>
-</div>
-<div class="flex gap-sm">
-<button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-colors" onclick="showToast('已应用此音色到默认数字人！')">
-<span class="material-symbols-outlined text-lg">check_circle</span>
-                            使用此音色
-                        </button>
-<button class="px-md bg-surface-container text-on-surface-variant rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors flex items-center justify-center">
-<span class="material-symbols-outlined">play_arrow</span>
-</button>
-</div>
-</div>
-<!-- Add New Voice Card Placeholder -->
-<div class="border-2 border-dashed border-outline-variant rounded-xl p-md flex flex-col items-center justify-center bg-surface-container-low hover:bg-surface-container hover:border-primary/50 transition-all cursor-pointer group" onclick="document.getElementById('voiceModal').style.display='flex'">
-<div class="w-12 h-12 rounded-full bg-white border border-outline-variant flex items-center justify-center mb-sm group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-primary">add</span>
-</div>
-<p class="font-title-lg text-title-lg text-on-surface-variant">新增音色</p>
-<p class="text-body-sm text-outline mt-xs">上传音频进行 AI 克隆</p>
+<div class="flex items-center justify-between mt-md">
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="page-info">共 0 个音色</p>
 </div>
 </div>
 </div>
 </main>
-<!-- Simple Interaction Overlay for Demo -->
-<div class="fixed inset-0 z-[60] flex items-center justify-center bg-black/20 pointer-events-none opacity-0 transition-opacity" id="play-overlay">
-<div class="bg-white p-lg rounded-full shadow-xl flex items-center gap-md border border-primary/20 pointer-events-auto">
-<div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-<div class="flex items-end gap-[2px] h-4">
-<div class="w-1 bg-white animate-[bounce_1s_infinite]"></div>
-<div class="w-1 bg-white animate-[bounce_0.8s_infinite]"></div>
-<div class="w-1 bg-white animate-[bounce_1.2s_infinite]"></div>
-<div class="w-1 bg-white animate-[bounce_0.9s_infinite]"></div>
-</div>
-</div>
-<p class="font-title-lg text-title-lg text-primary mr-sm">正在试听: 晓雅...</p>
-<button class="text-outline-variant hover:text-on-surface" onclick="hidePlayOverlay()">
-<span class="material-symbols-outlined">close</span>
-</button>
-</div>
-</div>
-<script>
-        function showPlayOverlay(name) {
-            const overlay = document.getElementById('play-overlay');
-            overlay.querySelector('p').innerText = `正在试听: ${name}...`;
-            overlay.classList.remove('opacity-0');
-            overlay.classList.add('opacity-100');
-            
-            // Auto hide after 3 seconds for realism
-            setTimeout(() => {
-                hidePlayOverlay();
-            }, 3000);
-        }
 
-        function hidePlayOverlay() {
-            const overlay = document.getElementById('play-overlay');
-            overlay.classList.remove('opacity-100');
-            overlay.classList.add('opacity-0');
-        }
-
-        // Add event listeners to play buttons
-        document.querySelectorAll('button').forEach(btn => {
-            if (btn.querySelector('.material-symbols-outlined')?.innerText === 'play_arrow') {
-                btn.addEventListener('click', (e) => {
-                    const card = e.target.closest('.voice-card-hover');
-                    const name = card.querySelector('h4').innerText.split('(')[0].trim();
-                    showPlayOverlay(name);
-                });
-            }
-        });
-    </script>
-
-
-<div class="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-50 flex items-center justify-center p-md hidden" id="voiceModal" style="display:none">
-<div class="bg-surface w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-<div class="px-lg py-md border-b border-outline-variant flex items-center justify-between bg-surface-bright">
-<div class="flex items-center gap-xs"><div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center"><span class="material-symbols-outlined text-primary">mic_external_on</span></div><h2 class="font-headline-sm text-headline-sm text-primary">新增音色</h2></div>
-<button class="text-on-surface-variant hover:bg-surface-container p-base rounded-full transition-colors" onclick="document.getElementById('voiceModal').style.display='none'"><span class="material-symbols-outlined">close</span></button>
-</div>
-<div class="flex-1 overflow-y-auto p-lg">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
-<div class="space-y-md">
-<div class="space-y-base"><label class="font-label-md text-on-surface-variant block">音色名称</label><input class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md" placeholder="输入名称，如：海南大学播报员" type="text"></div>
-<div class="grid grid-cols-2 gap-sm">
-<div class="space-y-base"><label class="font-label-md text-on-surface-variant block">性别</label><select class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md"><option>男</option><option>女</option><option>其他</option></select></div>
-<div class="space-y-base"><label class="font-label-md text-on-surface-variant block">语言</label><select class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md"><option>中文</option><option>英文</option><option>日语</option></select></div>
-</div>
-<div class="space-y-base"><label class="font-label-md text-on-surface-variant block">音色描述</label><textarea class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md resize-none" placeholder="描述该音色的特点，如：沉稳、亲切、适合学术报告..." rows="3"></textarea></div>
-</div>
-<div class="space-y-md flex flex-col">
-<label class="font-label-md text-on-surface-variant block">上传参考音频</label>
-<div class="flex-1 border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center p-lg bg-surface-container-low hover:bg-surface-container transition-all cursor-pointer group">
-<span class="material-symbols-outlined text-4xl text-primary mb-sm group-hover:scale-110 transition-transform">cloud_upload</span>
-<p class="text-body-sm font-semibold text-on-surface">点击或拖拽上传音频文件</p>
-<p class="text-label-md text-on-surface-variant mt-1 text-center">支持 MP3/WAV 格式，大小不超过10MB，时长30s-1min效果更佳</p>
-</div>
-</div>
-</div>
-<div class="mt-xl p-md bg-primary-fixed/30 rounded-xl border border-primary-fixed">
-<div class="flex items-center justify-between mb-md"><div class="flex items-center gap-xs"><span class="material-symbols-outlined text-primary">record_voice_over</span><span class="font-title-lg text-primary">预览与试听</span></div><button class="bg-primary text-on-primary px-md py-base rounded-lg text-sm font-bold flex items-center gap-xs hover:shadow-lg transition-all active:scale-95"><span class="material-symbols-outlined text-sm">auto_fix_high</span>生成试听</button></div>
-<div class="space-y-sm"><textarea class="w-full bg-surface border-none rounded-lg p-sm text-sm focus:ring-0" placeholder="在此输入试听文本..." rows="2">海南大学欢迎您的到来，在这里您可以体验最前沿的数字人克隆技术。</textarea>
-<div class="flex items-center gap-md bg-white p-sm rounded-lg border border-outline-variant"><button class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-on-primary hover:bg-primary-container transition-colors"><span class="material-symbols-outlined">play_arrow</span></button><div class="flex-1"><div class="flex items-center justify-between mb-1"><span class="text-[10px] font-bold text-on-surface-variant uppercase">Preview_Output_01.wav</span><span class="text-[10px] font-bold text-on-surface-variant">00:08 / 00:15</span></div><div class="h-1 bg-surface-container-highest rounded-full overflow-hidden"><div class="h-full bg-primary w-[45%]"></div></div></div><div class="flex items-end gap-[2px] h-6 px-sm"><div class="w-[3px] bg-primary rounded-sm animate-pulse" style="height:4px;animation-delay:0.1s;animation:bounce 0.8s ease-in-out infinite alternate"></div><div class="w-[3px] bg-primary rounded-sm animate-pulse" style="height:12px;animation-delay:0.3s;animation:bounce 0.6s ease-in-out infinite alternate"></div><div class="w-[3px] bg-primary rounded-sm animate-pulse" style="height:8px;animation-delay:0.2s;animation:bounce 0.7s ease-in-out infinite alternate"></div><div class="w-[3px] bg-primary rounded-sm animate-pulse" style="height:16px;animation-delay:0.4s;animation:bounce 0.5s ease-in-out infinite alternate"></div></div></div></div></div></div>
-<div class="px-lg py-md border-t border-outline-variant flex items-center justify-end gap-md bg-surface-bright">
-<button class="px-lg py-sm text-on-surface-variant font-bold hover:bg-surface-container rounded-lg transition-colors" onclick="document.getElementById('voiceModal').style.display='none'">取消</button>
-<button class="px-xl py-sm bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:opacity-90 active:scale-95 transition-all" onclick="alert('音色创建成功！');document.getElementById('voiceModal').style.display='none'">确认创建</button>
-</div>
-</div>
-</div>
-<!-- Custom Confirm Dialog -->
-<div class="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[100] flex items-center justify-center p-md hidden" id="confirmDialog">
-<div class="bg-surface w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-<div class="p-xl text-center">
-<div class="w-14 h-14 rounded-full bg-error-container flex items-center justify-center mx-auto mb-lg" id="confirmIcon"><span class="material-symbols-outlined text-error text-3xl">delete</span></div>
-<h3 class="font-headline-sm text-headline-sm text-on-surface mb-sm" id="confirmTitle">确认删除</h3>
-<p class="font-body-md text-body-md text-on-surface-variant mb-xl" id="confirmMsg">确定要删除此音色吗？此操作不可撤销。</p>
-<div class="flex gap-md">
-<button class="flex-1 px-lg py-sm border border-outline-variant text-on-surface-variant font-label-md text-label-md rounded-lg hover:bg-surface-container-low transition-colors" onclick="closeConfirm()">取消</button>
-<button class="flex-1 px-lg py-sm bg-error text-on-error font-label-md text-label-md rounded-lg hover:opacity-90 transition-all shadow-sm" id="confirmOk" onclick="closeConfirm()">确认删除</button>
-</div>
-</div>
-</div>
-</div>
-
-<!-- Custom Toast -->
-<div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[110] opacity-0 translate-y-4 transition-all duration-300 pointer-events-none" id="toast">
-<div class="bg-inverse-surface text-inverse-on-surface px-xl py-md rounded-2xl shadow-lg flex items-center gap-sm">
-<span class="material-symbols-outlined text-secondary">check_circle</span>
-<span class="font-label-md text-label-md" id="toastMsg">操作成功</span>
-</div>
-</div>
+<!-- 菜单容器 -->
+<div id="menu-root"></div>
+<!-- 弹窗容器 -->
+<div id="modal-root"></div>
+<!-- Toast -->
+<div id="toast-root"></div>
 
 <script>
-let confirmCallback = null;
+const GRADS = [
+  { from: '#d4e3ff', to: '#a5c8ff', c: '#005daa' },
+  { from: '#e3ffd0', to: '#b6f58b', c: '#266d00' },
+  { from: '#ffddb0', to: '#ffba45', c: '#7d5400' },
+  { from: '#e0f7fa', to: '#b2ebf2', c: '#006064' },
+  { from: '#fce4ec', to: '#f8bbd0', c: '#880e4f' },
+  { from: '#ede7f6', to: '#d1c4e9', c: '#4527a0' },
+  { from: '#fff9c4', to: '#ffe082', c: '#f57f17' },
+  { from: '#e8f5e9', to: '#c8e6c9', c: '#2e7d32' },
+];
 
-function showConfirm(title, msg, icon, iconColor, btnText, btnColor, callback) {
-    document.getElementById('confirmTitle').innerText = title;
-    document.getElementById('confirmMsg').innerText = msg;
-    document.getElementById('confirmIcon').innerHTML = '<span class="material-symbols-outlined text-3xl" style="color:'+iconColor+'">'+icon+'</span>';
-    const okBtn = document.getElementById('confirmOk');
-    okBtn.innerText = btnText;
-    okBtn.className = 'flex-1 px-lg py-sm font-label-md text-label-md rounded-lg hover:opacity-90 transition-all shadow-sm';
-    okBtn.classList.add(btnColor === 'error' ? 'bg-error text-on-error' : 'bg-primary text-on-primary');
-    confirmCallback = callback;
-    document.getElementById('confirmDialog').classList.remove('hidden');
-    document.getElementById('confirmDialog').style.display = 'flex';
+let voices = [
+  { id: 1, name: '晓雅', alias: '智慧导师', gender: '女', lang: '普通话', langKey: 'zh', group: '教育', type: '专业录音', typeKey: 'pro', desc: '温柔、知性、富有耐心', icon: 'face_3', grad: 0 },
+  { id: 2, name: '志远', alias: '新闻播音', gender: '男', lang: '普通话', langKey: 'zh', group: '新闻', type: '专业录音', typeKey: 'pro', desc: '稳重、专业、富有磁性', icon: 'face_6', grad: 1 },
+  { id: 3, name: '可儿', alias: '活力元气', gender: '女', lang: '普通话', langKey: 'zh', group: '营销', type: '预置风格', typeKey: 'preset', desc: '活泼、明快、富有感染力', icon: 'face_3', grad: 4 },
+  { id: 4, name: 'William', alias: 'English', gender: '男', lang: '英语', langKey: 'en', group: '商务', type: '专业录音', typeKey: 'pro', desc: '自然、流畅、标准英式口音', icon: 'face_6', grad: 3 },
+  { id: 5, name: '雅子', alias: '日语讲师', gender: '女', lang: '日语', langKey: 'intl', group: '教育', type: '克隆音色', typeKey: 'clone', desc: '柔和、亲切、适合语言教学', icon: 'face_3', grad: 5 },
+  { id: 6, name: '陈老师', alias: '学术专家', gender: '男', lang: '普通话', langKey: 'zh', group: '教育', type: '专业录音', typeKey: 'pro', desc: '严谨、沉稳、适合学术报告', icon: 'man', grad: 6 },
+  { id: 7, name: '安娜', alias: 'Anna', gender: '女', lang: '英语', langKey: 'en', group: '新闻', type: '克隆音色', typeKey: 'clone', desc: '清晰、自信、美式播音腔', icon: 'woman', grad: 7 },
+  { id: 8, name: '小明', alias: '青春活力', gender: '男', lang: '普通话', langKey: 'zh', group: '营销', type: '预置风格', typeKey: 'preset', desc: '阳光、朝气、适合年轻群体', icon: 'face_6', grad: 2 },
+  { id: 9, name: '玛丽', alias: 'Marie', gender: '女', lang: '法语', langKey: 'intl', group: '商务', type: '克隆音色', typeKey: 'clone', desc: '优雅、专业、法语商务口音', icon: 'face_3', grad: 0 },
+  { id: 10, name: '播音员', alias: '时政新闻', gender: '女', lang: '普通话', langKey: 'zh', group: '新闻', type: '专业录音', typeKey: 'pro', desc: '端庄、大气、适合时政播报', icon: 'face_3', grad: 3 },
+];
+
+let groups = ['教育', '新闻', '商务', '营销'];
+let view = 'grid';
+let category = 'all';
+let selected = new Set();
+
+function thumbStyle(i) { const g = GRADS[i % GRADS.length]; return `background:linear-gradient(135deg,${g.from},${g.to})`; }
+function thumbColor(i) { return GRADS[i % GRADS.length].c; }
+
+function filteredVoices() {
+  let list = [...voices];
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  if (q) list = list.filter(v => v.name.toLowerCase().includes(q) || v.alias.toLowerCase().includes(q));
+  if (category === 'pro' || category === 'clone' || category === 'preset') list = list.filter(v => v.typeKey === category);
+  else if (category === 'zh' || category === 'en' || category === 'intl') list = list.filter(v => v.langKey === category);
+  else if (category.startsWith('group-')) { const g = category.slice(6); list = list.filter(v => v.group === g); }
+  return list;
 }
 
-function closeConfirm() {
-    document.getElementById('confirmDialog').classList.add('hidden');
-    document.getElementById('confirmDialog').style.display = 'none';
+function render() {
+  const list = filteredVoices();
+  const container = document.getElementById('voice-list');
+  const empty = document.getElementById('empty-state');
+  document.getElementById('page-info').textContent = '共 ' + list.length + ' 个音色';
+  updateCounts();
+  if (list.length === 0) {
+    container.innerHTML = '';
+    container.classList.add('hidden');
+    empty.classList.remove('hidden'); empty.classList.add('flex');
+    return;
+  }
+  container.classList.remove('hidden');
+  empty.classList.add('hidden'); empty.classList.remove('flex');
+
+  if (view === 'grid') {
+    container.className = 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-lg';
+    container.innerHTML = list.map(v => `
+      <div class="voice-card">
+        <div class="p-md">
+          <div class="check" onclick="event.stopPropagation();toggleSelect(${v.id})">
+            <span class="cbx ${selected.has(v.id) ? 'checked' : ''}" id="cbx-${v.id}"><span class="material-symbols-outlined text-[14px]">check</span></span>
+          </div>
+          <div class="flex items-center gap-md mb-md mt-4">
+            <div class="relative shrink-0">
+              <div class="w-14 h-14 rounded-full flex items-center justify-center border-2 border-white shadow-sm" style="${thumbStyle(v.id)}">
+                <span class="material-symbols-outlined text-2xl" style="color:${thumbColor(v.id)}">${v.icon}</span>
+              </div>
+              <button class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity" onclick="event.stopPropagation();audition(${v.id})">
+                <span class="material-symbols-outlined text-white text-[20px]" style="font-variation-settings:'FILL' 1">play_arrow</span>
+              </button>
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-xs">
+                <h4 class="font-title-lg text-title-lg text-on-surface truncate">${v.name}</h4>
+                <button class="shrink-0 text-on-surface-variant hover:bg-surface-container rounded p-0.5 transition-colors ml-auto" onclick="event.stopPropagation();openMenu(event, ${v.id})"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+              </div>
+              <p class="text-body-sm text-body-sm text-on-surface-variant truncate">${v.desc}</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-xs mb-lg">
+            <span class="px-xs py-[2px] bg-primary/5 text-primary text-[11px] font-bold rounded-lg border border-primary/10">${v.gender}</span>
+            <span class="px-xs py-[2px] bg-secondary/5 text-secondary text-[11px] font-bold rounded-lg border border-secondary/10">${v.lang}</span>
+            <span class="px-xs py-[2px] bg-tertiary/5 text-tertiary text-[11px] font-bold rounded-lg border border-tertiary/10">${v.group}</span>
+          </div>
+          <div class="flex gap-sm">
+            <button class="flex-1 bg-primary text-white py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:opacity-90 transition-colors" onclick="event.stopPropagation();useVoice(${v.id})">
+              <span class="material-symbols-outlined text-[16px]">check_circle</span>使用此音色
+            </button>
+            <button class="px-md bg-surface-container text-on-surface-variant rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors flex items-center justify-center" onclick="event.stopPropagation();audition(${v.id})">
+              <span class="material-symbols-outlined">play_arrow</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    container.className = 'grid grid-cols-1 gap-0 bg-surface rounded-xl border border-surface-variant overflow-hidden';
+    container.innerHTML = `
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead><tr class="bg-surface-container-low border-b border-surface-variant">
+            <th class="px-lg py-md w-10"></th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">音色名称</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">类型</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">语言</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">分组</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase text-right">操作</th>
+          </tr></thead>
+          <tbody class="divide-y divide-surface-variant">
+          ${list.map(v => `
+            <tr class="hover:bg-surface-container-lowest transition-colors">
+              <td class="px-lg py-md" onclick="toggleSelect(${v.id})">
+                <span class="cbx ${selected.has(v.id) ? 'checked' : ''}" id="cbx-${v.id}"><span class="material-symbols-outlined text-[14px]">check</span></span>
+              </td>
+              <td class="px-lg py-md">
+                <div class="flex items-center gap-md">
+                  <div class="w-11 h-11 rounded-full flex items-center justify-center shrink-0 border-2 border-white shadow-sm" style="${thumbStyle(v.id)}"><span class="material-symbols-outlined" style="color:${thumbColor(v.id)}">${v.icon}</span></div>
+                  <div><p class="font-title-lg text-title-lg text-on-surface">${v.name} <span class="text-on-surface-variant font-normal text-body-sm">(${v.alias})</span></p><p class="font-body-sm text-body-sm text-on-surface-variant">${v.desc}</p></div>
+                </div>
+              </td>
+              <td class="px-lg py-md"><span class="px-base py-[2px] bg-surface-variant text-on-surface-variant rounded font-label-md text-label-md">${v.type}</span></td>
+              <td class="px-lg py-md"><span class="font-body-md text-body-md text-on-surface">${v.lang}</span></td>
+              <td class="px-lg py-md"><span class="px-base py-[2px] bg-primary-fixed text-on-primary-fixed-variant rounded font-label-md text-label-md">${v.group}</span></td>
+              <td class="px-lg py-md text-right">
+                <div class="flex items-center justify-end gap-sm">
+                  <button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="试听" onclick="audition(${v.id})"><span class="material-symbols-outlined">play_arrow</span></button>
+                  <button class="p-base hover:bg-surface-container-high rounded text-primary" title="使用" onclick="useVoice(${v.id})"><span class="material-symbols-outlined">check_circle</span></button>
+                  <button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="更多" onclick="openMenu(event, ${v.id})"><span class="material-symbols-outlined">more_vert</span></button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+  updateSelectAll();
+  updateBatchBar();
 }
 
-document.getElementById('confirmOk').addEventListener('click', function() {
-    if (confirmCallback) confirmCallback();
-    closeConfirm();
-});
-
-function showToast(msg) {
-    document.getElementById('toastMsg').innerText = msg;
-    const toast = document.getElementById('toast');
-    toast.classList.remove('opacity-0', 'translate-y-4');
-    setTimeout(() => toast.classList.add('opacity-0', 'translate-y-4'), 2000);
+function updateCounts() {
+  document.getElementById('count-all').textContent = voices.length;
+  document.getElementById('count-pro').textContent = voices.filter(v => v.typeKey === 'pro').length;
+  document.getElementById('count-clone').textContent = voices.filter(v => v.typeKey === 'clone').length;
+  document.getElementById('count-preset').textContent = voices.filter(v => v.typeKey === 'preset').length;
+  document.getElementById('count-zh').textContent = voices.filter(v => v.langKey === 'zh').length;
+  document.getElementById('count-en').textContent = voices.filter(v => v.langKey === 'en').length;
+  document.getElementById('count-intl').textContent = voices.filter(v => v.langKey === 'intl').length;
 }
 
+function renderGroups() {
+  const el = document.getElementById('group-list');
+  el.innerHTML = groups.map(g => `
+    <div class="cat-item ${category === 'group-' + g ? 'active' : ''}" data-cat="group-${g}" onclick="setCategory('group-${g}', this)">
+      <span class="material-symbols-outlined text-[18px]">folder</span><span class="truncate">${g}</span>
+      <span class="count">${voices.filter(v => v.group === g).length}</span>
+    </div>`).join('');
+}
+
+function setCategory(cat, el) {
+  category = cat;
+  document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  render();
+}
+
+function switchView(v) {
+  view = v;
+  document.getElementById('view-grid').classList.toggle('active', v === 'grid');
+  document.getElementById('view-list').classList.toggle('active', v === 'list');
+  render();
+}
+
+function applyFilters() { render(); }
+
+function toggleSelect(id) {
+  if (selected.has(id)) selected.delete(id); else selected.add(id);
+  document.getElementById('cbx-' + id)?.classList.toggle('checked', selected.has(id));
+  updateSelectAll(); updateBatchBar();
+}
+
+function toggleSelectAll() {
+  const list = filteredVoices();
+  if (selected.size === list.length && list.length > 0) selected.clear();
+  else list.forEach(v => selected.add(v.id));
+  render();
+}
+
+function updateSelectAll() {
+  const list = filteredVoices();
+  document.getElementById('select-all-cbx').classList.toggle('checked', list.length > 0 && selected.size === list.length);
+}
+
+function updateBatchBar() {
+  const bar = document.getElementById('batch-bar');
+  if (selected.size > 0) { bar.classList.remove('hidden'); document.getElementById('batch-count').textContent = selected.size; }
+  else bar.classList.add('hidden');
+}
+
+function clearSelection() { selected.clear(); render(); }
+
+function audition(id) {
+  const v = voices.find(x => x.id === id);
+  toast('正在试听：' + v.name + '（' + v.alias + '）', 'success');
+  if ('speechSynthesis' in window) {
+    try { const u = new SpeechSynthesisUtterance('海南大学欢迎您的到来。'); u.lang = v.langKey === 'en' ? 'en-US' : v.langKey === 'intl' ? 'ja-JP' : 'zh-CN'; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {}
+  }
+}
+
+function useVoice(id) {
+  const v = voices.find(x => x.id === id);
+  toast('已应用音色「' + v.name + '」到默认数字人', 'success');
+}
+
+function openMenu(event, id) {
+  closeMenu();
+  const v = voices.find(x => x.id === id);
+  const menu = document.createElement('div');
+  menu.className = 'menu-pop';
+  menu.id = 'menu-pop';
+  menu.innerHTML = `
+    <button onclick="audition(${id})"><span class="material-symbols-outlined text-[18px]">play_arrow</span>试听</button>
+    <button onclick="useVoice(${id});closeMenu()"><span class="material-symbols-outlined text-[18px]">check_circle</span>使用此音色</button>
+    <button onclick="renameVoice(${id})"><span class="material-symbols-outlined text-[18px]">edit</span>重命名</button>
+    <div class="divider"></div>
+    <button onclick="moveVoice(${id})"><span class="material-symbols-outlined text-[18px]">drive_file_move</span>移动到分组</button>
+    <div class="divider"></div>
+    <button class="danger" onclick="deleteVoice(${id})"><span class="material-symbols-outlined text-[18px]">delete</span>删除</button>`;
+  document.getElementById('menu-root').appendChild(menu);
+  const rect = event.currentTarget.getBoundingClientRect();
+  menu.style.top = rect.bottom + 4 + 'px';
+  menu.style.left = Math.min(rect.left, window.innerWidth - 200) + 'px';
+  document.addEventListener('click', outsideMenu);
+}
+function closeMenu() { document.getElementById('menu-pop')?.remove(); document.removeEventListener('click', outsideMenu); }
+function outsideMenu(e) { if (!e.target.closest('.menu-pop')) closeMenu(); }
+
+function renameVoice(id) {
+  closeMenu();
+  const v = voices.find(x => x.id === id);
+  openModal('重命名音色', `
+    <label class="block text-sm text-on-surface-variant mb-1">音色名称</label>
+    <input id="modal-input" class="w-full px-md py-sm border border-outline-variant rounded-lg text-sm focus:border-primary focus:ring-2 focus:ring-primary/20" value="${v.name}" type="text">
+  `, () => {
+    const nv = document.getElementById('modal-input').value.trim();
+    if (!nv) { toast('名称不能为空', 'error'); return; }
+    v.name = nv; toast('重命名成功', 'success'); render();
+  });
+}
+
+function moveVoice(id) {
+  closeMenu();
+  const v = voices.find(x => x.id === id);
+  openModal('移动到分组', `
+    <div class="space-y-2">
+      ${groups.map(g => `<label class="flex items-center gap-sm p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-primary/5 transition-colors"><input type="radio" name="group" value="${g}" ${v.group === g ? 'checked' : ''} class="text-primary focus:ring-primary"> <span class="text-sm">${g}</span></label>`).join('')}
+    </div>
+  `, () => {
+    const sel = document.querySelector('input[name="group"]:checked');
+    if (sel) { v.group = sel.value; toast('已移动到「' + v.group + '」', 'success'); renderGroups(); render(); }
+  });
+}
+
+function deleteVoice(id) {
+  closeMenu();
+  openModal('删除音色', `<p class="text-sm text-on-surface-variant">确定要删除「${voices.find(v => v.id === id).name}」吗？此操作不可撤销。</p>`, () => {
+    voices = voices.filter(v => v.id !== id);
+    selected.delete(id);
+    toast('已删除', 'success'); renderGroups(); render();
+  }, '删除', true);
+}
+
+function batchMove() {
+  openModal('批量移动到分组', `
+    <div class="space-y-2">
+      ${groups.map(g => `<label class="flex items-center gap-sm p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-primary/5 transition-colors"><input type="radio" name="group" value="${g}" class="text-primary focus:ring-primary"> <span class="text-sm">${g}</span></label>`).join('')}
+    </div>
+  `, () => {
+    const sel = document.querySelector('input[name="group"]:checked');
+    if (sel) { voices.forEach(v => { if (selected.has(v.id)) v.group = sel.value; }); toast('已移动 ' + selected.size + ' 个音色', 'success'); clearSelection(); renderGroups(); }
+  });
+}
+
+function batchDelete() {
+  openModal('批量删除', `<p class="text-sm text-on-surface-variant">确定要删除选中的 ${selected.size} 个音色吗？此操作不可撤销。</p>`, () => {
+    voices = voices.filter(v => !selected.has(v.id));
+    selected.clear();
+    toast('已批量删除', 'success'); renderGroups(); render();
+  }, '删除', true);
+}
+
+function openGroupModal() {
+  openModal('新建分组', `
+    <label class="block text-sm text-on-surface-variant mb-1">分组名称</label>
+    <input id="modal-input" class="w-full px-md py-sm border border-outline-variant rounded-lg text-sm focus:border-primary focus:ring-2 focus:ring-primary/20" placeholder="例如：少儿课程" type="text">
+  `, () => {
+    const nv = document.getElementById('modal-input').value.trim();
+    if (!nv) { toast('名称不能为空', 'error'); return; }
+    if (groups.includes(nv)) { toast('分组已存在', 'error'); return; }
+    groups.push(nv); toast('分组已创建', 'success'); renderGroups();
+  });
+}
+
+function openVoiceModal() {
+  openModal('新增音色', `
+    <div class="space-y-md">
+      <div class="space-y-base"><label class="font-label-md text-on-surface-variant block">音色名称</label><input id="voice-name" class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md" placeholder="输入名称，如：海南大学播报员" type="text"></div>
+      <div class="grid grid-cols-2 gap-sm">
+        <div class="space-y-base"><label class="font-label-md text-on-surface-variant block">性别</label><select id="voice-gender" class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md"><option>女</option><option>男</option></select></div>
+        <div class="space-y-base"><label class="font-label-md text-on-surface-variant block">语言</label><select id="voice-lang" class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md"><option>普通话</option><option>英语</option><option>日语</option><option>法语</option></select></div>
+      </div>
+      <div class="space-y-base"><label class="font-label-md text-on-surface-variant block">音色描述</label><textarea id="voice-desc" class="w-full border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-sm py-xs text-body-md resize-none" placeholder="描述该音色的特点，如：沉稳、亲切、适合学术报告..." rows="2"></textarea></div>
+      <div class="border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center p-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition-all">
+        <span class="material-symbols-outlined text-4xl text-primary mb-sm">cloud_upload</span>
+        <p class="text-body-sm font-semibold text-on-surface">点击或拖拽上传参考音频</p>
+        <p class="text-label-md text-on-surface-variant mt-1 text-center">支持 MP3/WAV 格式，时长 30s-1min 效果更佳</p>
+      </div>
+    </div>
+  `, () => {
+    const name = document.getElementById('voice-name').value.trim();
+    if (!name) { toast('请输入音色名称', 'error'); return; }
+    const gender = document.getElementById('voice-gender').value;
+    const lang = document.getElementById('voice-lang').value;
+    const desc = document.getElementById('voice-desc').value.trim() || '新克隆音色';
+    voices.push({ id: Date.now(), name, alias: '新音色', gender, lang, langKey: lang === '普通话' ? 'zh' : lang === '英语' ? 'en' : 'intl', group: '教育', type: '克隆音色', typeKey: 'clone', desc, icon: gender === '女' ? 'face_3' : 'face_6', grad: Math.floor(Math.random() * GRADS.length) });
+    toast('音色创建成功', 'success'); renderGroups(); render();
+  }, '确认创建');
+}
+
+function openModal(title, bodyHtml, onConfirm, confirmLabel = '确认', danger = false) {
+  closeModal();
+  const mask = document.createElement('div');
+  mask.className = 'modal-mask';
+  mask.id = 'modal';
+  mask.innerHTML = `
+    <div class="modal-panel overflow-hidden">
+      <div class="px-lg py-md border-b border-outline-variant flex justify-between items-center bg-surface">
+        <h3 class="font-title-lg text-title-lg text-on-surface font-semibold">${title}</h3>
+        <button class="text-on-surface-variant hover:text-primary p-1 rounded transition-colors" onclick="closeModal()"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="p-lg">${bodyHtml}</div>
+      <div class="px-lg py-md border-t border-outline-variant bg-surface flex justify-end gap-sm">
+        <button class="px-md py-2 rounded-lg text-sm text-on-surface-variant border border-outline-variant hover:bg-surface-container-high transition-colors" onclick="closeModal()">取消</button>
+        <button class="px-md py-2 rounded-lg text-sm ${danger ? 'bg-error text-on-error hover:opacity-90' : 'bg-primary text-on-primary hover:opacity-90'} transition-colors" onclick="modalConfirm()">${confirmLabel}</button>
+      </div>
+    </div>`;
+  mask.addEventListener('click', e => { if (e.target === mask) closeModal(); });
+  mask._onConfirm = onConfirm;
+  document.getElementById('modal-root').appendChild(mask);
+}
+function modalConfirm() { const m = document.getElementById('modal'); if (m && m._onConfirm) m._onConfirm(); closeModal(); }
+function closeModal() { document.getElementById('modal')?.remove(); }
+
+function toast(msg, type = 'success') {
+  const root = document.getElementById('toast-root');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = `<span class="material-symbols-outlined text-[18px]">${type === 'error' ? 'error' : 'check_circle'}</span>${msg}`;
+  root.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 300); }, 2400);
+}
+
+renderGroups();
+render();
 </script>
 </body></html>
