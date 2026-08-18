@@ -1,232 +1,469 @@
 <!DOCTYPE html><html class="light" lang="zh-CN"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>数字人形象管理 - Digital Human AI</title>
+<title>数字人模型管理 - Digital Human AI</title>
 <link rel="stylesheet" href="../assets/css/tailwind.css">
 <link rel="stylesheet" href="../assets/css/fonts.css">
 <style>
-    body {
-        background-color: #f0f2f5;
-        color: #1b1c1c;
-    }
-    .sidebar-active {
-        background-color: #d4e3ff;
-        color: #001c3a;
-        border-right: 4px solid #005daa;
-    }
-    .material-symbols-outlined.fill {
-        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    }
+.sidebar-active { background-color: #d4e3ff; color: #001c3a; border-right: 4px solid #005daa; }
+body { font-family: 'Inter', 'Noto Sans SC', sans-serif; background-color: #f0f2f5; }
+.cat-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; color: #404753; font-size: 13px; transition: all .15s; }
+.cat-item:hover { background: #e7eefd; color: #004581; }
+.cat-item.active { background: #d4e3ff; color: #001c3a; font-weight: 600; }
+.cat-item .count { margin-left: auto; font-size: 11px; color: #707785; }
+.cat-item.active .count { color: #004785; }
+.avatar-card { position: relative; border-radius: 12px; overflow: hidden; background: #fff; border: 1px solid #e3e2e2; cursor: pointer; transition: all .18s; }
+.avatar-card:hover { box-shadow: 0 8px 24px rgba(0,28,58,.12); transform: translateY(-2px); border-color: #a5c8ff; }
+.avatar-card .thumb { position: relative; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; }
+.avatar-card .check { position: absolute; top: 8px; left: 8px; z-index: 10; }
+.menu-pop { position: absolute; z-index: 60; background: #fff; border: 1px solid #e3e2e2; border-radius: 10px; box-shadow: 0 12px 32px rgba(0,28,58,.18); min-width: 180px; padding: 6px; animation: pop-in .16s ease; }
+.menu-pop button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 12px; border-radius: 7px; font-size: 13px; color: #1b1c1c; text-align: left; }
+.menu-pop button:hover { background: #f4f3f3; }
+.menu-pop button.danger { color: #ba1a1a; }
+.menu-pop button.danger:hover { background: #ffdad6; }
+.menu-pop .divider { height: 1px; background: #e3e2e2; margin: 4px 8px; }
+@keyframes pop-in { from { transform: scale(.95); opacity: 0; } }
+.cbx { width: 18px; height: 18px; border-radius: 5px; border: 2px solid #c0c7d6; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; transition: all .15s; }
+.cbx.checked { background: #005daa; border-color: #005daa; }
+.view-btn { padding: 7px 10px; border-radius: 8px; cursor: pointer; color: #404753; transition: all .15s; }
+.view-btn.active { background: #005daa; color: #fff; }
+.dot { width: 7px; height: 7px; border-radius: 50%; }
+.dot.enabled { background: #266d00; }
+.dot.disabled { background: #ba1a1a; }
+.batch-bar { animation: slide-up .2s ease; }
+@keyframes slide-up { from { transform: translateY(8px); opacity: 0; } }
+#toast-root { position: fixed; top: 80px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+.toast { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; background: #2f3031; color: #f2f0f0; font-size: 13px; box-shadow: 0 8px 24px rgba(0,28,58,.18); animation: toast-in .25s ease; }
+.toast.success { border-left: 4px solid #266d00; }
+.toast.error { border-left: 4px solid #ba1a1a; }
+@keyframes toast-in { from { transform: translateX(40px); opacity: 0; } }
+.modal-mask { position: fixed; inset: 0; z-index: 100; background: rgba(27,28,28,.45); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; }
+.modal-panel { background: #fff; border-radius: 14px; box-shadow: 0 20px 60px rgba(0,28,58,.25); width: 420px; max-width: 92vw; animation: pop-in .2s ease; }
 </style>
 </head>
 <body class="font-body-md text-body-md overflow-x-hidden">
-<!-- SideNavBar -->
-<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50">
-<div class="px-6 py-8 flex flex-col items-center">
-<img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png">
-<h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1>
-<p class="font-label-md text-label-md text-outline">Hainan University</p>
-</div>
-<nav class="flex-1 mt-4 px-3 space-y-1">
-<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html">
-<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
-<span class="font-label-md text-label-md">业务总览</span>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html">
-<span class="material-symbols-outlined mr-3" data-icon="video_call">video_call</span>
-<span class="font-label-md text-label-md">微课智能体</span>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html">
-<span class="material-symbols-outlined mr-3">video_library</span>
-<span class="font-label-md text-label-md">视频管理</span>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html">
-<span class="material-symbols-outlined mr-3" data-icon="folder_open">folder_open</span>
-<span class="font-label-md text-label-md">资产管理</span>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html">
-<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
-<span class="font-label-md text-label-md">系统设置</span>
-</a>
-</nav>
-<div class="p-4 mt-auto">
-<div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3">
-<div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm">
-<img class="w-full h-full object-cover" data-alt="A professional business headshot of a university administrator in a modern office, bright natural lighting, corporate aesthetic, clean light-mode environment." src="../assets/images/user-avatar.png">
-</div>
-<div class="flex-1 min-w-0">
-<p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p>
-<p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p>
-</div>
-<span class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer" data-icon="logout">logout</span>
-</div>
-</div>
-</aside>
-<!-- TopNavBar -->
-<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest">
-<div class="flex items-center gap-4">
-<div class="flex items-center text-outline font-body-sm text-body-sm">
-<a href="index.html" class="hover:text-primary transition-colors">业务总览</a>
-<span class="material-symbols-outlined text-sm mx-2" data-icon="chevron_right">chevron_right</span>
-<a href="asset-management.html" class="hover:text-primary transition-colors">资产管理</a>
-<span class="material-symbols-outlined text-sm mx-2" data-icon="chevron_right">chevron_right</span>
-<span class="text-primary font-bold">数字人形象管理</span>
-</div>
-</div>
-<div class="flex items-center gap-6">
-<div class="relative group">
-<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-<span class="material-symbols-outlined text-outline text-lg" data-icon="search">search</span>
-</div>
-<input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索资源或项目..." type="text">
-</div>
-<div class="flex items-center gap-4 text-on-surface-variant">
-<a href="notifications.html" class="relative hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span>
-</a>
-<a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1">
-<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
-<span class="font-body-sm text-body-sm">帮助</span>
-</a>
-</div>
-</div>
-</header>
-<!-- Main Content Area -->
-<main class="ml-sidebar-width mt-16 p-xl min-h-[calc(100vh-64px)]"" style="width:calc(100% - 240px)">
-<!-- Page Header -->
-<section class="mb-xl flex flex-col md:flex-row md:items-end justify-between gap-4">
+<!-- 共享 Sidebar -->
+<aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50"><div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div><nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav><div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
+<!-- 共享 Header -->
+<header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest"><div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="asset-management.html" class="hover:text-primary transition-colors">资产管理</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">数字人模型管理</span></div></div><div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
+<!-- 主内容区 -->
+<main class="ml-sidebar-width mt-16 p-xl" style="width:calc(100% - 240px)">
+<!-- 页头 -->
+<div class="mb-lg flex justify-between items-end">
 <div>
-<h1 class="font-display-lg text-display-lg text-on-surface mb-2">数字人形象管理</h1>
-<p class="font-body-sm text-body-sm text-outline">管理您的数字人形象库，支持 2D、3D 和 2.5D 类型</p>
+<h2 class="font-headline-md text-headline-md text-on-background">数字人模型管理</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-base">管理 2D / 3D / 2.5D 数字人分身，支持形象定制、动作编排与分组归类。</p>
 </div>
-<button class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center gap-2" onclick="window.location.href='add-digital-human.html'">
-<span class="material-symbols-outlined text-lg">add</span>
-新增形象
+<button class="flex items-center gap-xs bg-primary text-on-primary px-md py-sm rounded-lg font-title-lg hover:opacity-90 transition-opacity" onclick="window.location.href='add-digital-human.html'">
+<span class="material-symbols-outlined">add</span>新增形象
 </button>
-</section>
-<!-- Search / Filter Bar -->
-<section class="bg-surface p-lg rounded-xl border border-surface-container-highest mb-xl">
-<div class="flex flex-wrap items-center gap-4">
-<div class="relative flex-1 min-w-[200px]">
-<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-<span class="material-symbols-outlined text-outline text-lg" data-icon="search">search</span>
 </div>
-<input class="block w-full pl-10 pr-3 py-2 bg-surface-container border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/10 rounded-lg font-body-sm text-body-sm transition-all outline-none" placeholder="搜索形象名称..." type="text">
+
+<div class="flex gap-lg items-start">
+<!-- 左侧分类侧栏 -->
+<div class="w-56 shrink-0 bg-surface rounded-xl border border-surface-variant p-sm sticky top-20">
+<div class="px-sm pt-xs pb-sm">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider px-1 mb-1">模型库</p>
+<div class="cat-item active" data-cat="all" onclick="setCategory('all', this)"><span class="material-symbols-outlined text-[18px]">person_apron</span>全部模型<span class="count" id="count-all"></span></div>
 </div>
-<select class="px-4 py-2 bg-surface-container border border-outline-variant rounded-lg font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none cursor-pointer">
-<option value="">全部类型</option>
-<option value="2d">2D真身</option>
-<option value="3d">3D超写实</option>
-<option value="2.5d">2.5D</option>
-</select>
-<select class="px-4 py-2 bg-surface-container border border-outline-variant rounded-lg font-body-sm text-body-sm text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none cursor-pointer">
-<option value="">全部状态</option>
-<option value="enabled">已启用</option>
-<option value="disabled">已禁用</option>
-</select>
-<button class="px-4 py-2 border border-outline-variant rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors">重置</button>
-<button class="px-6 py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors">查询</button>
+<div class="px-sm py-sm">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider px-1 mb-1">类型</p>
+<div class="cat-item" data-cat="2d" onclick="setCategory('2d', this)"><span class="material-symbols-outlined text-[18px]">face_3</span>2D 真身<span class="count" id="count-2d"></span></div>
+<div class="cat-item" data-cat="3d" onclick="setCategory('3d', this)"><span class="material-symbols-outlined text-[18px]">face_6</span>3D 超写实<span class="count" id="count-3d"></span></div>
+<div class="cat-item" data-cat="2.5d" onclick="setCategory('2.5d', this)"><span class="material-symbols-outlined text-[18px]">smart_toy</span>2.5D 动漫<span class="count" id="count-25d"></span></div>
 </div>
-</section>
-<!-- Bento Grid: Avatar Cards -->
-<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-xl">
-<!-- Card 1: 晓晓 - 2D真身, enabled -->
-<div class="bg-surface rounded-xl border border-surface-container-highest overflow-hidden group hover:shadow-lg transition-shadow">
-<div class="relative aspect-video bg-surface-container overflow-hidden">
-<img class="w-full h-full object-cover" src="../assets/images/video-thumbnail.svg" data-alt="A friendly 2D digital human avatar with a warm smile, standing in front of a modern classroom setting, soft lighting, professional educational context.">
-<div class="absolute top-3 right-3">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/80 text-on-secondary-container text-[10px] font-bold border border-secondary-container backdrop-blur">已启用</span>
+<div class="px-sm py-sm">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider px-1 mb-1">状态</p>
+<div class="cat-item" data-cat="enabled" onclick="setCategory('enabled', this)"><span class="dot enabled"></span>已启用<span class="count" id="count-enabled"></span></div>
+<div class="cat-item" data-cat="disabled" onclick="setCategory('disabled', this)"><span class="dot disabled"></span>已禁用<span class="count" id="count-disabled"></span></div>
 </div>
-<div class="absolute bottom-3 left-3">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface/80 text-on-surface-variant text-[10px] font-medium border border-outline-variant/30 backdrop-blur">2D真身</span>
+<div class="px-sm py-sm">
+<div class="flex items-center justify-between px-1 mb-1">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider">分组</p>
+<button class="text-primary hover:bg-primary/10 p-1 rounded transition-colors" title="新建分组" onclick="openGroupModal()"><span class="material-symbols-outlined text-[16px]">create_new_folder</span></button>
+</div>
+<div id="group-list"></div>
 </div>
 </div>
-<div class="p-lg">
-<div class="flex items-start justify-between mb-2">
-<h3 class="font-title-lg text-title-lg text-on-surface">晓晓</h3>
-<div class="flex gap-1">
+
+<!-- 右侧内容区 -->
+<div class="flex-1 min-w-0 flex flex-col gap-md">
+<!-- 工具栏 -->
+<div class="bg-surface rounded-xl border border-surface-variant p-md flex flex-wrap items-center justify-between gap-md">
+<div class="flex items-center gap-sm">
+<div class="flex bg-surface-container rounded-lg p-0.5">
+<button class="view-btn active flex items-center gap-xs" id="view-grid" onclick="switchView('grid')"><span class="material-symbols-outlined text-[18px]">grid_view</span></button>
+<button class="view-btn flex items-center gap-xs" id="view-list" onclick="switchView('list')"><span class="material-symbols-outlined text-[18px]">view_list</span></button>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+<input id="search-input" class="pl-9 pr-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg text-sm w-56 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="搜索模型名称..." type="text" oninput="applyFilters()">
 </div>
 </div>
-<p class="font-body-sm text-body-sm text-outline mb-3">女性，知性风格，适用于教学场景</p>
-<div class="flex items-center gap-2">
-<span class="font-label-md text-label-md text-outline">创建于 2023-08-15</span>
+<label class="flex items-center gap-xs cursor-pointer select-none ml-2">
+<span class="cbx" id="select-all-cbx" onclick="toggleSelectAll()"><span class="material-symbols-outlined text-[14px]">check</span></span>
+<span class="text-sm text-on-surface-variant">全选</span>
+</label>
 </div>
-<div class="flex gap-2 mt-5 pt-4 border-t border-surface-container-highest">
-<button class="flex-1 py-1.5 px-2 bg-surface-container-low hover:bg-surface-variant rounded text-on-surface font-body-sm text-body-sm transition-colors flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[16px]">visibility</span>预览</button>
-<a href="digital-human-config.html" class="flex-1 py-1.5 px-2 bg-surface-container-low hover:bg-surface-variant rounded text-on-surface font-body-sm text-body-sm transition-colors flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[16px]">tune</span>配置</a>
-<button class="p-1.5 hover:bg-error-container text-on-surface-variant hover:text-error rounded transition-colors flex items-center justify-center" title="删除"><span class="material-symbols-outlined text-[18px]">delete</span></button>
-</div>
-</div>
-</div>
-<!-- Card 2: 杰克 - 3D超写实, enabled -->
-<div class="bg-surface rounded-xl border border-surface-container-highest overflow-hidden group hover:shadow-lg transition-shadow">
-<div class="relative aspect-video bg-surface-container overflow-hidden">
-<img class="w-full h-full object-cover" src="../assets/images/video-thumbnail.svg" data-alt="A realistic 3D Caucasian male digital human avatar in a business casual outfit, confident expression, modern studio lighting, high-quality render for corporate training videos.">
-<div class="absolute top-3 right-3">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/80 text-on-secondary-container text-[10px] font-bold border border-secondary-container backdrop-blur">已启用</span>
-</div>
-<div class="absolute bottom-3 left-3">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface/80 text-on-surface-variant text-[10px] font-medium border border-outline-variant/30 backdrop-blur">3D超写实</span>
-</div>
-</div>
-<div class="p-lg">
-<div class="flex items-start justify-between mb-2">
-<h3 class="font-title-lg text-title-lg text-on-surface">杰克</h3>
-<div class="flex gap-1">
-</div>
-</div>
-<p class="font-body-sm text-body-sm text-outline mb-3">男性，商务风格，适用于企业培训</p>
-<div class="flex items-center gap-2">
-<span class="font-label-md text-label-md text-outline">创建于 2023-09-01</span>
-</div>
-<div class="flex gap-2 mt-5 pt-4 border-t border-surface-container-highest">
-<button class="flex-1 py-1.5 px-2 bg-surface-container-low hover:bg-surface-variant rounded text-on-surface font-body-sm text-body-sm transition-colors flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[16px]">visibility</span>预览</button>
-<a href="digital-human-config.html" class="flex-1 py-1.5 px-2 bg-surface-container-low hover:bg-surface-variant rounded text-on-surface font-body-sm text-body-sm transition-colors flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[16px]">tune</span>配置</a>
-<button class="p-1.5 hover:bg-error-container text-on-surface-variant hover:text-error rounded transition-colors flex items-center justify-center" title="删除"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+<!-- 批量操作栏 -->
+<div class="batch-bar bg-primary-fixed border border-primary/30 rounded-xl p-md hidden" id="batch-bar">
+<div class="flex items-center justify-between">
+<span class="text-sm font-semibold text-on-primary-fixed">已选 <span id="batch-count">0</span> 项</span>
+<div class="flex items-center gap-sm">
+<button class="px-md py-sm rounded-lg bg-surface text-on-surface text-sm hover:bg-surface-container-high transition-colors flex items-center gap-xs" onclick="batchEnable()"><span class="material-symbols-outlined text-[18px]">check_circle</span>启用</button>
+<button class="px-md py-sm rounded-lg bg-surface text-on-surface text-sm hover:bg-surface-container-high transition-colors flex items-center gap-xs" onclick="batchDisable()"><span class="material-symbols-outlined text-[18px]">block</span>禁用</button>
+<button class="px-md py-sm rounded-lg bg-surface text-on-surface text-sm hover:bg-surface-container-high transition-colors flex items-center gap-xs" onclick="batchMove()"><span class="material-symbols-outlined text-[18px]">drive_file_move</span>移动分组</button>
+<button class="px-md py-sm rounded-lg bg-error text-on-error text-sm hover:opacity-90 transition-colors flex items-center gap-xs" onclick="batchDelete()"><span class="material-symbols-outlined text-[18px]">delete</span>批量删除</button>
+<button class="p-1 rounded text-on-primary-fixed-variant hover:bg-primary/20 transition-colors" onclick="clearSelection()"><span class="material-symbols-outlined text-[18px]">close</span></button>
 </div>
 </div>
 </div>
-<!-- Card 3: 小智 - 2.5D, disabled -->
-<div class="bg-surface rounded-xl border border-surface-container-highest overflow-hidden group hover:shadow-lg transition-shadow">
-<div class="relative aspect-video bg-surface-container overflow-hidden">
-<img class="w-full h-full object-cover grayscale opacity-60" src="../assets/images/video-thumbnail.svg" data-alt="A cartoon-style 2.5D digital human avatar with expressive features, colorful illustrative design, friendly and approachable appearance, educational content creation.">
-<div class="absolute top-3 right-3">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container/80 text-outline text-[10px] font-bold border border-outline-variant/30 backdrop-blur">已禁用</span>
+<!-- 模型列表 -->
+<div id="model-list" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-lg"></div>
+<div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
+<span class="material-symbols-outlined text-6xl text-outline mb-md">person_search</span>
+<p class="text-on-surface-variant text-body-md">没有找到匹配的模型</p>
 </div>
-<div class="absolute bottom-3 left-3">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface/80 text-on-surface-variant text-[10px] font-medium border border-outline-variant/30 backdrop-blur">2.5D</span>
-</div>
-</div>
-<div class="p-lg">
-<div class="flex items-start justify-between mb-2">
-<h3 class="font-title-lg text-title-lg text-on-surface">小智</h3>
-<div class="flex gap-1">
-</div>
-</div>
-<p class="font-body-sm text-body-sm text-outline mb-3">卡通风格，适用于趣味教学</p>
-<div class="flex items-center gap-2">
-<span class="font-label-md text-label-md text-outline">创建于 2023-07-20</span>
-</div>
-<div class="flex gap-2 mt-5 pt-4 border-t border-surface-container-highest">
-<button class="flex-1 py-1.5 px-2 bg-surface-container-low hover:bg-surface-variant rounded text-on-surface font-body-sm text-body-sm transition-colors flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[16px]">visibility</span>预览</button>
-<a href="digital-human-config.html" class="flex-1 py-1.5 px-2 bg-surface-container-low hover:bg-surface-variant rounded text-on-surface font-body-sm text-body-sm transition-colors flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[16px]">tune</span>配置</a>
-<button class="p-1.5 hover:bg-error-container text-on-surface-variant hover:text-error rounded transition-colors flex items-center justify-center" title="删除"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+<div class="flex items-center justify-between mt-md">
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="page-info">共 0 个模型</p>
 </div>
 </div>
 </div>
-<!-- Card 4: Ghost card - Upload new avatar -->
-<div class="bg-surface rounded-xl border-2 border-dashed border-outline-variant hover:border-primary hover:shadow-md transition-all overflow-hidden group cursor-pointer flex flex-col items-center justify-center p-xl min-h-[300px]" onclick="window.location.href='add-digital-human.html'">
-<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-4xl">add_photo_alternate</span>
-</div>
-<h3 class="font-title-lg text-title-lg text-on-surface mb-1">上传新形象</h3>
-<p class="font-body-sm text-body-sm text-outline text-center">支持 2D / 3D / 2.5D 模型<br>一键导入与智能适配</p>
-</div>
-</section>
-<!-- Footer -->
-<footer class="mt-xl text-center pb-lg">
-<p class="font-label-md text-label-md text-outline">2023 海南大学 - 数字人微课平台 | 智能合成 赋能教育</p>
-</footer>
 </main>
+
+<!-- 菜单容器 -->
+<div id="menu-root"></div>
+<!-- 弹窗容器 -->
+<div id="modal-root"></div>
+<!-- Toast -->
+<div id="toast-root"></div>
+
+<script>
+const GRADS = [
+  { from: '#d4e3ff', to: '#a5c8ff', c: '#005daa' },
+  { from: '#e3ffd0', to: '#b6f58b', c: '#266d00' },
+  { from: '#ffddb0', to: '#ffba45', c: '#7d5400' },
+  { from: '#e0f7fa', to: '#b2ebf2', c: '#006064' },
+  { from: '#ede7f6', to: '#d1c4e9', c: '#4527a0' },
+  { from: '#fce4ec', to: '#f8bbd0', c: '#880e4f' },
+  { from: '#fff9c4', to: '#ffe082', c: '#f57f17' },
+  { from: '#e8f5e9', to: '#c8e6c9', c: '#2e7d32' },
+];
+
+let models = [
+  { id: 1, name: '晓晓', type: '2d', typeLabel: '2D真身', status: 'enabled', group: '教学', desc: '女性 · 知性风格，适用于教学场景', date: '2023-08-15', icon: 'face_3', grad: 0 },
+  { id: 2, name: '杰克', type: '3d', typeLabel: '3D超写实', status: 'enabled', group: '商务', desc: '男性 · 商务风格，适用于企业培训', date: '2023-09-01', icon: 'face_6', grad: 1 },
+  { id: 3, name: '小智', type: '2.5d', typeLabel: '2.5D动漫', status: 'disabled', group: '教学', desc: '卡通风格，适用于趣味教学', date: '2023-07-20', icon: 'smart_toy', grad: 2 },
+  { id: 4, name: '林老师', type: '3d', typeLabel: '3D超写实', status: 'enabled', group: '教学', desc: '女性 · 教授形象，学术权威', date: '2023-10-05', icon: 'woman', grad: 3 },
+  { id: 5, name: '王助教', type: '2d', typeLabel: '2D真身', status: 'enabled', group: '教学', desc: '男性 · 亲和风格，适合辅导答疑', date: '2023-09-15', icon: 'man', grad: 4 },
+  { id: 6, name: '张教授', type: '3d', typeLabel: '3D超写实', status: 'enabled', group: '新闻', desc: '男性 · 权威形象，适用于新闻播报', date: '2023-10-24', icon: 'face_6', grad: 5 },
+  { id: 7, name: '新闻主播', type: '2d', typeLabel: '2D真身', status: 'enabled', group: '新闻', desc: '女性 · 端庄形象，适合时政新闻', date: '2023-10-18', icon: 'face_3', grad: 6 },
+  { id: 8, name: '商务顾问', type: '3d', typeLabel: '3D超写实', status: 'disabled', group: '商务', desc: '男性 · 精英形象，适合商务汇报', date: '2023-08-28', icon: 'face_6', grad: 7 },
+  { id: 9, name: '动漫小助手', type: '2.5d', typeLabel: '2.5D动漫', status: 'enabled', group: '教学', desc: '活泼二次元形象，适合少儿课程', date: '2023-11-01', icon: 'smart_toy', grad: 0 },
+  { id: 10, name: '学术专家', type: '3d', typeLabel: '3D超写实', status: 'enabled', group: '教学', desc: '男性 · 学术形象，适合专业讲座', date: '2023-11-05', icon: 'face', grad: 2 },
+];
+
+let groups = ['教学', '新闻', '商务'];
+let view = 'grid';
+let category = 'all';
+let selected = new Set();
+
+function thumbStyle(i) { const g = GRADS[i % GRADS.length]; return `background:linear-gradient(135deg,${g.from},${g.to})`; }
+function thumbColor(i) { return GRADS[i % GRADS.length].c; }
+
+function filteredModels() {
+  let list = [...models];
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  if (q) list = list.filter(m => m.name.toLowerCase().includes(q));
+  if (category === '2d' || category === '3d' || category === '2.5d') list = list.filter(m => m.type === category);
+  else if (category === 'enabled' || category === 'disabled') list = list.filter(m => m.status === category);
+  else if (category.startsWith('group-')) { const g = category.slice(6); list = list.filter(m => m.group === g); }
+  return list;
+}
+
+function render() {
+  const list = filteredModels();
+  const container = document.getElementById('model-list');
+  const empty = document.getElementById('empty-state');
+  document.getElementById('page-info').textContent = '共 ' + list.length + ' 个模型';
+  updateCounts();
+  if (list.length === 0) {
+    container.innerHTML = '';
+    container.classList.add('hidden');
+    empty.classList.remove('hidden'); empty.classList.add('flex');
+    return;
+  }
+  container.classList.remove('hidden');
+  empty.classList.add('hidden'); empty.classList.remove('flex');
+
+  if (view === 'grid') {
+    container.className = 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-lg';
+    container.innerHTML = list.map(m => `
+      <div class="avatar-card">
+        <div class="thumb" style="${thumbStyle(m.id)}">
+          <span class="material-symbols-outlined text-7xl" style="color:${thumbColor(m.id)}">${m.icon}</span>
+          <div class="check" onclick="event.stopPropagation();toggleSelect(${m.id})">
+            <span class="cbx ${selected.has(m.id) ? 'checked' : ''}" id="cbx-${m.id}"><span class="material-symbols-outlined text-[14px]">check</span></span>
+          </div>
+          <div class="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold backdrop-blur ${m.status === 'enabled' ? 'bg-secondary-container/90 text-on-secondary-container' : 'bg-surface-container/90 text-outline'}">${m.status === 'enabled' ? '已启用' : '已禁用'}</div>
+          <div class="absolute bottom-3 left-3 px-2 py-0.5 rounded-full bg-surface/85 text-on-surface-variant text-[10px] font-medium backdrop-blur">${m.typeLabel}</div>
+        </div>
+        <div class="p-md">
+          <div class="flex items-start justify-between gap-xs">
+            <h3 class="text-sm font-semibold text-on-surface">${m.name}</h3>
+            <button class="shrink-0 p-1 text-on-surface-variant hover:bg-surface-container rounded transition-colors" onclick="event.stopPropagation();openMenu(event, ${m.id})"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+          </div>
+          <p class="text-xs text-on-surface-variant mt-1 leading-snug">${m.desc}</p>
+          <div class="flex items-center justify-between mt-3 pt-3 border-t border-surface-variant">
+            <span class="text-[11px] text-outline">${m.date}</span>
+            <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold" style="background:#e7eefd;color:#004581">${m.group}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    container.className = 'grid grid-cols-1 gap-0 bg-surface rounded-xl border border-surface-variant overflow-hidden';
+    container.innerHTML = `
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead><tr class="bg-surface-container-low border-b border-surface-variant">
+            <th class="px-lg py-md w-10"></th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">模型名称</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">类型</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">分组</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">状态</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">创建日期</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase text-right">操作</th>
+          </tr></thead>
+          <tbody class="divide-y divide-surface-variant">
+          ${list.map(m => `
+            <tr class="hover:bg-surface-container-lowest transition-colors">
+              <td class="px-lg py-md" onclick="toggleSelect(${m.id})">
+                <span class="cbx ${selected.has(m.id) ? 'checked' : ''}" id="cbx-${m.id}"><span class="material-symbols-outlined text-[14px]">check</span></span>
+              </td>
+              <td class="px-lg py-md">
+                <div class="flex items-center gap-md">
+                  <div class="w-12 h-12 rounded-lg overflow-hidden flex items-center justify-center shrink-0" style="${thumbStyle(m.id)}"><span class="material-symbols-outlined text-on-surface-variant" style="color:${thumbColor(m.id)}">${m.icon}</span></div>
+                  <div><p class="font-title-lg text-title-lg text-on-surface">${m.name}</p><p class="font-body-sm text-body-sm text-on-surface-variant">${m.desc}</p></div>
+                </div>
+              </td>
+              <td class="px-lg py-md"><span class="px-base py-[2px] bg-surface-variant text-on-surface-variant rounded font-label-md text-label-md">${m.typeLabel}</span></td>
+              <td class="px-lg py-md"><span class="px-base py-[2px] bg-primary-fixed text-on-primary-fixed-variant rounded font-label-md text-label-md">${m.group}</span></td>
+              <td class="px-lg py-md"><div class="flex items-center gap-xs ${m.status === 'enabled' ? 'text-secondary' : 'text-on-surface-variant'}"><span class="dot ${m.status}"></span><span class="font-body-md text-body-md">${m.status === 'enabled' ? '已启用' : '已禁用'}</span></div></td>
+              <td class="px-lg py-md"><p class="font-body-md text-body-md text-on-surface">${m.date}</p></td>
+              <td class="px-lg py-md text-right">
+                <div class="flex items-center justify-end gap-sm">
+                  <button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="配置" onclick="location.href='digital-human-config.html'"><span class="material-symbols-outlined">tune</span></button>
+                  <button class="p-base hover:bg-surface-container-high rounded ${m.status === 'enabled' ? 'text-on-surface-variant' : 'text-secondary'}" title="${m.status === 'enabled' ? '禁用' : '启用'}" onclick="toggleStatus(${m.id})"><span class="material-symbols-outlined">${m.status === 'enabled' ? 'block' : 'check_circle'}</span></button>
+                  <button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="更多" onclick="openMenu(event, ${m.id})"><span class="material-symbols-outlined">more_vert</span></button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+  updateSelectAll();
+  updateBatchBar();
+}
+
+function updateCounts() {
+  document.getElementById('count-all').textContent = models.length;
+  document.getElementById('count-2d').textContent = models.filter(m => m.type === '2d').length;
+  document.getElementById('count-3d').textContent = models.filter(m => m.type === '3d').length;
+  document.getElementById('count-25d').textContent = models.filter(m => m.type === '2.5d').length;
+  document.getElementById('count-enabled').textContent = models.filter(m => m.status === 'enabled').length;
+  document.getElementById('count-disabled').textContent = models.filter(m => m.status === 'disabled').length;
+}
+
+function renderGroups() {
+  const el = document.getElementById('group-list');
+  el.innerHTML = groups.map(g => `
+    <div class="cat-item ${category === 'group-' + g ? 'active' : ''}" data-cat="group-${g}" onclick="setCategory('group-${g}', this)">
+      <span class="material-symbols-outlined text-[18px]">folder</span><span class="truncate">${g}</span>
+      <span class="count">${models.filter(m => m.group === g).length}</span>
+    </div>`).join('');
+}
+
+function setCategory(cat, el) {
+  category = cat;
+  document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  render();
+}
+
+function switchView(v) {
+  view = v;
+  document.getElementById('view-grid').classList.toggle('active', v === 'grid');
+  document.getElementById('view-list').classList.toggle('active', v === 'list');
+  render();
+}
+
+function applyFilters() { render(); }
+
+function toggleStatus(id) {
+  const m = models.find(x => x.id === id);
+  m.status = m.status === 'enabled' ? 'disabled' : 'enabled';
+  toast(m.name + (m.status === 'enabled' ? ' 已启用' : ' 已禁用'), 'success');
+  render();
+}
+
+function toggleSelect(id) {
+  if (selected.has(id)) selected.delete(id); else selected.add(id);
+  document.getElementById('cbx-' + id)?.classList.toggle('checked', selected.has(id));
+  updateSelectAll(); updateBatchBar();
+}
+
+function toggleSelectAll() {
+  const list = filteredModels();
+  if (selected.size === list.length && list.length > 0) selected.clear();
+  else list.forEach(m => selected.add(m.id));
+  render();
+}
+
+function updateSelectAll() {
+  const list = filteredModels();
+  document.getElementById('select-all-cbx').classList.toggle('checked', list.length > 0 && selected.size === list.length);
+}
+
+function updateBatchBar() {
+  const bar = document.getElementById('batch-bar');
+  if (selected.size > 0) { bar.classList.remove('hidden'); document.getElementById('batch-count').textContent = selected.size; }
+  else bar.classList.add('hidden');
+}
+
+function clearSelection() { selected.clear(); render(); }
+
+function openMenu(event, id) {
+  closeMenu();
+  const m = models.find(x => x.id === id);
+  const menu = document.createElement('div');
+  menu.className = 'menu-pop';
+  menu.id = 'menu-pop';
+  menu.innerHTML = `
+    <button onclick="previewModel(${id})"><span class="material-symbols-outlined text-[18px]">visibility</span>预览</button>
+    <button onclick="location.href='digital-human-config.html'"><span class="material-symbols-outlined text-[18px]">tune</span>配置</button>
+    <button onclick="renameModel(${id})"><span class="material-symbols-outlined text-[18px]">edit</span>重命名</button>
+    <button onclick="toggleStatus(${id});closeMenu()"><span class="material-symbols-outlined text-[18px]">${m.status === 'enabled' ? 'block' : 'check_circle'}</span>${m.status === 'enabled' ? '禁用' : '启用'}</button>
+    <div class="divider"></div>
+    <button onclick="moveModel(${id})"><span class="material-symbols-outlined text-[18px]">drive_file_move</span>移动到分组</button>
+    <div class="divider"></div>
+    <button class="danger" onclick="deleteModel(${id})"><span class="material-symbols-outlined text-[18px]">delete</span>删除</button>`;
+  document.getElementById('menu-root').appendChild(menu);
+  const rect = event.currentTarget.getBoundingClientRect();
+  menu.style.top = rect.bottom + 4 + 'px';
+  menu.style.left = Math.min(rect.left, window.innerWidth - 200) + 'px';
+  document.addEventListener('click', outsideMenu);
+}
+function closeMenu() { document.getElementById('menu-pop')?.remove(); document.removeEventListener('click', outsideMenu); }
+function outsideMenu(e) { if (!e.target.closest('.menu-pop')) closeMenu(); }
+
+function previewModel(id) { closeMenu(); toast('预览：' + models.find(m => m.id === id).name, 'success'); }
+
+function renameModel(id) {
+  closeMenu();
+  const m = models.find(x => x.id === id);
+  openModal('重命名模型', `
+    <label class="block text-sm text-on-surface-variant mb-1">模型名称</label>
+    <input id="modal-input" class="w-full px-md py-sm border border-outline-variant rounded-lg text-sm focus:border-primary focus:ring-2 focus:ring-primary/20" value="${m.name}" type="text">
+  `, () => {
+    const nv = document.getElementById('modal-input').value.trim();
+    if (!nv) { toast('名称不能为空', 'error'); return; }
+    m.name = nv; toast('重命名成功', 'success'); render();
+  });
+}
+
+function moveModel(id) {
+  closeMenu();
+  const m = models.find(x => x.id === id);
+  openModal('移动到分组', `
+    <div class="space-y-2">
+      ${groups.map(g => `<label class="flex items-center gap-sm p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-primary/5 transition-colors"><input type="radio" name="group" value="${g}" ${m.group === g ? 'checked' : ''} class="text-primary focus:ring-primary"> <span class="text-sm">${g}</span></label>`).join('')}
+    </div>
+  `, () => {
+    const sel = document.querySelector('input[name="group"]:checked');
+    if (sel) { m.group = sel.value; toast('已移动到「' + m.group + '」', 'success'); renderGroups(); render(); }
+  });
+}
+
+function deleteModel(id) {
+  closeMenu();
+  openModal('删除模型', `<p class="text-sm text-on-surface-variant">确定要删除「${models.find(m => m.id === id).name}」吗？此操作不可撤销。</p>`, () => {
+    models = models.filter(m => m.id !== id);
+    selected.delete(id);
+    toast('已删除', 'success'); renderGroups(); render();
+  }, '删除', true);
+}
+
+function batchEnable() { models.forEach(m => { if (selected.has(m.id)) m.status = 'enabled'; }); toast('已批量启用', 'success'); clearSelection(); }
+function batchDisable() { models.forEach(m => { if (selected.has(m.id)) m.status = 'disabled'; }); toast('已批量禁用', 'success'); clearSelection(); }
+
+function batchMove() {
+  openModal('批量移动到分组', `
+    <div class="space-y-2">
+      ${groups.map(g => `<label class="flex items-center gap-sm p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-primary/5 transition-colors"><input type="radio" name="group" value="${g}" class="text-primary focus:ring-primary"> <span class="text-sm">${g}</span></label>`).join('')}
+    </div>
+  `, () => {
+    const sel = document.querySelector('input[name="group"]:checked');
+    if (sel) { models.forEach(m => { if (selected.has(m.id)) m.group = sel.value; }); toast('已移动 ' + selected.size + ' 个模型', 'success'); clearSelection(); renderGroups(); }
+  });
+}
+
+function batchDelete() {
+  openModal('批量删除', `<p class="text-sm text-on-surface-variant">确定要删除选中的 ${selected.size} 个模型吗？此操作不可撤销。</p>`, () => {
+    models = models.filter(m => !selected.has(m.id));
+    selected.clear();
+    toast('已批量删除', 'success'); renderGroups(); render();
+  }, '删除', true);
+}
+
+function openGroupModal() {
+  openModal('新建分组', `
+    <label class="block text-sm text-on-surface-variant mb-1">分组名称</label>
+    <input id="modal-input" class="w-full px-md py-sm border border-outline-variant rounded-lg text-sm focus:border-primary focus:ring-2 focus:ring-primary/20" placeholder="例如：实验课程" type="text">
+  `, () => {
+    const nv = document.getElementById('modal-input').value.trim();
+    if (!nv) { toast('名称不能为空', 'error'); return; }
+    if (groups.includes(nv)) { toast('分组已存在', 'error'); return; }
+    groups.push(nv); toast('分组已创建', 'success'); renderGroups();
+  });
+}
+
+function openModal(title, bodyHtml, onConfirm, confirmLabel = '确认', danger = false) {
+  closeModal();
+  const mask = document.createElement('div');
+  mask.className = 'modal-mask';
+  mask.id = 'modal';
+  mask.innerHTML = `
+    <div class="modal-panel overflow-hidden">
+      <div class="px-lg py-md border-b border-outline-variant flex justify-between items-center bg-surface">
+        <h3 class="font-title-lg text-title-lg text-on-surface font-semibold">${title}</h3>
+        <button class="text-on-surface-variant hover:text-primary p-1 rounded transition-colors" onclick="closeModal()"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="p-lg">${bodyHtml}</div>
+      <div class="px-lg py-md border-t border-outline-variant bg-surface flex justify-end gap-sm">
+        <button class="px-md py-2 rounded-lg text-sm text-on-surface-variant border border-outline-variant hover:bg-surface-container-high transition-colors" onclick="closeModal()">取消</button>
+        <button class="px-md py-2 rounded-lg text-sm ${danger ? 'bg-error text-on-error hover:opacity-90' : 'bg-primary text-on-primary hover:opacity-90'} transition-colors" onclick="modalConfirm()">${confirmLabel}</button>
+      </div>
+    </div>`;
+  mask.addEventListener('click', e => { if (e.target === mask) closeModal(); });
+  mask._onConfirm = onConfirm;
+  document.getElementById('modal-root').appendChild(mask);
+}
+function modalConfirm() { const m = document.getElementById('modal'); if (m && m._onConfirm) m._onConfirm(); closeModal(); }
+function closeModal() { document.getElementById('modal')?.remove(); }
+
+function toast(msg, type = 'success') {
+  const root = document.getElementById('toast-root');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = `<span class="material-symbols-outlined text-[18px]">${type === 'error' ? 'error' : 'check_circle'}</span>${msg}`;
+  root.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 300); }, 2400);
+}
+
+renderGroups();
+render();
+</script>
 </body></html>
