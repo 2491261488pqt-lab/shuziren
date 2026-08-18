@@ -404,6 +404,9 @@ function clearSelection() { selected.clear(); render(); }
 function previewVideo(id) { toast('预览播放：' + videos.find(v => v.id === id).name, 'success'); }
 function downloadVideo(id) { toast('已开始下载：' + videos.find(v => v.id === id).name, 'success'); }
 
+const EDIT_LINK = { 'src-script': 'script-generation.html', 'src-ppt': 'courseware-to-video.html', 'src-course': 'courseware-synthesis.html', 'src-broadcast': 'digital-human-broadcast.html' };
+function editVideo(id) { const v = videos.find(x => x.id === id); location.href = EDIT_LINK[v.sourceKey] || 'script-generation.html'; }
+
 function openMenu(event, id) {
   closeMenu();
   const v = videos.find(x => x.id === id);
@@ -412,7 +415,8 @@ function openMenu(event, id) {
   menu.id = 'menu-pop';
   menu.innerHTML = `
     <button onclick="previewVideo(${id})"><span class="material-symbols-outlined text-[18px]">visibility</span>预览</button>
-    <button onclick="renameVideo(${id})"><span class="material-symbols-outlined text-[18px]">edit</span>重命名</button>
+    <button onclick="editVideo(${id})"><span class="material-symbols-outlined text-[18px]">edit</span>重新编辑</button>
+    <button onclick="renameVideo(${id})"><span class="material-symbols-outlined text-[18px]">drive_file_rename_outline</span>重命名</button>
     <button onclick="downloadVideo(${id})"><span class="material-symbols-outlined text-[18px]">download</span>下载</button>
     <button onclick="toggleFav(${id});closeMenu()"><span class="material-symbols-outlined text-[18px]">${v.fav ? 'star' : 'star_outline'}</span>${v.fav ? '取消收藏' : '收藏'}</button>
     <div class="divider"></div>
