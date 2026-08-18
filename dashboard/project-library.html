@@ -1,277 +1,512 @@
-<!DOCTYPE html>
-
-<html class="light" lang="zh-CN"><head>
-<meta charset="utf-8"/>
+<!DOCTYPE html><html class="light" lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>项目库 - 数字人微课平台</title>
 <link rel="stylesheet" href="../assets/css/tailwind.css">
 <link rel="stylesheet" href="../assets/css/fonts.css">
 <style>
-.sidebar-active{background-color:#d4e3ff;color:#001c3a;border-right:4px solid #005daa}
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .material-symbols-outlined.fill {
-            font-variation-settings: 'FILL' 1;
-        }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #dce3f2;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #c0c7d6;
-        }
-        
-        .card-checkbox {
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-        
-        .group:hover .card-checkbox,
-        .card-checkbox:checked {
-            opacity: 1;
-        }
-    </style>
+.sidebar-active { background-color: #d4e3ff; color: #001c3a; border-right: 4px solid #005daa; }
+body { font-family: 'Inter', 'Noto Sans SC', sans-serif; background-color: #f0f2f5; }
+.cat-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; color: #404753; font-size: 13px; transition: all .15s; }
+.cat-item:hover { background: #e7eefd; color: #004581; }
+.cat-item.active { background: #d4e3ff; color: #001c3a; font-weight: 600; }
+.cat-item .count { margin-left: auto; font-size: 11px; color: #707785; }
+.cat-item.active .count { color: #004785; }
+.pj-card { position: relative; border-radius: 12px; overflow: hidden; background: #fff; border: 1px solid #e3e2e2; cursor: pointer; transition: all .18s; }
+.pj-card:hover { box-shadow: 0 8px 24px rgba(0,28,58,.12); transform: translateY(-2px); border-color: #a5c8ff; }
+.pj-card.draft { border-style: dashed; }
+.pj-card .thumb { position: relative; aspect-ratio: 16/10; display: flex; align-items: center; justify-content: center; }
+.pj-card .check { position: absolute; top: 8px; left: 8px; z-index: 20; }
+.menu-pop { position: absolute; z-index: 60; background: #fff; border: 1px solid #e3e2e2; border-radius: 10px; box-shadow: 0 12px 32px rgba(0,28,58,.18); min-width: 180px; padding: 6px; animation: pop-in .16s ease; }
+.menu-pop button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 12px; border-radius: 7px; font-size: 13px; color: #1b1c1c; text-align: left; }
+.menu-pop button:hover { background: #f4f3f3; }
+.menu-pop button.danger { color: #ba1a1a; }
+.menu-pop button.danger:hover { background: #ffdad6; }
+.menu-pop .divider { height: 1px; background: #e3e2e2; margin: 4px 8px; }
+@keyframes pop-in { from { transform: scale(.95); opacity: 0; } }
+.cbx { width: 18px; height: 18px; border-radius: 5px; border: 2px solid #c0c7d6; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; transition: all .15s; }
+.cbx.checked { background: #005daa; border-color: #005daa; }
+.view-btn { padding: 7px 10px; border-radius: 8px; cursor: pointer; color: #404753; transition: all .15s; }
+.view-btn.active { background: #005daa; color: #fff; }
+.dot { width: 7px; height: 7px; border-radius: 50%; }
+.dot.rendering { background: #005daa; animation: pulse-blue 1.6s infinite; }
+.dot.completed { background: #266d00; }
+.dot.draft { background: #707785; }
+.dot.failed { background: #ba1a1a; }
+@keyframes pulse-blue { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+.batch-bar { animation: slide-up .2s ease; }
+@keyframes slide-up { from { transform: translateY(8px); opacity: 0; } }
+#toast-root { position: fixed; top: 80px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+.toast { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; background: #2f3031; color: #f2f0f0; font-size: 13px; box-shadow: 0 8px 24px rgba(0,28,58,.18); animation: toast-in .25s ease; }
+.toast.success { border-left: 4px solid #266d00; }
+.toast.error { border-left: 4px solid #ba1a1a; }
+@keyframes toast-in { from { transform: translateX(40px); opacity: 0; } }
+.modal-mask { position: fixed; inset: 0; z-index: 100; background: rgba(27,28,28,.45); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; }
+.modal-panel { background: #fff; border-radius: 14px; box-shadow: 0 20px 60px rgba(0,28,58,.25); width: 440px; max-width: 92vw; max-height: 90vh; overflow-y: auto; animation: pop-in .2s ease; }
+</style>
 </head>
-<body class="bg-background text-on-surface font-body-md h-screen overflow-x-hidden flex">
+<body class="bg-background text-on-background min-h-screen overflow-x-hidden">
+<!-- 共享 Sidebar -->
 <aside class="w-sidebar-width h-screen fixed left-0 top-0 bg-surface border-r border-surface-container-highest flex flex-col z-50"><div class="px-6 py-8 flex flex-col items-center"><img alt="Hainan University Logo" class="h-12 w-auto object-contain mb-4" src="../assets/images/logo-brand.png"><h1 class="font-headline-sm text-headline-sm font-bold text-primary">Digital Human AI</h1><p class="font-label-md text-label-md text-outline">Hainan University</p></div><nav class="flex-1 mt-4 px-3 space-y-1"><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="index.html"><span class="material-symbols-outlined mr-3">dashboard</span><span class="font-label-md text-label-md">业务总览</span></a><a class="sidebar-active flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="micro-lecture-agent.html"><span class="material-symbols-outlined mr-3">video_call</span><span class="font-label-md text-label-md">微课智能体</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="video-management.html"><span class="material-symbols-outlined mr-3">video_library</span><span class="font-label-md text-label-md">视频管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="asset-management.html"><span class="material-symbols-outlined mr-3">folder_open</span><span class="font-label-md text-label-md">资产管理</span></a><a class="text-on-surface-variant hover:bg-surface-container-low flex items-center px-4 py-3 rounded-sm transition-colors duration-200" href="system-settings.html"><span class="material-symbols-outlined mr-3">settings</span><span class="font-label-md text-label-md">系统设置</span></a></nav><div class="p-4 mt-auto"><div class="bg-primary-fixed p-4 rounded-xl flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden bg-primary shadow-sm"><img class="w-full h-full object-cover" src="../assets/images/user-avatar.png"></div><div class="flex-1 min-w-0"><p class="font-label-md text-label-md font-bold text-on-primary-fixed truncate">管理员</p><p class="text-[10px] text-on-primary-fixed-variant truncate">高级账户</p></div><a href="../Login/login/index.html" class="material-symbols-outlined text-on-primary-fixed-variant cursor-pointer hover:text-error transition-colors" title="退出登录">logout</a></div></div></aside>
+<!-- 共享 Header -->
 <header class="h-16 fixed top-0 right-0 left-sidebar-width z-40 bg-surface flex items-center justify-between px-6 border-b border-surface-container-highest"><div class="flex items-center gap-4"><div class="flex items-center text-outline font-body-sm text-body-sm"><a href="index.html" class="hover:text-primary transition-colors">业务总览</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><a href="micro-lecture-agent.html" class="hover:text-primary transition-colors">微课智能体</a><span class="material-symbols-outlined text-sm mx-2">chevron_right</span><span class="text-primary font-bold">项目库</span></div></div><div class="flex items-center gap-6"><div class="relative group"><div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span class="material-symbols-outlined text-outline text-lg">search</span></div><input class="block w-80 pl-10 pr-3 py-1.5 bg-surface-container border border-transparent focus:border-primary focus:ring-4 focus:ring-primary-fixed/50 rounded-full font-body-sm text-body-sm transition-all" placeholder="搜索..." type="text"></div><div class="flex items-center gap-4 text-on-surface-variant"><a href="notifications.html" class="relative hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span></a><a href="help-center.html" class="hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined">help_outline</span><span class="font-body-sm text-body-sm">帮助</span></a></div></div></header>
-<!-- Main Content Area -->
-<main class="ml-[240px] mt-16 p-xl flex-1 h-[calc(100vh-64px)] overflow-y-auto">
-<div class="max-w-[1400px] mx-auto flex flex-col gap-lg">
-<!-- Page Header -->
-<div class="flex items-start justify-between">
+<!-- 主内容区 -->
+<main class="ml-sidebar-width mt-16 p-xl" style="width:calc(100% - 240px)">
+<!-- 页头 -->
+<div class="mb-lg flex justify-between items-end">
 <div>
-<h2 class="font-headline-md text-headline-md text-on-surface">项目库</h2>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">管理与追溯所有微课创作项目，支持状态筛选与快速二次编辑。</p>
+<h2 class="font-headline-md text-headline-md text-on-background">项目库</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-base">管理与追溯所有微课创作项目，支持状态筛选、分组归类与快速二次编辑。</p>
 </div>
 <div class="flex items-center gap-sm">
-<button class="text-on-surface-variant hover:text-primary px-sm py-sm rounded-lg font-title-lg text-title-lg transition-colors flex items-center gap-xs" onclick="window.location.href='trash.html'">
-<span class="material-symbols-outlined text-[20px]">delete</span>
-                    回收站
-                </button>
+<button class="flex items-center gap-xs text-on-surface-variant hover:text-primary px-sm py-sm rounded-lg font-title-lg transition-colors" onclick="window.location.href='trash.html'"><span class="material-symbols-outlined text-[20px]">delete</span>回收站</button>
 <div class="h-6 w-px bg-outline-variant mx-1"></div>
-<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-title-lg text-title-lg hover:-translate-y-0.5 transition-transform shadow-sm hover:shadow-md flex items-center gap-xs" onclick="window.location.href='new-video-project.html'">
-<span class="material-symbols-outlined text-[20px]">add</span>
-                    新建项目
-                </button>
+<button class="flex items-center gap-xs bg-primary text-on-primary px-lg py-sm rounded-lg font-title-lg hover:opacity-90 transition-opacity shadow-sm" onclick="window.location.href='new-video-project.html'"><span class="material-symbols-outlined text-[20px]">add</span>新建项目</button>
 </div>
 </div>
-<!-- Filters and Search -->
-<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm flex flex-col gap-sm">
-<div class="flex flex-wrap items-center justify-between gap-md">
-<div class="flex items-center gap-2">
-<button class="px-md py-xs rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md transition-colors">全部项目</button>
-<button class="px-md py-xs rounded-full bg-transparent hover:bg-surface-container-low text-on-surface-variant font-label-md text-label-md transition-colors border border-outline-variant">进行中</button>
-<button class="px-md py-xs rounded-full bg-transparent hover:bg-surface-container-low text-on-surface-variant font-label-md text-label-md transition-colors border border-outline-variant">已完成</button>
-<button class="px-md py-xs rounded-full bg-transparent hover:bg-surface-container-low text-on-surface-variant font-label-md text-label-md transition-colors border border-outline-variant">草稿</button>
-<button class="px-md py-xs rounded-full bg-transparent hover:bg-error-container text-on-error-container font-label-md text-label-md transition-colors border border-outline-variant">失败</button>
+
+<div class="flex gap-lg items-start">
+<!-- 左侧分类侧栏 -->
+<div class="w-56 shrink-0 bg-surface rounded-xl border border-surface-variant p-sm sticky top-20">
+<div class="px-sm pt-xs pb-sm">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider px-1 mb-1">项目库</p>
+<div class="cat-item active" data-cat="all" onclick="setCategory('all', this)"><span class="material-symbols-outlined text-[18px]">folder_open</span>全部项目<span class="count" id="count-all"></span></div>
+</div>
+<div class="px-sm py-sm">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider px-1 mb-1">状态</p>
+<div class="cat-item" data-cat="rendering" onclick="setCategory('rendering', this)"><span class="dot rendering"></span>进行中<span class="count" id="count-rendering"></span></div>
+<div class="cat-item" data-cat="completed" onclick="setCategory('completed', this)"><span class="dot completed"></span>已完成<span class="count" id="count-completed"></span></div>
+<div class="cat-item" data-cat="draft" onclick="setCategory('draft', this)"><span class="dot draft"></span>草稿<span class="count" id="count-draft"></span></div>
+<div class="cat-item" data-cat="failed" onclick="setCategory('failed', this)"><span class="dot failed"></span>失败<span class="count" id="count-failed"></span></div>
+</div>
+<div class="px-sm py-sm">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider px-1 mb-1">创建方式</p>
+<div class="cat-item" data-cat="script" onclick="setCategory('script', this)"><span class="material-symbols-outlined text-[18px]">description</span>脚本驱动</div>
+<div class="cat-item" data-cat="courseware" onclick="setCategory('courseware', this)"><span class="material-symbols-outlined text-[18px]">slideshow</span>课件转视频</div>
+<div class="cat-item" data-cat="ppt" onclick="setCategory('ppt', this)"><span class="material-symbols-outlined text-[18px]">present_to_all</span>PPT 生成</div>
+<div class="cat-item" data-cat="broadcast" onclick="setCategory('broadcast', this)"><span class="material-symbols-outlined text-[18px]">mic</span>口播生成</div>
+</div>
+<div class="px-sm py-sm">
+<div class="flex items-center justify-between px-1 mb-1">
+<p class="text-[11px] font-bold text-outline uppercase tracking-wider">分组</p>
+<button class="text-primary hover:bg-primary/10 p-1 rounded transition-colors" title="新建分组" onclick="openGroupModal()"><span class="material-symbols-outlined text-[16px]">create_new_folder</span></button>
+</div>
+<div id="group-list"></div>
+</div>
+</div>
+
+<!-- 右侧内容区 -->
+<div class="flex-1 min-w-0 flex flex-col gap-md">
+<!-- 工具栏 -->
+<div class="bg-surface rounded-xl border border-surface-variant p-md flex flex-wrap items-center justify-between gap-md">
+<div class="flex items-center gap-sm">
+<div class="flex bg-surface-container rounded-lg p-0.5">
+<button class="view-btn active flex items-center gap-xs" id="view-grid" onclick="switchView('grid')"><span class="material-symbols-outlined text-[18px]">grid_view</span></button>
+<button class="view-btn flex items-center gap-xs" id="view-list" onclick="switchView('list')"><span class="material-symbols-outlined text-[18px]">view_list</span></button>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+<input id="search-input" class="pl-9 pr-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg text-sm w-56 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="搜索项目名称..." type="text" oninput="applyFilters()">
+</div>
 </div>
 <div class="flex items-center gap-sm">
-<div class="relative w-64">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
-<input class="w-full pl-10 pr-4 py-1.5 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="搜索项目名称..." type="text"/>
-</div>
-<div class="relative group">
-<button class="flex items-center gap-1 px-3 py-1.5 border border-outline-variant rounded-lg font-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-xs text-sm text-on-surface-variant">
 <span class="material-symbols-outlined text-[18px]">sort</span>
-                                排序
-                                <span class="material-symbols-outlined text-[18px]">arrow_drop_down</span>
-</button>
-<div class="absolute right-0 top-full mt-1 w-32 bg-surface-container-lowest border border-outline-variant rounded-lg shadow-md hidden group-hover:block z-10">
-<a class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low cursor-pointer" href="#">创建时间</a>
-<a class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low cursor-pointer" href="#">修改时间</a>
-<a class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low cursor-pointer" href="#">名称</a>
+<select id="sort-select" class="bg-transparent border-none focus:ring-0 text-sm font-semibold text-on-surface cursor-pointer" onchange="applyFilters()">
+<option value="newest">最新创建</option>
+<option value="oldest">最早创建</option>
+<option value="name">名称排序</option>
+<option value="modified">最近修改</option>
+</select>
 </div>
-</div>
-</div>
-</div>
-<div class="flex items-center justify-between pt-sm border-t border-outline-variant">
-<div class="flex items-center gap-sm">
-<label class="flex items-center gap-2 cursor-pointer text-on-surface-variant text-sm hover:text-primary transition-colors">
-<input class="form-checkbox rounded text-primary focus:ring-primary border-outline-variant" type="checkbox"/>
-<span>全选</span>
+<label class="flex items-center gap-xs cursor-pointer select-none ml-2">
+<span class="cbx" id="select-all-cbx" onclick="toggleSelectAll()"><span class="material-symbols-outlined text-[14px]">check</span></span>
+<span class="text-sm text-on-surface-variant">全选</span>
 </label>
-<div class="h-4 w-px bg-outline-variant mx-1"></div>
-<button class="flex items-center gap-1 text-sm text-on-surface-variant hover:text-primary transition-colors font-medium">
-<span class="material-symbols-outlined text-[18px]">checklist</span>
-                            批量管理
-                        </button>
 </div>
-<div class="flex items-center gap-sm hidden">
-<button class="flex items-center gap-1 text-sm text-on-surface-variant hover:text-primary transition-colors font-medium px-2 py-1 rounded hover:bg-surface-container-low">
-<span class="material-symbols-outlined text-[18px]">folder_open</span>
-                            移动到文件夹
-                        </button>
-<button class="flex items-center gap-1 text-sm text-error hover:text-error transition-colors font-medium px-2 py-1 rounded hover:bg-error-container">
-<span class="material-symbols-outlined text-[18px]">delete</span>
-                            删除选中
-                        </button>
+</div>
+<!-- 批量操作栏 -->
+<div class="batch-bar bg-primary-fixed border border-primary/30 rounded-xl p-md hidden" id="batch-bar">
+<div class="flex items-center justify-between">
+<span class="text-sm font-semibold text-on-primary-fixed">已选 <span id="batch-count">0</span> 项</span>
+<div class="flex items-center gap-sm">
+<button class="px-md py-sm rounded-lg bg-surface text-on-surface text-sm hover:bg-surface-container-high transition-colors flex items-center gap-xs" onclick="batchCopy()"><span class="material-symbols-outlined text-[18px]">content_copy</span>复制</button>
+<button class="px-md py-sm rounded-lg bg-surface text-on-surface text-sm hover:bg-surface-container-high transition-colors flex items-center gap-xs" onclick="batchMove()"><span class="material-symbols-outlined text-[18px]">drive_file_move</span>移动分组</button>
+<button class="px-md py-sm rounded-lg bg-error text-on-error text-sm hover:opacity-90 transition-colors flex items-center gap-xs" onclick="batchDelete()"><span class="material-symbols-outlined text-[18px]">delete</span>批量删除</button>
+<button class="p-1 rounded text-on-primary-fixed-variant hover:bg-primary/20 transition-colors" onclick="clearSelection()"><span class="material-symbols-outlined text-[18px]">close</span></button>
 </div>
 </div>
 </div>
-<!-- Project Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-md">
-<!-- Project Card 1: Rendering -->
-<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm hover:shadow-md hover:border-primary transition-all overflow-visible group relative flex flex-col">
-<input class="card-checkbox absolute top-sm left-sm z-20 form-checkbox h-5 w-5 rounded text-primary focus:ring-primary border-white bg-white/80 backdrop-blur-sm shadow-sm cursor-pointer" type="checkbox"/>
-<!-- Progress Bar Overlay -->
-<div class="absolute top-0 left-0 h-1 bg-primary w-[65%] z-10"></div>
-<div class="h-40 bg-surface-container-low relative cursor-pointer">
-<div class="bg-cover bg-center w-full h-full opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A cinematic, high-quality rendering of a digital human professor standing in a modern, well-lit virtual classroom setting. The environment features subtle academic blue accents, soft volumetric lighting, and a clean, high-tech educational aesthetic. 4k resolution, photorealistic, suitable for a professional AI courseware presentation." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD2nafHcMxYZx-N3-ykSwGNKf1N3lSoanEQJeStCfmlL6vSu8PdvDA9LM52LeoB8ElijD580a40LVV-Eq2nMDC7v3at-nRgqgbmxMay9O6U6eEiatiwagiWPdBzOsx-MI4JfNg4ieFYLm8uUkrTJB-4C2eTQ9kvJ3C1QD0GXspucitvZ4iIimTLu1wgGnsbexwC_oDAxu8qh6cYubxXpmR6kgBi3BY9P91Z-UkFYBLND0enHs6YfBtZ')"></div>
-<div class="absolute top-sm right-sm bg-surface-container-lowest/90 backdrop-blur-md px-2 py-1 rounded text-xs font-label-md text-primary font-medium flex items-center gap-1 shadow-sm border border-outline-variant">
-<span class="material-symbols-outlined text-[14px] animate-spin">sync</span>
-                            渲染中 65%
-                        </div>
-<div class="absolute bottom-sm right-sm bg-surface-container-lowest/80 backdrop-blur-sm px-1.5 py-0.5 rounded text-[10px] font-label-caps text-on-surface-variant flex items-center gap-1">
-                            12:45
-                        </div>
+<!-- 项目列表 -->
+<div id="project-list" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-lg"></div>
+<div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
+<span class="material-symbols-outlined text-6xl text-outline mb-md">folder_off</span>
+<p class="text-on-surface-variant text-body-md">没有找到匹配的项目</p>
 </div>
-<div class="p-md flex flex-col flex-1">
-<div class="cursor-pointer flex-1">
-<h3 class="font-title-lg text-title-lg text-on-surface truncate">《人工智能基础导论 - 第1讲》</h3>
-<div class="flex items-center gap-3 mt-1">
-<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px]">description</span> 脚本驱动模式
-                                </p>
-<span class="text-xs text-outline">•</span>
-<span class="font-body-sm text-body-sm text-outline-variant">256 MB</span>
-</div>
-</div>
-<div class="flex items-center justify-between mt-md border-t border-surface-variant pt-sm">
-<span class="font-label-caps text-label-caps text-outline">2023-10-25 14:30</span>
-<div class="flex gap-2">
-<button class="text-primary hover:bg-primary-fixed px-2 py-1 rounded font-label-md text-label-md transition-colors flex items-center gap-1 border border-primary">
-                                    查看进度
-                                </button>
-<button class="text-on-surface-variant hover:text-error hover:bg-error-container p-1.5 rounded transition-colors tooltip-trigger" title="取消">
-<span class="material-symbols-outlined text-[20px]">cancel</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-<!-- Project Card 2: Completed -->
-<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm hover:shadow-md hover:border-primary transition-all overflow-visible group relative flex flex-col">
-<input class="card-checkbox absolute top-sm left-sm z-20 form-checkbox h-5 w-5 rounded text-primary focus:ring-primary border-white bg-white/80 backdrop-blur-sm shadow-sm cursor-pointer" type="checkbox"/>
-<div class="h-40 bg-surface-container-low relative cursor-pointer">
-<div class="bg-cover bg-center w-full h-full opacity-90 group-hover:opacity-100 transition-opacity" data-alt="A professional digital human presenter, female, dressed in contemporary business casual attire, delivering a presentation against a sleek, minimalist data-visualization background. Bright, high-key lighting, emphasizing clarity and modern SaaS aesthetic. Shallow depth of field focusing on the presenter." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB3oNDnMBKL4UhK006N-noGnKFNHmrEHlhI7-yjWZG0u_K6YN6shrmIvzQHKMZFcUnhJFqOzhRCLn2Fcp2v8FQT4QLjIyVbskiV0eWzytJ-YEt2nHiu0sJ27_Xdo35h34kDqj5yPtoBMCQDFRpG6o-yo4hYeqr77irTxZ04C446yzd1jYFactrGSRaR0U11oq5WxlM4iqsH48AZiPWsT9BJqTs8HWruMJXN5OGZJMiNOKuLJ49b4h-h')"></div>
-<div class="absolute top-sm right-sm bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-xs font-label-md font-medium flex items-center gap-1 shadow-sm border border-secondary-fixed">
-<span class="material-symbols-outlined text-[14px]">check_circle</span>
-                            已完成
-                        </div>
-<div class="absolute bottom-sm right-sm bg-surface-container-lowest/80 backdrop-blur-sm px-1.5 py-0.5 rounded text-[10px] font-label-caps text-on-surface-variant flex items-center gap-1">
-                            08:30
-                        </div>
-</div>
-<div class="p-md flex flex-col flex-1">
-<div class="cursor-pointer flex-1">
-<h3 class="font-title-lg text-title-lg text-on-surface truncate">《数据结构与算法核心概念》</h3>
-<div class="flex items-center gap-3 mt-1">
-<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px]">slideshow</span> 课件转视频
-                                </p>
-<span class="text-xs text-outline">•</span>
-<span class="font-body-sm text-body-sm text-outline-variant">142 MB</span>
-</div>
-</div>
-<div class="flex items-center justify-between mt-md border-t border-surface-variant pt-sm">
-<span class="font-label-caps text-label-caps text-outline">2023-10-24 09:15</span>
-<div class="flex gap-2">
-<button class="text-primary hover:bg-primary-fixed px-2 py-1 rounded font-label-md text-label-md transition-colors flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px]">edit</span>编辑
-                                </button>
-<button class="text-primary hover:bg-primary-fixed px-2 py-1 rounded font-label-md text-label-md transition-colors flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px]">play_arrow</span>预览
-                                </button>
-<div class="relative">
-<button class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high p-1 rounded transition-colors" title="更多" onclick="const d=this.nextElementSibling;d.classList.toggle('hidden')">
-<span class="material-symbols-outlined text-[20px]">more_vert</span>
-</button>
-<div class="absolute right-0 top-full mt-1 w-40 bg-surface rounded-xl border border-surface-container-highest shadow-xl z-50 hidden py-1">
-<button class="w-full text-left px-lg py-sm hover:bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[16px]">content_copy</span>复制项目</button>
-<button class="w-full text-left px-lg py-sm hover:bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[16px]">drive_file_rename_outline</span>重命名</button>
-<button class="w-full text-left px-lg py-sm hover:bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[16px]">file_download</span>导出</button>
-<div class="border-t border-surface-container-highest my-1"></div>
-<button class="w-full text-left px-lg py-sm hover:bg-error-container text-error font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation();this.closest('.bg-surface-container-lowest').remove();let t=document.getElementById('delete-toast');t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2000)"><span class="material-symbols-outlined text-[16px]">delete</span>删除</button>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Project Card 3: Draft -->
-<div class="bg-surface-container-lowest rounded-xl border border-dashed border-outline-variant shadow-sm hover:shadow-md hover:border-primary hover:bg-surface-container/30 transition-all overflow-visible group relative flex flex-col opacity-80 hover:opacity-100">
-<input class="card-checkbox absolute top-sm left-sm z-20 form-checkbox h-5 w-5 rounded text-primary focus:ring-primary border-outline bg-white/80 backdrop-blur-sm shadow-sm cursor-pointer" type="checkbox"/>
-<div class="h-40 bg-surface-container-high relative flex items-center justify-center cursor-pointer">
-<span class="material-symbols-outlined text-[48px] text-outline-variant group-hover:text-primary transition-colors">draft</span>
-<div class="absolute top-sm right-sm bg-surface-variant text-on-surface-variant px-2 py-1 rounded text-xs font-label-md font-medium flex items-center gap-1 shadow-sm border border-outline-variant">
-<span class="material-symbols-outlined text-[14px]">edit_document</span>
-                            草稿
-                        </div>
-<div class="absolute bottom-sm right-sm bg-surface-container-lowest/80 backdrop-blur-sm px-1.5 py-0.5 rounded text-[10px] font-label-caps text-on-surface-variant flex items-center gap-1">
-                            --:--
-                        </div>
-</div>
-<div class="p-md flex flex-col flex-1">
-<div class="cursor-pointer flex-1">
-<h3 class="font-title-lg text-title-lg text-on-surface truncate">《Python基础语法速成》</h3>
-<div class="flex items-center gap-3 mt-1">
-<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px]">description</span> 脚本驱动模式
-                                </p>
-<span class="text-xs text-outline">•</span>
-<span class="font-body-sm text-body-sm text-outline-variant">-- MB</span>
-</div>
-</div>
-<div class="flex items-center justify-between mt-md border-t border-surface-variant pt-sm">
-<span class="font-label-caps text-label-caps text-outline">2023-10-26 10:05</span>
-<div class="flex gap-2">
-<button class="text-primary hover:bg-primary-fixed px-3 py-1 rounded font-label-md text-label-md transition-colors flex items-center gap-1 border border-primary">
-                                    继续编辑
-                                </button>
-<div class="relative">
-<button class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high p-1 rounded transition-colors" title="更多" onclick="const d=this.nextElementSibling;d.classList.toggle('hidden')">
-<span class="material-symbols-outlined text-[20px]">more_vert</span>
-</button>
-<div class="absolute right-0 top-full mt-1 w-40 bg-surface rounded-xl border border-surface-container-highest shadow-xl z-50 hidden py-1">
-<button class="w-full text-left px-lg py-sm hover:bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[16px]">content_copy</span>复制项目</button>
-<button class="w-full text-left px-lg py-sm hover:bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[16px]">drive_file_rename_outline</span>重命名</button>
-<button class="w-full text-left px-lg py-sm hover:bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[16px]">file_download</span>导出</button>
-<div class="border-t border-surface-container-highest my-1"></div>
-<button class="w-full text-left px-lg py-sm hover:bg-error-container text-error font-label-md text-label-md flex items-center gap-2" onclick="event.stopPropagation();this.closest('.bg-surface-container-lowest').remove();let t=document.getElementById('delete-toast');t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2000)"><span class="material-symbols-outlined text-[16px]">delete</span>删除</button>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Pagination -->
-<div class="flex items-center justify-between mt-lg pt-md border-t border-outline-variant">
-<span class="font-body-sm text-body-sm text-on-surface-variant">共 42 个项目，显示 1-3</span>
-<div class="flex items-center gap-1 bg-surface-container-lowest border border-outline-variant rounded-lg p-1 shadow-sm">
-<button class="p-1.5 rounded hover:bg-surface-container-high text-outline transition-colors disabled:opacity-50 flex items-center justify-center" disabled="">
-<span class="material-symbols-outlined text-[18px]">chevron_left</span>
-</button>
-<button class="w-8 h-8 rounded-md bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center shadow-sm">1</button>
-<button class="w-8 h-8 rounded-md hover:bg-surface-container-high text-on-surface-variant font-label-md text-label-md flex items-center justify-center transition-colors">2</button>
-<button class="w-8 h-8 rounded-md hover:bg-surface-container-high text-on-surface-variant font-label-md text-label-md flex items-center justify-center transition-colors">3</button>
-<span class="text-on-surface-variant mx-1 text-sm">...</span>
-<button class="w-8 h-8 rounded-md hover:bg-surface-container-high text-on-surface-variant font-label-md text-label-md flex items-center justify-center transition-colors">14</button>
-<button class="p-1.5 rounded-md hover:bg-surface-container-high text-on-surface-variant transition-colors flex items-center justify-center">
-<span class="material-symbols-outlined text-[18px]">chevron_right</span>
-</button>
+<div class="flex items-center justify-between mt-md">
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="page-info">共 0 个项目</p>
 </div>
 </div>
 </div>
 </main>
-<div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden" id="delete-toast"><div class="bg-error-container text-on-error-container px-lg py-sm rounded-full shadow-lg flex items-center gap-sm"><span class="material-symbols-outlined">delete</span><span class="font-body-md font-semibold">项目已删除</span></div></div>
+
+<!-- 菜单容器 -->
+<div id="menu-root"></div>
+<!-- 弹窗容器 -->
+<div id="modal-root"></div>
+<!-- Toast -->
+<div id="toast-root"></div>
+
+<script>
+const GRADS = [
+  { from: '#d4e3ff', to: '#a5c8ff', c: '#005daa' },
+  { from: '#e3ffd0', to: '#b6f58b', c: '#266d00' },
+  { from: '#ffddb0', to: '#ffba45', c: '#7d5400' },
+  { from: '#e0f7fa', to: '#b2ebf2', c: '#006064' },
+  { from: '#ede7f6', to: '#d1c4e9', c: '#4527a0' },
+  { from: '#fce4ec', to: '#f8bbd0', c: '#880e4f' },
+  { from: '#fff9c4', to: '#ffe082', c: '#f57f17' },
+  { from: '#e8f5e9', to: '#c8e6c9', c: '#2e7d32' },
+];
+
+const TYPE_ICON = { '脚本驱动': 'description', '课件转视频': 'slideshow', 'PPT生成': 'present_to_all', '口播生成': 'mic' };
+const TYPE_LINK = { '脚本驱动': 'script-generation.html', '课件转视频': 'courseware-to-video.html', 'PPT生成': 'ppt-generation.html', '口播生成': 'digital-human-broadcast.html' };
+
+let projects = [
+  { id: 1, name: '人工智能基础导论 - 第1讲', type: '脚本驱动', typeKey: 'script', status: 'rendering', progress: 65, group: 'AI课程', size: '256 MB', duration: '12:45', date: '2023-10-25 14:30', ts: 202310251430, grad: 0 },
+  { id: 2, name: '数据结构与算法核心概念', type: '课件转视频', typeKey: 'courseware', status: 'completed', progress: 100, group: '计算机', size: '142 MB', duration: '08:30', date: '2023-10-24 09:15', ts: 202310240915, grad: 1 },
+  { id: 3, name: 'Python 基础语法速成', type: '脚本驱动', typeKey: 'script', status: 'draft', progress: 0, group: '编程', size: '--', duration: '--:--', date: '2023-10-26 10:05', ts: 202310261005, grad: 2 },
+  { id: 4, name: '高等数学 - 微积分基础', type: '课件转视频', typeKey: 'courseware', status: 'completed', progress: 100, group: '数学', size: '188 MB', duration: '15:20', date: '2023-10-22 15:40', ts: 202310221540, grad: 3 },
+  { id: 5, name: '英语口语 - 日常对话训练', type: '口播生成', typeKey: 'broadcast', status: 'completed', progress: 100, group: '外语', size: '96 MB', duration: '06:18', date: '2023-10-21 11:22', ts: 202310211122, grad: 4 },
+  { id: 6, name: '区块链技术 - 共识机制', type: 'PPT生成', typeKey: 'ppt', status: 'failed', progress: 0, group: '计算机', size: '--', duration: '--:--', date: '2023-10-20 16:40', ts: 202310201640, grad: 5 },
+  { id: 7, name: '市场营销实战案例分析', type: 'PPT生成', typeKey: 'ppt', status: 'draft', progress: 0, group: '商务', size: '--', duration: '--:--', date: '2023-10-19 09:08', ts: 202310190908, grad: 6 },
+  { id: 8, name: '校园新闻播报练习', type: '口播生成', typeKey: 'broadcast', status: 'completed', progress: 100, group: '新闻', size: '58 MB', duration: '03:12', date: '2023-10-18 18:22', ts: 202310181822, grad: 7 },
+  { id: 9, name: '深度学习入门 - 神经网络', type: '脚本驱动', typeKey: 'script', status: 'rendering', progress: 30, group: 'AI课程', size: '204 MB', duration: '--:--', date: '2023-10-27 08:45', ts: 202310270845, grad: 0 },
+  { id: 10, name: '物理 - 量子力学导论', type: '课件转视频', typeKey: 'courseware', status: 'failed', progress: 0, group: '数学', size: '--', duration: '--:--', date: '2023-10-17 14:30', ts: 202310171430, grad: 2 },
+];
+
+let groups = ['AI课程', '计算机', '编程', '数学', '外语', '商务', '新闻'];
+let view = 'grid';
+let category = 'all';
+let selected = new Set();
+
+function thumbStyle(i) { const g = GRADS[i % GRADS.length]; return `background:linear-gradient(135deg,${g.from},${g.to})`; }
+function thumbColor(i) { return GRADS[i % GRADS.length].c; }
+function statusText(s) { return { rendering: '渲染中', completed: '已完成', draft: '草稿', failed: '失败' }[s]; }
+function statusColor(s) { return { rendering: 'text-primary', completed: 'text-secondary', draft: 'text-on-surface-variant', failed: 'text-error' }[s]; }
+
+function filteredProjects() {
+  let list = [...projects];
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  if (q) list = list.filter(p => p.name.toLowerCase().includes(q));
+  if (category === 'rendering' || category === 'completed' || category === 'draft' || category === 'failed') list = list.filter(p => p.status === category);
+  else if (category === 'script' || category === 'courseware' || category === 'ppt' || category === 'broadcast') list = list.filter(p => p.typeKey === category);
+  else if (category.startsWith('group-')) { const g = category.slice(6); list = list.filter(p => p.group === g); }
+  const sort = document.getElementById('sort-select').value;
+  if (sort === 'newest') list.sort((a, b) => b.ts - a.ts);
+  else if (sort === 'oldest') list.sort((a, b) => a.ts - b.ts);
+  else if (sort === 'name') list.sort((a, b) => a.name.localeCompare(b.name, 'zh'));
+  else if (sort === 'modified') list.sort((a, b) => b.ts - a.ts);
+  return list;
+}
+
+function render() {
+  const list = filteredProjects();
+  const container = document.getElementById('project-list');
+  const empty = document.getElementById('empty-state');
+  document.getElementById('page-info').textContent = '共 ' + list.length + ' 个项目';
+  updateCounts();
+  if (list.length === 0) {
+    container.innerHTML = '';
+    container.classList.add('hidden');
+    empty.classList.remove('hidden'); empty.classList.add('flex');
+    return;
+  }
+  container.classList.remove('hidden');
+  empty.classList.add('hidden'); empty.classList.remove('flex');
+
+  if (view === 'grid') {
+    container.className = 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-lg';
+    container.innerHTML = list.map(p => `
+      <div class="pj-card ${p.status === 'draft' ? 'draft' : ''}">
+        <div class="thumb" style="${thumbStyle(p.id)}">
+          <span class="material-symbols-outlined text-6xl" style="color:${thumbColor(p.id)}">${p.status === 'draft' ? 'draft' : TYPE_ICON[p.type]}</span>
+          <div class="check" onclick="event.stopPropagation();toggleSelect(${p.id})">
+            <span class="cbx ${selected.has(p.id) ? 'checked' : ''}" id="cbx-${p.id}"><span class="material-symbols-outlined text-[14px]">check</span></span>
+          </div>
+          <div class="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold backdrop-blur ${p.status === 'completed' ? 'bg-secondary-container/90 text-on-secondary-container' : p.status === 'failed' ? 'bg-error-container/90 text-on-error-container' : p.status === 'draft' ? 'bg-surface-variant/90 text-on-surface-variant' : 'bg-primary-container/90 text-on-primary-container'}">${p.status === 'rendering' ? '渲染中 ' + p.progress + '%' : statusText(p.status)}</div>
+          <div class="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded">${p.duration}</div>
+          ${p.status === 'rendering' ? `<div class="absolute bottom-0 left-0 right-0 h-1 bg-white/30"><div class="h-full bg-primary" style="width:${p.progress}%"></div></div>` : ''}
+        </div>
+        <div class="p-md">
+          <div class="flex items-start justify-between gap-xs">
+            <h3 class="text-sm font-semibold text-on-surface leading-snug line-clamp-2">${p.name}</h3>
+            <button class="shrink-0 p-1 text-on-surface-variant hover:bg-surface-container rounded transition-colors" onclick="event.stopPropagation();openMenu(event, ${p.id})"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+          </div>
+          <div class="flex items-center gap-2 mt-2 text-xs text-on-surface-variant">
+            <span class="material-symbols-outlined text-[14px]">${TYPE_ICON[p.type]}</span>${p.type}
+            <span class="text-outline">•</span>${p.size}
+          </div>
+          <div class="flex items-center justify-between mt-3 pt-3 border-t border-surface-variant">
+            <span class="text-[11px] text-outline">${p.date}</span>
+            <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold" style="background:#e7eefd;color:#004581">${p.group}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    container.className = 'grid grid-cols-1 gap-0 bg-surface rounded-xl border border-surface-variant overflow-hidden';
+    container.innerHTML = `
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead><tr class="bg-surface-container-low border-b border-surface-variant">
+            <th class="px-lg py-md w-10"></th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">项目名称</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">创建方式</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">分组</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">状态</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">创建日期</th>
+            <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase text-right">操作</th>
+          </tr></thead>
+          <tbody class="divide-y divide-surface-variant">
+          ${list.map(p => `
+            <tr class="hover:bg-surface-container-lowest transition-colors">
+              <td class="px-lg py-md" onclick="toggleSelect(${p.id})">
+                <span class="cbx ${selected.has(p.id) ? 'checked' : ''}" id="cbx-${p.id}"><span class="material-symbols-outlined text-[14px]">check</span></span>
+              </td>
+              <td class="px-lg py-md">
+                <div class="flex items-center gap-md">
+                  <div class="w-16 h-10 rounded-lg overflow-hidden flex items-center justify-center shrink-0" style="${thumbStyle(p.id)}"><span class="material-symbols-outlined" style="color:${thumbColor(p.id)}">${p.status === 'draft' ? 'draft' : TYPE_ICON[p.type]}</span></div>
+                  <div><p class="font-title-lg text-title-lg text-on-surface">${p.name}</p><p class="font-body-sm text-body-sm text-on-surface-variant">${p.duration} | ${p.size}</p></div>
+                </div>
+              </td>
+              <td class="px-lg py-md"><span class="px-base py-[2px] bg-surface-variant text-on-surface-variant rounded font-label-md text-label-md">${p.type}</span></td>
+              <td class="px-lg py-md"><span class="px-base py-[2px] bg-primary-fixed text-on-primary-fixed-variant rounded font-label-md text-label-md">${p.group}</span></td>
+              <td class="px-lg py-md"><div class="flex items-center gap-xs ${statusColor(p.status)}"><span class="dot ${p.status}"></span><span class="font-body-md text-body-md">${p.status === 'rendering' ? '渲染中 ' + p.progress + '%' : statusText(p.status)}</span></div></td>
+              <td class="px-lg py-md"><p class="font-body-md text-body-md text-on-surface">${p.date.split(' ')[0]}</p><p class="font-label-md text-label-md text-outline">${p.date.split(' ')[1]}</p></td>
+              <td class="px-lg py-md text-right">
+                <div class="flex items-center justify-end gap-sm">
+                  <button class="p-base hover:bg-surface-container-high rounded text-primary" title="编辑" onclick="editProject(${p.id})"><span class="material-symbols-outlined">edit</span></button>
+                  ${p.status === 'rendering' ? `<button class="p-base hover:bg-surface-container-high rounded text-primary" title="查看进度" onclick="viewProgress(${p.id})"><span class="material-symbols-outlined">visibility</span></button>` : `<button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="预览" onclick="previewProject(${p.id})"><span class="material-symbols-outlined">play_arrow</span></button>`}
+                  <button class="p-base hover:bg-surface-container-high rounded text-on-surface-variant" title="更多" onclick="openMenu(event, ${p.id})"><span class="material-symbols-outlined">more_vert</span></button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+  updateSelectAll();
+  updateBatchBar();
+}
+
+function updateCounts() {
+  document.getElementById('count-all').textContent = projects.length;
+  document.getElementById('count-rendering').textContent = projects.filter(p => p.status === 'rendering').length;
+  document.getElementById('count-completed').textContent = projects.filter(p => p.status === 'completed').length;
+  document.getElementById('count-draft').textContent = projects.filter(p => p.status === 'draft').length;
+  document.getElementById('count-failed').textContent = projects.filter(p => p.status === 'failed').length;
+}
+
+function renderGroups() {
+  const el = document.getElementById('group-list');
+  el.innerHTML = groups.map(g => `
+    <div class="cat-item ${category === 'group-' + g ? 'active' : ''}" data-cat="group-${g}" onclick="setCategory('group-${g}', this)">
+      <span class="material-symbols-outlined text-[18px]">folder</span><span class="truncate">${g}</span>
+      <span class="count">${projects.filter(p => p.group === g).length}</span>
+    </div>`).join('');
+}
+
+function setCategory(cat, el) {
+  category = cat;
+  document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  render();
+}
+
+function switchView(v) {
+  view = v;
+  document.getElementById('view-grid').classList.toggle('active', v === 'grid');
+  document.getElementById('view-list').classList.toggle('active', v === 'list');
+  render();
+}
+
+function applyFilters() { render(); }
+
+function toggleSelect(id) {
+  if (selected.has(id)) selected.delete(id); else selected.add(id);
+  document.getElementById('cbx-' + id)?.classList.toggle('checked', selected.has(id));
+  updateSelectAll(); updateBatchBar();
+}
+
+function toggleSelectAll() {
+  const list = filteredProjects();
+  if (selected.size === list.length && list.length > 0) selected.clear();
+  else list.forEach(p => selected.add(p.id));
+  render();
+}
+
+function updateSelectAll() {
+  const list = filteredProjects();
+  document.getElementById('select-all-cbx').classList.toggle('checked', list.length > 0 && selected.size === list.length);
+}
+
+function updateBatchBar() {
+  const bar = document.getElementById('batch-bar');
+  if (selected.size > 0) { bar.classList.remove('hidden'); document.getElementById('batch-count').textContent = selected.size; }
+  else bar.classList.add('hidden');
+}
+
+function clearSelection() { selected.clear(); render(); }
+
+function editProject(id) {
+  const p = projects.find(x => x.id === id);
+  if (p.status === 'rendering') { viewProgress(id); return; }
+  location.href = TYPE_LINK[p.type] || 'script-generation.html';
+}
+function viewProgress(id) { location.href = 'processing-tasks.html'; }
+function previewProject(id) { toast('预览：' + projects.find(p => p.id === id).name, 'success'); }
+function exportProject(id) { toast('已导出：' + projects.find(p => p.id === id).name, 'success'); }
+
+function openMenu(event, id) {
+  closeMenu();
+  const p = projects.find(x => x.id === id);
+  const menu = document.createElement('div');
+  menu.className = 'menu-pop';
+  menu.id = 'menu-pop';
+  menu.innerHTML = `
+    ${p.status === 'rendering' ? `<button onclick="viewProgress(${id})"><span class="material-symbols-outlined text-[18px]">visibility</span>查看进度</button>` : `<button onclick="editProject(${id})"><span class="material-symbols-outlined text-[18px]">edit</span>编辑</button><button onclick="previewProject(${id})"><span class="material-symbols-outlined text-[18px]">play_arrow</span>预览</button>`}
+    <div class="divider"></div>
+    <button onclick="copyProject(${id})"><span class="material-symbols-outlined text-[18px]">content_copy</span>复制项目</button>
+    <button onclick="renameProject(${id})"><span class="material-symbols-outlined text-[18px]">drive_file_rename_outline</span>重命名</button>
+    <button onclick="exportProject(${id})"><span class="material-symbols-outlined text-[18px]">file_download</span>导出</button>
+    <div class="divider"></div>
+    <button onclick="moveProject(${id})"><span class="material-symbols-outlined text-[18px]">drive_file_move</span>移动到分组</button>
+    <div class="divider"></div>
+    <button class="danger" onclick="deleteProject(${id})"><span class="material-symbols-outlined text-[18px]">delete</span>删除</button>`;
+  document.getElementById('menu-root').appendChild(menu);
+  const rect = event.currentTarget.getBoundingClientRect();
+  menu.style.top = rect.bottom + 4 + 'px';
+  menu.style.left = Math.min(rect.left, window.innerWidth - 200) + 'px';
+  document.addEventListener('click', outsideMenu);
+}
+function closeMenu() { document.getElementById('menu-pop')?.remove(); document.removeEventListener('click', outsideMenu); }
+function outsideMenu(e) { if (!e.target.closest('.menu-pop')) closeMenu(); }
+
+function copyProject(id) {
+  closeMenu();
+  const p = projects.find(x => x.id === id);
+  projects.push({ ...p, id: Date.now(), name: p.name + '（副本）', status: 'draft', progress: 0, date: '刚刚', ts: 999999999999 });
+  toast('已复制项目', 'success'); renderGroups(); render();
+}
+
+function renameProject(id) {
+  closeMenu();
+  const p = projects.find(x => x.id === id);
+  openModal('重命名项目', `
+    <label class="block text-sm text-on-surface-variant mb-1">项目名称</label>
+    <input id="modal-input" class="w-full px-md py-sm border border-outline-variant rounded-lg text-sm focus:border-primary focus:ring-2 focus:ring-primary/20" value="${p.name}" type="text">
+  `, () => {
+    const nv = document.getElementById('modal-input').value.trim();
+    if (!nv) { toast('名称不能为空', 'error'); return; }
+    p.name = nv; toast('重命名成功', 'success'); render();
+  });
+}
+
+function moveProject(id) {
+  closeMenu();
+  const p = projects.find(x => x.id === id);
+  openModal('移动到分组', `
+    <div class="space-y-2">
+      ${groups.map(g => `<label class="flex items-center gap-sm p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-primary/5 transition-colors"><input type="radio" name="group" value="${g}" ${p.group === g ? 'checked' : ''} class="text-primary focus:ring-primary"> <span class="text-sm">${g}</span></label>`).join('')}
+    </div>
+  `, () => {
+    const sel = document.querySelector('input[name="group"]:checked');
+    if (sel) { p.group = sel.value; toast('已移动到「' + p.group + '」', 'success'); renderGroups(); render(); }
+  });
+}
+
+function deleteProject(id) {
+  closeMenu();
+  openModal('删除项目', `<p class="text-sm text-on-surface-variant">确定要删除「${projects.find(p => p.id === id).name}」吗？项目将移入回收站。</p>`, () => {
+    projects = projects.filter(p => p.id !== id);
+    selected.delete(id);
+    toast('项目已移入回收站', 'success'); renderGroups(); render();
+  }, '删除', true);
+}
+
+function batchCopy() {
+  const n = selected.size;
+  selected.forEach(id => { const p = projects.find(x => x.id === id); if (p) projects.push({ ...p, id: Date.now() + Math.random(), name: p.name + '（副本）', status: 'draft', progress: 0, ts: 999999999999 }); });
+  toast('已复制 ' + n + ' 个项目', 'success'); clearSelection(); renderGroups();
+}
+
+function batchMove() {
+  openModal('批量移动到分组', `
+    <div class="space-y-2">
+      ${groups.map(g => `<label class="flex items-center gap-sm p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-primary/5 transition-colors"><input type="radio" name="group" value="${g}" class="text-primary focus:ring-primary"> <span class="text-sm">${g}</span></label>`).join('')}
+    </div>
+  `, () => {
+    const sel = document.querySelector('input[name="group"]:checked');
+    if (sel) { projects.forEach(p => { if (selected.has(p.id)) p.group = sel.value; }); toast('已移动 ' + selected.size + ' 个项目', 'success'); clearSelection(); renderGroups(); }
+  });
+}
+
+function batchDelete() {
+  openModal('批量删除', `<p class="text-sm text-on-surface-variant">确定要删除选中的 ${selected.size} 个项目吗？将移入回收站。</p>`, () => {
+    projects = projects.filter(p => !selected.has(p.id));
+    selected.clear();
+    toast('已移入回收站', 'success'); renderGroups(); render();
+  }, '删除', true);
+}
+
+function openGroupModal() {
+  openModal('新建分组', `
+    <label class="block text-sm text-on-surface-variant mb-1">分组名称</label>
+    <input id="modal-input" class="w-full px-md py-sm border border-outline-variant rounded-lg text-sm focus:border-primary focus:ring-2 focus:ring-primary/20" placeholder="例如：期末考试" type="text">
+  `, () => {
+    const nv = document.getElementById('modal-input').value.trim();
+    if (!nv) { toast('名称不能为空', 'error'); return; }
+    if (groups.includes(nv)) { toast('分组已存在', 'error'); return; }
+    groups.push(nv); toast('分组已创建', 'success'); renderGroups();
+  });
+}
+
+function openModal(title, bodyHtml, onConfirm, confirmLabel = '确认', danger = false) {
+  closeModal();
+  const mask = document.createElement('div');
+  mask.className = 'modal-mask';
+  mask.id = 'modal';
+  mask.innerHTML = `
+    <div class="modal-panel overflow-hidden">
+      <div class="px-lg py-md border-b border-outline-variant flex justify-between items-center bg-surface">
+        <h3 class="font-title-lg text-title-lg text-on-surface font-semibold">${title}</h3>
+        <button class="text-on-surface-variant hover:text-primary p-1 rounded transition-colors" onclick="closeModal()"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="p-lg">${bodyHtml}</div>
+      <div class="px-lg py-md border-t border-outline-variant bg-surface flex justify-end gap-sm">
+        <button class="px-md py-2 rounded-lg text-sm text-on-surface-variant border border-outline-variant hover:bg-surface-container-high transition-colors" onclick="closeModal()">取消</button>
+        <button class="px-md py-2 rounded-lg text-sm ${danger ? 'bg-error text-on-error hover:opacity-90' : 'bg-primary text-on-primary hover:opacity-90'} transition-colors" onclick="modalConfirm()">${confirmLabel}</button>
+      </div>
+    </div>`;
+  mask.addEventListener('click', e => { if (e.target === mask) closeModal(); });
+  mask._onConfirm = onConfirm;
+  document.getElementById('modal-root').appendChild(mask);
+}
+function modalConfirm() { const m = document.getElementById('modal'); if (m && m._onConfirm) m._onConfirm(); closeModal(); }
+function closeModal() { document.getElementById('modal')?.remove(); }
+
+function toast(msg, type = 'success') {
+  const root = document.getElementById('toast-root');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = `<span class="material-symbols-outlined text-[18px]">${type === 'error' ? 'error' : 'check_circle'}</span>${msg}`;
+  root.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 300); }, 2400);
+}
+
+renderGroups();
+render();
+</script>
 </body></html>
