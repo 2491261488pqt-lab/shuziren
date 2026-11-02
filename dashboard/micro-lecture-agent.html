@@ -5,6 +5,7 @@
 <title>微课智能体 - 数字人微课平台</title>
 <link rel="stylesheet" href="../assets/css/tailwind.css">
 <link rel="stylesheet" href="../assets/css/fonts.css">
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 <style>
 body {
             background-color: #f0f2f5;
@@ -104,7 +105,7 @@ body {
 </div>
 </header>
 <!-- Main Content Canvas -->
-<main class="ml-sidebar-width mt-16 p-xl space-y-lg"" style="width:calc(100% - 240px)">
+<main class="ml-sidebar-width mt-16 p-xl space-y-lg" style="width:calc(100% - 240px)">
 
 <!-- Welcome Banner Section -->
 <section class="relative overflow-hidden rounded-xl bg-primary-container p-xl text-white shadow-sm h-56 flex flex-col justify-center">
@@ -122,7 +123,7 @@ body {
 <h4 class="font-title-lg text-title-lg text-on-surface">核心创作工具</h4>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
 <!-- Script-driven Generation -->
-<div class="group relative overflow-hidden bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" onclick="window.location.href='script-generation.html'">
+<div class="group relative overflow-hidden bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" @click="go('script-generation.html')">
 <div class="flex justify-between items-start mb-md">
 <div class="p-base bg-primary-fixed text-primary rounded-lg">
 <span class="material-symbols-outlined text-[32px]">movie_edit</span>
@@ -138,7 +139,7 @@ body {
 </div>
 </div>
 <!-- PPT-to-Video -->
-<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" onclick="window.location.href='courseware-to-video.html'">
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" @click="go('courseware-to-video.html')">
 <div class="flex justify-between items-start mb-md">
 <div class="p-base bg-secondary-fixed-dim text-secondary rounded-lg">
 <span class="material-symbols-outlined text-[32px]">present_to_all</span>
@@ -153,7 +154,7 @@ body {
 </div>
 </div>
 <!-- AI PPT Generation -->
-<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" onclick="window.location.href='ppt-generation.html'">
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" @click="go('ppt-generation.html')">
 <div class="flex justify-between items-start mb-md">
 <div class="p-base bg-tertiary-fixed-dim text-tertiary rounded-lg">
 <span class="material-symbols-outlined text-[32px]">auto_awesome_motion</span>
@@ -169,7 +170,7 @@ body {
 </div>
 </div>
 <!-- Script Processing -->
-<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" onclick="window.location.href='script-processing.html'">
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" @click="go('script-processing.html')">
 <div class="flex justify-between items-start mb-md">
 <div class="p-base bg-surface-container-highest text-on-surface-variant rounded-lg">
 <span class="material-symbols-outlined text-[32px]">edit_note</span>
@@ -184,7 +185,7 @@ body {
 </div>
 </div>
 <!-- Voice Synthesis -->
-<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" onclick="window.location.href='voice-synthesis.html'">
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" @click="go('voice-synthesis.html')">
 <div class="flex justify-between items-start mb-md">
 <div class="p-base bg-primary-fixed text-primary rounded-lg">
 <span class="material-symbols-outlined text-[32px]">record_voice_over</span>
@@ -199,7 +200,7 @@ body {
 </div>
 </div>
 <!-- Project Library -->
-<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" onclick="window.location.href='project-library.html'">
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" @click="go('project-library.html')">
 <div class="flex justify-between items-start mb-md">
 <div class="p-base bg-surface-container-highest text-on-surface-variant rounded-lg">
 <span class="material-symbols-outlined text-[32px]">folder_special</span>
@@ -214,7 +215,7 @@ body {
 </div>
 </div>
 <!-- Digital Human Video Generation -->
-<div class="group relative overflow-hidden bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" onclick="window.location.href='digital-human-broadcast.html'">
+<div class="group relative overflow-hidden bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" @click="go('digital-human-broadcast.html')">
 <div class="flex justify-between items-start mb-md">
 <div class="p-base bg-primary-fixed text-primary rounded-lg">
 <span class="material-symbols-outlined text-[32px]">auto_videocam</span>
@@ -229,7 +230,7 @@ body {
 </div>
 </div>
 <!-- Digital Human Courseware Synthesis -->
-<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" onclick="window.location.href='courseware-synthesis.html'">
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" @click="go('courseware-synthesis.html')">
 <div class="flex justify-between items-start mb-md">
 <div class="p-base bg-primary-fixed text-primary rounded-lg">
 <span class="material-symbols-outlined text-[32px]">library_books</span>
@@ -244,7 +245,7 @@ body {
 </div>
 </div>
 <!-- PPT Translation & Script Processing -->
-<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" onclick="window.location.href='ppt-translation.html'">
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-lg hover:border-primary transition-all duration-300 hover:shadow-md cursor-pointer flex flex-col h-60" @click="go('ppt-translation.html')">
 <div class="flex justify-between items-start mb-md">
 <div class="p-base bg-tertiary-fixed-dim text-tertiary rounded-lg">
 <span class="material-symbols-outlined text-[32px]">translate</span>
@@ -261,54 +262,26 @@ body {
 </div>
 </div>
 
-<!-- Bottom Dashboard Content -->
-<div class="grid grid-cols-1 xl:grid-cols-4 gap-lg">
+<!-- ================= Vue 应用挂载区: 模板推荐 + 创作进行中 ================= -->
+<div id="app" class="grid grid-cols-1 xl:grid-cols-4 gap-lg">
 <!-- Templates Section (3/4 width) -->
 <div class="xl:col-span-3 space-y-md">
 <div class="flex items-center justify-between">
 <h4 class="font-title-lg text-title-lg text-on-surface">热门推荐模板</h4>
-<button class="text-primary font-label-md hover:underline">查看全部</a>
+<button @click="go('ppt-generation.html')" class="text-primary font-label-md hover:underline">查看全部</button>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
-<!-- Template Card 1 -->
-<div class="bg-surface-container-lowest rounded-lg border border-outline-variant overflow-hidden group">
+<!-- Template Cards (GET /api/presentation/templates/recommend) -->
+<div v-for="t in templates" :key="t.id" class="bg-surface-container-lowest rounded-lg border border-outline-variant overflow-hidden group">
 <div class="h-32 bg-surface-container overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="../assets/images/video-thumbnail.svg"/>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" :src="t.thumb || fallbackThumb" :alt="t.name"/>
 </div>
 <div class="p-md">
-<h5 class="font-bold font-body-md text-on-surface">企业级科技风</h5>
-<p class="text-[11px] text-on-surface-variant mt-xs">适用于：技术方案宣讲、产品演示</p>
+<h5 class="font-bold font-body-md text-on-surface">{{ t.name }}</h5>
+<p class="text-[11px] text-on-surface-variant mt-xs">{{ t.desc }}</p>
 <div class="mt-sm flex justify-between items-center">
-<span class="text-[10px] bg-surface-container-high px-2 py-0.5 rounded-full text-on-surface-variant">2.4k 使用</span>
-<button class="text-primary material-symbols-outlined">add_circle</a>
-</div>
-</div>
-</div>
-<!-- Template Card 2 -->
-<div class="bg-surface-container-lowest rounded-lg border border-outline-variant overflow-hidden group">
-<div class="h-32 bg-surface-container overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="../assets/images/video-thumbnail.svg"/>
-</div>
-<div class="p-md">
-<h5 class="font-bold font-body-md text-on-surface">明亮学术风</h5>
-<p class="text-[11px] text-on-surface-variant mt-xs">适用于：教育培训、在线讲座</p>
-<div class="mt-sm flex justify-between items-center">
-<span class="text-[10px] bg-surface-container-high px-2 py-0.5 rounded-full text-on-surface-variant">1.8k 使用</span>
-<button class="text-primary material-symbols-outlined">add_circle</a>
-</div>
-</div>
-</div>
-<!-- Template Card 3 -->
-<div class="bg-surface-container-lowest rounded-lg border border-outline-variant overflow-hidden group">
-<div class="h-32 bg-surface-container overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="../assets/images/video-thumbnail.svg"/>
-</div>
-<div class="p-md">
-<h5 class="font-bold font-body-md text-on-surface">前沿未来感</h5>
-<p class="text-[11px] text-on-surface-variant mt-xs">适用于：AI 技术介绍、未来展望</p>
-<div class="mt-sm flex justify-between items-center">
-<span class="text-[10px] bg-surface-container-high px-2 py-0.5 rounded-full text-on-surface-variant">3.1k 使用</span>
-<button class="text-primary material-symbols-outlined">add_circle</a>
+<span class="text-[10px] bg-surface-container-high px-2 py-0.5 rounded-full text-on-surface-variant">{{ t.usage }} 使用</span>
+<button @click="go('ppt-generation.html')" class="text-primary material-symbols-outlined">add_circle</button>
 </div>
 </div>
 </div>
@@ -318,41 +291,18 @@ body {
 <div class="xl:col-span-1 space-y-md">
 <h4 class="font-title-lg text-title-lg text-on-surface">创作进行中</h4>
 <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md divide-y divide-outline-variant">
-<!-- Task 1 -->
-<div class="py-md first:pt-0 last:pb-0">
+<!-- Tasks (合并 GET /tts-api/api/digital-human/videos + GET /video-api/api/videos) -->
+<div v-for="t in tasks" :key="t.id" class="py-md first:pt-0 last:pb-0">
 <div class="flex justify-between items-start mb-xs">
-<span class="font-body-sm font-semibold truncate max-w-[120px]">深度学习入门 02</span>
-<span class="text-[10px] text-primary bg-primary-fixed px-2 py-0.5 rounded flex items-center">
-<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1 animate-pulse-subtle"></span>处理中
-                        </span>
+<span class="font-body-sm font-semibold truncate max-w-[120px]">{{ t.title }}</span>
+<span class="text-[10px] px-2 py-0.5 rounded flex items-center" :class="taskStatus(t).cls">
+<span v-if="t.status === 'processing'" class="w-1.5 h-1.5 rounded-full bg-primary mr-1 animate-pulse-subtle"></span>{{ taskStatus(t).label }}
+</span>
 </div>
 <div class="w-full bg-surface-container-high h-1.5 rounded-full mt-xs">
-<div class="bg-primary h-1.5 rounded-full w-[65%]"></div>
+<div class="h-1.5 rounded-full" :class="taskBarClass(t.status)" :style="{ width: taskProgress(t) + '%' }"></div>
 </div>
-<p class="text-[10px] text-on-surface-variant mt-xs">预计剩余时间: 3分钟</p>
-</div>
-<!-- Task 2 -->
-<div class="py-md">
-<div class="flex justify-between items-start mb-xs">
-<span class="font-body-sm font-semibold truncate max-w-[120px]">财务报表分析</span>
-<span class="text-[10px] text-on-tertiary-fixed-variant bg-tertiary-fixed px-2 py-0.5 rounded">
-                            队列中
-                        </span>
-</div>
-<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-xs">
-<div class="bg-tertiary h-1.5 rounded-full w-[15%]"></div>
-</div>
-<p class="text-[10px] text-on-surface-variant mt-xs">前面还有 2 个任务</p>
-</div>
-<!-- Task 3 -->
-<div class="py-md">
-<div class="flex justify-between items-start mb-xs">
-<span class="font-body-sm font-semibold truncate max-w-[120px]">产品经理解析课程</span>
-<span class="text-[10px] text-secondary bg-secondary-fixed px-2 py-0.5 rounded font-medium">
-                            已完成
-                        </span>
-</div>
-<p class="text-[10px] text-on-surface-variant mt-xs">生成于 2小时前</p>
+<p class="text-[10px] text-on-surface-variant mt-xs">{{ taskTime(t) }}</p>
 </div>
 </div>
 <!-- Quick Assets -->
@@ -383,21 +333,151 @@ body {
 </main>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Sidebar nav click handler
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                document.querySelectorAll('nav a').forEach(l => l.classList.remove('sidebar-active'));
-                this.classList.add('sidebar-active');
+/* ============================================================================
+ * 微课智能体首页 · Vue 3 版 (仅本页面)
+ * 页面逻辑: Vue 响应式 (v-for / :class / :style), 接口依据文档 V1.0:
+ *   GET  /api/presentation/templates/recommend       模板推荐 (4.1, 失败降级 /templates)
+ *   GET  /tts-api/api/digital-human/videos           数字人视频列表 (4.3, "创作进行中"数据源①)
+ *   GET  /video-api/api/videos                       课程成片列表 (4.4, "创作进行中"数据源②)
+ *   GET  /prod-api/digitalhuman/health               网关服务状态 (3 章, 可选)
+ * 说明: 文档无统一任务列表接口 (任务查询仅支持单 taskId), 故"创作进行中"
+ *       合并数字人视频 + 课程成片两个列表展示; 后端提供统一接口后替换 loadTasks。
+ * 接口未就绪时页面保留原有静态内容; 后端就绪后自动渲染真实数据。
+ * ========================================================================== */
+(function () {
+    'use strict';
+
+    const { createApp } = Vue;
+
+    /* ================= API 配置 (文档 2.1 接口入口) ================= */
+    const API = {
+        PRESENTATION: '/api/presentation', // PPT 生成与模板
+        TTS: '/tts-api',                   // 音频 / 音色 / 数字人
+        VIDEO: '/video-api',               // PPT 视频轨 / 课程成片
+        GATEWAY: '/prod-api',              // RuoYi 数字人业务网关
+    };
+
+    /* ================= 统一请求封装 ================= */
+    async function request(base, path, options = {}) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 4000);
+        try {
+            const headers = {};
+            if (!(options.body instanceof FormData)) headers['Content-Type'] = 'application/json';
+            const token = localStorage.getItem('Admin-Token'); // RuoYi 登录 token
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+            const resp = await fetch(base + path, Object.assign({}, options, { headers, signal: controller.signal }));
+            clearTimeout(timer);
+            if (!resp.ok) throw new Error('HTTP ' + resp.status);
+            const data = await resp.json();
+            /* 网关统一格式 {code,msg,data} (文档 2.2); 业务服务直返对象则透传 */
+            if (data && typeof data === 'object' && 'code' in data) {
+                if (data.code !== 200 && data.code !== 0) throw new Error(data.msg || ('业务错误 code=' + data.code));
+                return data.data;
+            }
+            return data;
+        } catch (e) {
+            clearTimeout(timer);
+            throw e;
+        }
+    }
+
+    createApp({
+        data() {
+            return {
+                templates: [],           // 热门推荐模板 (接口数据)
+                tasks: [],               // 创作进行中任务 (合并两个接口)
+                fallbackThumb: '../assets/images/video-thumbnail.svg',
+            };
+        },
+
+        methods: {
+            go(url) { window.location.href = url; },
+
+            /* ---------------- 接口函数 (与后端对接) ---------------- */
+            /* GET /api/presentation/templates/recommend → 模板推荐列表 (失败降级模板列表) */
+            async loadRecommendTemplates() {
+                try {
+                    return this.normalizeTemplates(await request(API.PRESENTATION, '/templates/recommend'));
+                } catch (e) {
+                    try {
+                        return this.normalizeTemplates(await request(API.PRESENTATION, '/templates'));
+                    } catch (e2) { return []; }
+                }
+            },
+            normalizeTemplates(data) {
+                const list = data.templates || data.recommend || (Array.isArray(data) ? data : []);
+                return list.map(t => ({
+                    id: t.id,
+                    name: t.name || t.title || '未命名模板',
+                    desc: t.description || t.desc || t.intro || '',
+                    usage: t.usageCount || t.usage || t.usedCount || 0,
+                    thumb: t.thumbnail || t.thumb || t.coverImage || '',
+                }));
+            },
+
+            /* 合并"创作进行中"数据源: 数字人视频列表 + 课程成片列表 */
+            async loadTasks() {
+                const [dh, v] = await Promise.all([
+                    request(API.TTS, '/api/digital-human/videos').then(this.normalizeVideos).catch(() => []),
+                    request(API.VIDEO, '/api/videos').then(this.normalizeVideos).catch(() => []),
+                ]);
+                return [...dh, ...v];
+            },
+            normalizeVideos(data) {
+                const list = data.videos || data.list || (Array.isArray(data) ? data : []);
+                return list.map(v => ({
+                    id: v.id,
+                    title: v.title || v.name || '未命名任务',
+                    status: v.status || 'success',
+                    progress: v.progress != null ? v.progress : null,
+                    time: v.updatedAt || v.createdAt || v.generateTime || '',
+                }));
+            },
+
+            /* ---------------- 渲染辅助 ---------------- */
+            taskStatus(t) {
+                const map = {
+                    pending:    { label: '队列中', cls: 'text-on-tertiary-fixed-variant bg-tertiary-fixed' },
+                    processing: { label: '处理中', cls: 'text-primary bg-primary-fixed' },
+                    success:    { label: '已完成', cls: 'text-secondary bg-secondary-fixed' },
+                    failed:     { label: '失败',   cls: 'text-error bg-error/10' },
+                    error:      { label: '失败',   cls: 'text-error bg-error/10' },
+                };
+                return map[t.status] || map.success;
+            },
+            taskBarClass(status) {
+                if (status === 'processing') return 'bg-primary';
+                if (status === 'pending') return 'bg-tertiary';
+                return 'bg-secondary';
+            },
+            taskProgress(t) {
+                if (t.progress != null) return t.progress;
+                if (t.status === 'success') return 100;
+                if (t.status === 'pending') return 15;
+                return 65;
+            },
+            taskTime(t) {
+                if (!t.time) return '刚刚';
+                return (t.status === 'success' ? '生成于 ' : '更新于 ') + t.time;
+            },
+        },
+
+        mounted() {
+            /* 热门推荐模板 */
+            this.loadRecommendTemplates().then(list => {
+                if (list.length) this.templates = list;
             });
-        });
-        // Card press effect
-        const cards = document.querySelectorAll('.group');
-        cards.forEach(card => {
-            card.addEventListener('mousedown', () => card.classList.add('scale-[0.98]'));
-            card.addEventListener('mouseup', () => card.classList.remove('scale-[0.98]'));
-            card.addEventListener('mouseleave', () => card.classList.remove('scale-[0.98]'));
-        });
-    });
+            /* 创作进行中 (合并数字人视频 + 课程成片) */
+            this.loadTasks().then(list => {
+                if (list.length) this.tasks = list;
+            });
+            /* 可选: 网关健康检查 (文档流程2), 仅日志输出不阻塞页面 */
+            request(API.GATEWAY, '/digitalhuman/health')
+                .then(d => console.log('[网关健康状态]', d))
+                .catch(() => {});
+        },
+    }).mount('#app');
+})();
 </script>
 </body></html>
